@@ -20,7 +20,7 @@ export const WaLoader = () => {
 			const { Store, WAInterface } = await inject();
 			if (!!Store && !!WAInterface) {
 				setWa({
-					WAInterface: new Client(),
+					Client: new Client(),
 				});
 			}
 			setWAIinitialized(true);
@@ -31,5 +31,5 @@ export const WaLoader = () => {
 		return null;
 	}
 
-	return <h1>DONE!</h1>;
+	return <></>;
 };

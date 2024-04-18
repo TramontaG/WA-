@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'preact/hooks';
 import './app.css';
-import { elementGetsVisible } from './util/DOM';
-import { inject } from './lib/inject';
 import WaContext from './contexts/Wa';
-import { Client } from './lib/Client';
-import { WaLoader } from './components/WaLoader';
+import { AllModules } from './modules';
+import { WaLoader } from './modules/WaLoader';
 
 export function App() {
 	return (
 		<WaContext.Provider>
-			<WaLoader />
+			<div style={{ width: '100%', height: '100%' }}>
+				<WaLoader />
+				<AllModules />
+			</div>
 		</WaContext.Provider>
 	);
 }

@@ -162,7 +162,7 @@ export class Client {
 
 			const data = await window.WWebJS.arrayBufferToBase64Async(decryptedMedia);
 
-			return new MessageMedia(data, msg.mimetype, msg.filename, msg.size);
+			return new MessageMedia(msg.mimetype, data, msg.filename, msg.size);
 		} catch (e: any) {
 			if (e.status && e.status === 404) return undefined;
 			throw e;
