@@ -8,7 +8,7 @@ The Whatsapp client is relying on a manual port of WWebJs to remove any puppetee
 
 ### Tasks
 
-- [ ] Reveal media in-browser
+- [x] Reveal media in-browser
 - [ ] Personal Sticker Gallery
 - [ ] Anti-Delete
 - [ ] Forwarding messages to any amount of chats

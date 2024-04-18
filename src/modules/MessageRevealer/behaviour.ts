@@ -33,7 +33,8 @@ export const useMessageRevalerLogic = () => {
 			return;
 		}
 		const message = await Wa.Client.getMessageById(currentMessageId);
-		if (!message?.hasMedia) {
+
+		if (!message?.hasMedia || !message._data.isViewOnce) {
 			return;
 		}
 		if (!!currentMessageId) {
