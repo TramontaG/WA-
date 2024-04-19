@@ -1,4 +1,3 @@
-import './app.css';
 import WaContext from './contexts/Wa';
 import { AllModules } from './modules';
 import { WaLoader } from './modules/WaLoader';

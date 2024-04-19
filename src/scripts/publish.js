@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
 import fs from 'fs/promises';
+import { exec } from 'child_process';
 
 dotenv.config({
     path: ".env"
@@ -39,7 +40,30 @@ const publish = async () => {
     const newVersion = bumpVersion(updateType, preBumpVersion);
     console.log(newVersion);
 
+    await fs.writeFile("package.json", JSON.stringify({
+        ...packageJson,
+        version: newVersion,
+    }, undefined, "  "));
+
+    await new Promise((resolve, reject) => {
+        exec("yarn build", (stderr, stdout) => {
+            console.log({ stdout, stderr });
+            stderr ? reject(stderr) : resolve(stdout);
+        });
+    }).catch(async err => {
+        // revert package.json changes
+        await fs.writeFile("package.json", JSON.stringify({
+            ...packageJson,
+        }, undefined, "  "));
+
+        //exit process
+        console.warn(err);
+        process.exit(1);
+    });
+
     const bundle = await fs.readFile("./dist/wa-plusplus.user.js");
+    const meta = await fs.readFile("./dist/wa-plusplus.meta.js");
+
     const { data } = await CDNApi.post("/file/upload", {
         userspace: "public",
         fileName: "wa-plusplus@latest.user.js",
@@ -48,14 +72,23 @@ const publish = async () => {
 
     await CDNApi.post("/file/upload", {
         userspace: "public",
+        fileName: "wa-plusplus@latest.meta.js",
+        data: meta.toString("base64")
+    });
+
+    await CDNApi.post("/file/upload", {
+        userspace: "public",
         fileName: `wa-plusplus@${newVersion}.user.js`,
         data: bundle.toString("base64")
     });
 
-    await fs.writeFile("package.json", JSON.stringify({
-        ...packageJson,
-        version: newVersion,
-    }));
+    await CDNApi.post("/file/upload", {
+        userspace: "public",
+        fileName: `wa-plusplus@${newVersion}.user.js`,
+        data: meta.toString("base64")
+    });
+
+
 
     console.log(data);
 }
