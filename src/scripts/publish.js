@@ -88,8 +88,6 @@ const publish = async () => {
         data: meta.toString("base64")
     });
 
-
-
     console.log(data);
 }
 
