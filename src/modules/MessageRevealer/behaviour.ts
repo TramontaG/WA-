@@ -25,8 +25,12 @@ export const useMessageRevalerLogic = () => {
 	};
 
 	useEffect(() => {
-		setupMessageRevealer(onClickMessage);
-	}, []);
+		if (!Wa.Client) {
+			return;
+		} else {
+			setupMessageRevealer(onClickMessage);
+		}
+	}, [Wa]);
 
 	const downloadAndShowMedia = async () => {
 		if (currentMessageId === null) {

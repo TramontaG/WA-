@@ -1,16 +1,14 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.0.0
+// @version    0.1.6
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com
 // @require    https://cdn.jsdelivr.net/npm/preact@10.19.3/dist/preact.min.js
 // @sandbox    JavaScript
-// @grant      GM_addStyle
+// @grant      none
 // ==/UserScript==
-
-(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})(' .logo{height:6em;padding:1.5em}.logo:hover{filter:drop-shadow(0 0 2em #646cffaa)}.logo.preact:hover{filter:drop-shadow(0 0 2em #673ab8aa)}.card{padding:2em}.read-the-docs{color:#888}[id="WA++"]{position:absolute;z-index:999;width:100vw;height:100vh;pointer-events:none}[id="WA++"] *{box-sizing:border-box}:root{font-family:Inter,Avenir,Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;font-weight:400;color-scheme:light dark;color:#ffffffde;background-color:#242424;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-text-size-adjust:100%} ');
 
 (function (preact) {
   'use strict';
@@ -1693,8 +1691,12 @@
       setCurrentMessageId(messageId);
     };
     p(() => {
-      setupMessageRevealer(onClickMessage);
-    }, []);
+      if (!Wa.Client) {
+        return;
+      } else {
+        setupMessageRevealer(onClickMessage);
+      }
+    }, [Wa]);
     const downloadAndShowMedia = async () => {
       if (currentMessageId === null) {
         return;
@@ -3555,6 +3557,11 @@ ${this.address}` : this.name || this.address || "";
   preact.render(u(App, {}), (() => {
     const app = document.createElement("div");
     app.setAttribute("id", "WA++");
+    app.setAttribute("style", `position: absolute;
+			z-index: 999;
+			width: 100vw;
+			height: 100vh;
+			pointer-events: none;`);
     document.body.append(app);
     return app;
   })());
