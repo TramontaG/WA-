@@ -1,6 +1,8 @@
 import { render } from 'preact';
 import { App } from './app';
 
+console.log('WA++ is installed properly!');
+
 render(
 	<App />,
 	(() => {

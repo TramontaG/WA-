@@ -41,6 +41,7 @@ export const useMessageRevalerLogic = () => {
 		if (!message?.hasMedia || !message._data.isViewOnce) {
 			return;
 		}
+
 		if (!!currentMessageId) {
 			setModalOpen(true);
 			setLoading(true);

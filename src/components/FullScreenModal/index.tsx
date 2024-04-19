@@ -2,6 +2,7 @@ import { JSX } from 'preact/jsx-runtime';
 import { useFullScreenModalBehaviour } from './behaviour';
 import { Container } from './styles';
 import { stopBubbling } from '../../util/DOM';
+import { cloneElement } from 'preact';
 
 export type FullScreenModalProps = {
 	children: JSX.Element;
@@ -15,5 +16,10 @@ export const FullScreenModal = (props: FullScreenModalProps) => {
 	if (!isOpen) {
 		return null;
 	}
-	return <Container onClick={props.closeModal}>{props.children}</Container>;
+
+	const Children = cloneElement(props.children, {
+		onclick: (ev: Event) => ev.stopPropagation(),
+	});
+
+	return <Container onClick={props.closeModal}>{Children}</Container>;
 };
