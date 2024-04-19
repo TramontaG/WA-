@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.1.6
+// @version    0.2.0
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com
@@ -1654,9 +1654,12 @@
     if (!isOpen) {
       return null;
     }
+    const Children = preact.cloneElement(props.children, {
+      onclick: (ev) => ev.stopPropagation()
+    });
     return u(Container$1, {
       onClick: props.closeModal,
-      children: props.children
+      children: Children
     });
   };
   const Render = ({
@@ -1759,16 +1762,34 @@
     });
   };
   const Image$1 = ut.img`
+	width: 100%;
+	object-fit: contain;
 	max-width: 100%;
 	max-height: 100%;
+`;
+  const Multimidia = ut.video`
+	width: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
 `;
   const MediaPreview = ({
     media,
     messageType
   }) => {
+    const srcString = `data:${media.mimetype};base64,${media.data}`;
+    console.log(messageType);
     if (messageType === "image") {
       return u(Image$1, {
-        src: `data:image/png;base64,${media.data}`
+        src: srcString
+      });
+    }
+    if (messageType === "video" || messageType === "audio" || messageType === "ptt") {
+      return u(Multimidia, {
+        controls: true,
+        children: u("source", {
+          src: srcString
+        })
       });
     }
     return null;
@@ -3536,6 +3557,7 @@ ${this.address}` : this.name || this.address || "";
           });
         }
         setWAIinitialized(true);
+        console.log("WA++ EXTENSION READY");
       });
     }, []);
     if (!documentLoaded || !WaInitialized) {
@@ -3554,6 +3576,7 @@ ${this.address}` : this.name || this.address || "";
       })
     });
   }
+  console.log("WA++ is installed properly!");
   preact.render(u(App, {}), (() => {
     const app = document.createElement("div");
     app.setAttribute("id", "WA++");
