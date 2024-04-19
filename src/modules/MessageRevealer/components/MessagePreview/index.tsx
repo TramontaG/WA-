@@ -1,6 +1,6 @@
 import MessageMedia from '../../../../lib/Media';
 import { MessageTypes } from '../../../../lib/Message/models';
-import { Image } from './styles';
+import { Image, Multimidia } from './styles';
 
 type MediaPreviewProps = {
 	messageType: MessageTypes;
@@ -8,8 +8,17 @@ type MediaPreviewProps = {
 };
 
 export const MediaPreview = ({ media, messageType }: MediaPreviewProps) => {
+	const srcString = `data:${media.mimetype};base64,${media.data}`;
+	console.log(messageType);
 	if (messageType === 'image') {
-		return <Image src={`data:image/png;base64,${media.data}`} />;
+		return <Image src={srcString} />;
+	}
+	if (messageType === 'video' || messageType === 'audio' || messageType === 'ptt') {
+		return (
+			<Multimidia controls>
+				<source src={srcString} />
+			</Multimidia>
+		);
 	}
 
 	return null;

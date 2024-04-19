@@ -24,6 +24,7 @@ export const WaLoader = () => {
 				});
 			}
 			setWAIinitialized(true);
+			console.log('WA++ EXTENSION READY');
 		});
 	}, []);
 
