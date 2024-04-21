@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { color, getThemedColors } from '../../design';
 
 export const Container = styled.div`
 	height: 75%;
-	background: ${({ theme }) => color(getThemedColors(theme).background.default)};
 	border-radius: 15px;
 	display: flex;
 	justify-content: center;
@@ -15,6 +13,7 @@ export const Container = styled.div`
 
 export const ImageContainer = styled.div`
 	height: 100%;
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.2.1
+// @version    0.2.2
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com
@@ -2046,12 +2046,9 @@
     if (!isOpen) {
       return null;
     }
-    const Children = preact.cloneElement(props.children, {
-      onclick: (ev) => ev.stopPropagation()
-    });
     return u$1(Container$2, {
       onClick: props.closeModal,
-      children: Children
+      children: props.children
     });
   };
   const rotationAnimation = ht`
@@ -2119,6 +2116,27 @@
         height: size
       })
     });
+  };
+  const forExpression = (exp) => {
+    return new Promise((resolve) => {
+      const checker = setInterval(() => {
+        const done = exp();
+        if (done) {
+          clearInterval(checker);
+          resolve(true);
+        }
+      }, 1e3);
+    });
+  };
+  const elementGetsVisible = async (selector) => {
+    await forExpression(() => !!document.querySelector(selector));
+    return document.querySelector(selector);
+  };
+  const stopBubbling = (e2) => {
+    console.log("STOPPING BUBBLING FOR EVENT", e2);
+    e2.stopImmediatePropagation();
+    e2.preventDefault();
+    e2.stopPropagation();
   };
   const useMessageRevalerLogic = () => {
     const [currentMessageId, setCurrentMessageId] = h$1(null);
@@ -2212,16 +2230,18 @@
     });
   };
   const Image$1 = ut.img`
-	width: 100%;
+	height: 100%;
 	object-fit: contain;
 	max-width: 100%;
 	max-height: 100%;
 `;
   const Multimidia = ut.video`
+	border-radius: 15px;
 	width: 100%;
 	max-width: 100%;
 	max-height: 100%;
 	object-fit: contain;
+	pointer-events: auto;
 `;
   const MediaPreview = ({
     media,
@@ -2245,9 +2265,6 @@
   };
   const Container = ut.div`
 	height: 75%;
-	background: ${({
-  theme
-}) => color(getThemedColors(theme).background.default)};
 	border-radius: 15px;
 	display: flex;
 	justify-content: center;
@@ -2258,6 +2275,7 @@
 `;
   const ImageContainer = ut.div`
 	height: 100%;
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -2296,6 +2314,7 @@
         }), u$1(Render, {
           when: !loading,
           children: u$1(Container, {
+            onClick: stopBubbling,
             children: [u$1(ImageContainer, {
               children: u$1(MediaPreview, {
                 messageType,
@@ -2310,21 +2329,6 @@
         })]
       })
     });
-  };
-  const forExpression = (exp) => {
-    return new Promise((resolve) => {
-      const checker = setInterval(() => {
-        const done = exp();
-        if (done) {
-          clearInterval(checker);
-          resolve(true);
-        }
-      }, 1e3);
-    });
-  };
-  const elementGetsVisible = async (selector) => {
-    await forExpression(() => !!document.querySelector(selector));
-    return document.querySelector(selector);
   };
   const setupChatTools = async (onChatLoads) => {
     const chatContainer = await elementGetsVisible("#app > div > div > :nth-child(4)");
@@ -4225,10 +4229,10 @@ ${this.address}` : this.name || this.address || "";
     }, []);
     return null;
   };
-  const version = "0.2.1";
+  const version = "0.2.2";
   const checkVersion = () => {
     const fetchLatestVersion = async () => {
-      const latestVersion = await fetch("https://gramont.ddns.net/cdn/file/wa-plusplus-latest-version.txt").then((resp) => resp.text()).catch((err) => version);
+      const latestVersion = await fetch("https://gramont.ddns.net/cdn/file/public/wa-plusplus-latest-version.txt").then((resp) => resp.text()).catch((err) => version);
       if (latestVersion !== version) {
         console.log("version mismatch!");
       } else {

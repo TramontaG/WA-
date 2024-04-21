@@ -1,6 +1,7 @@
 import { FullScreenModal } from '../../components/FullScreenModal';
 import LoadingRing from '../../components/LoadingRing';
 import { Render } from '../../components/Render';
+import { stopBubbling } from '../../util/DOM';
 import { useMessageRevalerLogic } from './behaviour';
 import { MediaPreview } from './components/MessagePreview';
 import { CaptionContainer, Container, ImageContainer } from './styles';
@@ -16,7 +17,7 @@ export const MessageRevealer = () => {
 					<LoadingRing size={'12rem'} />
 				</Render>
 				<Render when={!loading}>
-					<Container>
+					<Container onClick={stopBubbling}>
 						<ImageContainer>
 							<MediaPreview messageType={messageType!} media={media!} />
 						</ImageContainer>

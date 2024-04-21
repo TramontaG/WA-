@@ -16,5 +16,8 @@ export const elementGetsVisible = async (selector: string) => {
 };
 
 export const stopBubbling = (e: Event) => {
+	console.log('STOPPING BUBBLING FOR EVENT', e);
+	e.stopImmediatePropagation();
+	e.preventDefault();
 	e.stopPropagation();
 };
