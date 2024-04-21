@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.2.2
+// @version    0.2.4
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com
@@ -2443,11 +2443,20 @@
   };
   Storage.prototype.setItem = new Proxy(Storage.prototype.setItem, {
     apply(target, thisArg, argumentList) {
-      const payload = {
-        key: argumentList[0],
-        oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
-        newValue: JSON.parse(argumentList[1])
-      };
+      let payload = {};
+      try {
+        payload = {
+          key: argumentList[0],
+          oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
+          newValue: JSON.parse(argumentList[1])
+        };
+      } catch (e2) {
+        payload = {
+          key: argumentList[0],
+          oldValue: thisArg.getItem(argumentList[0]),
+          newValue: argumentList[1]
+        };
+      }
       Object.values(eventCallbackMap.setItem).forEach((handler) => {
         handler(payload);
       });
@@ -2456,10 +2465,18 @@
   });
   Storage.prototype.removeItem = new Proxy(Storage.prototype.removeItem, {
     apply(target, thisArg, argumentList) {
-      const payload = {
-        key: argumentList[0],
-        oldValue: JSON.parse(thisArg.getItem(argumentList[0]))
-      };
+      let payload = {};
+      try {
+        payload = {
+          key: argumentList[0],
+          oldValue: JSON.parse(thisArg.getItem(argumentList[0]))
+        };
+      } catch (e2) {
+        payload = {
+          key: argumentList[0],
+          oldValue: thisArg.getItem(argumentList[0])
+        };
+      }
       Object.values(eventCallbackMap.removeItem).forEach((handler) => {
         handler(payload);
       });
@@ -4229,7 +4246,7 @@ ${this.address}` : this.name || this.address || "";
     }, []);
     return null;
   };
-  const version = "0.2.2";
+  const version = "0.2.4";
   const checkVersion = () => {
     const fetchLatestVersion = async () => {
       const latestVersion = await fetch("https://gramont.ddns.net/cdn/file/public/wa-plusplus-latest-version.txt").then((resp) => resp.text()).catch((err) => version);

@@ -29,11 +29,20 @@ const eventCallbackMap: EventCallbackMap = {
 
 Storage.prototype.setItem = new Proxy(Storage.prototype.setItem, {
 	apply(target, thisArg, argumentList) {
-		const payload = {
-			key: argumentList[0],
-			oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
-			newValue: JSON.parse(argumentList[1]),
-		} as SetItemPayload;
+		let payload = {} as SetItemPayload;
+		try {
+			payload = {
+				key: argumentList[0],
+				oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
+				newValue: JSON.parse(argumentList[1]),
+			};
+		} catch (e) {
+			payload = {
+				key: argumentList[0],
+				oldValue: thisArg.getItem(argumentList[0]),
+				newValue: argumentList[1],
+			};
+		}
 
 		Object.values(eventCallbackMap.setItem).forEach(handler => {
 			handler(payload);
@@ -45,10 +54,19 @@ Storage.prototype.setItem = new Proxy(Storage.prototype.setItem, {
 
 Storage.prototype.removeItem = new Proxy(Storage.prototype.removeItem, {
 	apply(target, thisArg, argumentList) {
-		const payload = {
-			key: argumentList[0],
-			oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
-		} as RemoveItemPayload;
+		let payload = {} as RemoveItemPayload;
+
+		try {
+			payload = {
+				key: argumentList[0],
+				oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
+			} as RemoveItemPayload;
+		} catch (e) {
+			payload = {
+				key: argumentList[0],
+				oldValue: thisArg.getItem(argumentList[0]),
+			} as RemoveItemPayload;
+		}
 
 		Object.values(eventCallbackMap.removeItem).forEach(handler => {
 			handler(payload);
