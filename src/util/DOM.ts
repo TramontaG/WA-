@@ -10,8 +10,10 @@ const forExpression = (exp: () => boolean): Promise<boolean> => {
 	});
 };
 
-export const elementGetsVisible = (selector: string) =>
-	forExpression(() => !!document.querySelector(selector));
+export const elementGetsVisible = async (selector: string) => {
+	await forExpression(() => !!document.querySelector(selector));
+	return document.querySelector(selector)!;
+};
 
 export const stopBubbling = (e: Event) => {
 	e.stopPropagation();

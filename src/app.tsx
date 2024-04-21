@@ -1,14 +1,34 @@
+import { ThemeProvider } from 'styled-components';
+import { AlertComponent } from './components/Alert';
 import WaContext from './contexts/Wa';
 import { AllModules } from './modules';
 import { WaLoader } from './modules/WaLoader';
+import { AppContext } from './contexts/App';
 
 export function App() {
 	return (
 		<WaContext.Provider>
-			<div style={{ width: '100%', height: '100%' }}>
-				<WaLoader />
-				<AllModules />
-			</div>
+			<AppContext.Provider>
+				<AppContent />
+			</AppContext.Provider>
 		</WaContext.Provider>
 	);
 }
+
+const AppContent = () => {
+	const { theme } = AppContext.useContext().value;
+
+	return (
+		<ThemeProvider
+			theme={{
+				variant: theme,
+			}}
+		>
+			<div style={{ width: '100%', height: '100%' }}>
+				<WaLoader />
+				<AllModules />
+				<AlertComponent />
+			</div>
+		</ThemeProvider>
+	);
+};

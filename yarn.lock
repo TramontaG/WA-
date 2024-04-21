@@ -391,6 +391,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@lgs-code/colorimetry@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lgs-code/colorimetry/-/colorimetry-1.0.0.tgz#79fb2b32942a1a1704aac69e150797364e8c551e"
+  integrity sha512-+AqRYmnGkiYOxnys2I3Hei7h7UClQsJJXTYdevhtHMAJG+y1ECrbfvsM3HB9lT+TGv24ZZdDLCtR9R8jOAsidA==
+
 "@preact/preset-vite@^2.8.1":
   version "2.8.2"
   resolved "https://registry.npmjs.org/@preact/preset-vite/-/preset-vite-2.8.2.tgz"
@@ -647,6 +652,11 @@ color-name@1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
   integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
+
+colord@^2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/colord/-/colord-2.9.3.tgz#4f8ce919de456f1d5c1c368c307fe20f3e59fb43"
+  integrity sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==
 
 combined-stream@^1.0.8:
   version "1.0.8"

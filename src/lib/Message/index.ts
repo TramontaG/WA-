@@ -1,11 +1,12 @@
 'use strict';
 
-import { RawMessage } from '../../types/Message';
 import { Client } from '../Client';
 import { MessageContent, MessageSendOptions } from '../Client/models';
 import Location from '../Location';
 import MessageMedia from '../Media';
 import { ChatId, InviteV4Data, MessageAck, MessageId, MessageTypes } from './models';
+
+type RawMessage = Record<string, any>;
 
 class Message {
 	client: Client;
