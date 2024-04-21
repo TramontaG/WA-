@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.2.0
+// @version    0.2.1
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com

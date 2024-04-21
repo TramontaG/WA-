@@ -88,6 +88,12 @@ const publish = async () => {
         data: meta.toString("base64")
     });
 
+    await CDNApi.post("/file/upload", {
+        userspace: "public",
+        fileName: `wa-plusplus-latest-version.txt`,
+        data: Buffer.from(newVersion).toString("base64"),
+    });
+
     console.log(data);
 }
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       wa-plusplus
 // @namespace  npm/vite-plugin-monkey
-// @version    0.2.0
+// @version    0.2.1
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://web.whatsapp.com
@@ -19,219 +19,9 @@
     __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
     return value;
   };
-  var t, r, u$1, i, o = 0, f$2 = [], c = [], e = preact.options.__b, a = preact.options.__r, v$1 = preact.options.diffed, l = preact.options.__c, m$1 = preact.options.unmount;
-  function d(t2, u2) {
-    preact.options.__h && preact.options.__h(r, t2, o || u2), o = 0;
-    var i2 = r.__H || (r.__H = { __: [], __h: [] });
-    return t2 >= i2.__.length && i2.__.push({ __V: c }), i2.__[t2];
-  }
-  function h(n) {
-    return o = 1, s(B$2, n);
-  }
-  function s(n, u2, i2) {
-    var o2 = d(t++, 2);
-    if (o2.t = n, !o2.__c && (o2.__ = [i2 ? i2(u2) : B$2(void 0, u2), function(n2) {
-      var t2 = o2.__N ? o2.__N[0] : o2.__[0], r2 = o2.t(t2, n2);
-      t2 !== r2 && (o2.__N = [r2, o2.__[1]], o2.__c.setState({}));
-    }], o2.__c = r, !r.u)) {
-      var f2 = function(n2, t2, r2) {
-        if (!o2.__c.__H)
-          return true;
-        var u3 = o2.__c.__H.__.filter(function(n3) {
-          return n3.__c;
-        });
-        if (u3.every(function(n3) {
-          return !n3.__N;
-        }))
-          return !c2 || c2.call(this, n2, t2, r2);
-        var i3 = false;
-        return u3.forEach(function(n3) {
-          if (n3.__N) {
-            var t3 = n3.__[0];
-            n3.__ = n3.__N, n3.__N = void 0, t3 !== n3.__[0] && (i3 = true);
-          }
-        }), !(!i3 && o2.__c.props === n2) && (!c2 || c2.call(this, n2, t2, r2));
-      };
-      r.u = true;
-      var c2 = r.shouldComponentUpdate, e2 = r.componentWillUpdate;
-      r.componentWillUpdate = function(n2, t2, r2) {
-        if (this.__e) {
-          var u3 = c2;
-          c2 = void 0, f2(n2, t2, r2), c2 = u3;
-        }
-        e2 && e2.call(this, n2, t2, r2);
-      }, r.shouldComponentUpdate = f2;
-    }
-    return o2.__N || o2.__;
-  }
-  function p(u2, i2) {
-    var o2 = d(t++, 3);
-    !preact.options.__s && z$2(o2.__H, i2) && (o2.__ = u2, o2.i = i2, r.__H.__h.push(o2));
-  }
-  function y$1(u2, i2) {
-    var o2 = d(t++, 4);
-    !preact.options.__s && z$2(o2.__H, i2) && (o2.__ = u2, o2.i = i2, r.__h.push(o2));
-  }
-  function _$1(n) {
-    return o = 5, F$2(function() {
-      return { current: n };
-    }, []);
-  }
-  function A$2(n, t2, r2) {
-    o = 6, y$1(function() {
-      return "function" == typeof n ? (n(t2()), function() {
-        return n(null);
-      }) : n ? (n.current = t2(), function() {
-        return n.current = null;
-      }) : void 0;
-    }, null == r2 ? r2 : r2.concat(n));
-  }
-  function F$2(n, r2) {
-    var u2 = d(t++, 7);
-    return z$2(u2.__H, r2) ? (u2.__V = n(), u2.i = r2, u2.__h = n, u2.__V) : u2.__;
-  }
-  function T$2(n, t2) {
-    return o = 8, F$2(function() {
-      return n;
-    }, t2);
-  }
-  function q$2(n) {
-    var u2 = r.context[n.__c], i2 = d(t++, 9);
-    return i2.c = n, u2 ? (null == i2.__ && (i2.__ = true, u2.sub(r)), u2.props.value) : n.__;
-  }
-  function x$2(t2, r2) {
-    preact.options.useDebugValue && preact.options.useDebugValue(r2 ? r2(t2) : t2);
-  }
-  function V$2() {
-    var n = d(t++, 11);
-    if (!n.__) {
-      for (var u2 = r.__v; null !== u2 && !u2.__m && null !== u2.__; )
-        u2 = u2.__;
-      var i2 = u2.__m || (u2.__m = [0, 0]);
-      n.__ = "P" + i2[0] + "-" + i2[1]++;
-    }
-    return n.__;
-  }
-  function b() {
-    for (var t2; t2 = f$2.shift(); )
-      if (t2.__P && t2.__H)
-        try {
-          t2.__H.__h.forEach(k$2), t2.__H.__h.forEach(w$2), t2.__H.__h = [];
-        } catch (r2) {
-          t2.__H.__h = [], preact.options.__e(r2, t2.__v);
-        }
-  }
-  preact.options.__b = function(n) {
-    r = null, e && e(n);
-  }, preact.options.__r = function(n) {
-    a && a(n), t = 0;
-    var i2 = (r = n.__c).__H;
-    i2 && (u$1 === r ? (i2.__h = [], r.__h = [], i2.__.forEach(function(n2) {
-      n2.__N && (n2.__ = n2.__N), n2.__V = c, n2.__N = n2.i = void 0;
-    })) : (i2.__h.forEach(k$2), i2.__h.forEach(w$2), i2.__h = [], t = 0)), u$1 = r;
-  }, preact.options.diffed = function(t2) {
-    v$1 && v$1(t2);
-    var o2 = t2.__c;
-    o2 && o2.__H && (o2.__H.__h.length && (1 !== f$2.push(o2) && i === preact.options.requestAnimationFrame || ((i = preact.options.requestAnimationFrame) || j$2)(b)), o2.__H.__.forEach(function(n) {
-      n.i && (n.__H = n.i), n.__V !== c && (n.__ = n.__V), n.i = void 0, n.__V = c;
-    })), u$1 = r = null;
-  }, preact.options.__c = function(t2, r2) {
-    r2.some(function(t3) {
-      try {
-        t3.__h.forEach(k$2), t3.__h = t3.__h.filter(function(n) {
-          return !n.__ || w$2(n);
-        });
-      } catch (u2) {
-        r2.some(function(n) {
-          n.__h && (n.__h = []);
-        }), r2 = [], preact.options.__e(u2, t3.__v);
-      }
-    }), l && l(t2, r2);
-  }, preact.options.unmount = function(t2) {
-    m$1 && m$1(t2);
-    var r2, u2 = t2.__c;
-    u2 && u2.__H && (u2.__H.__.forEach(function(n) {
-      try {
-        k$2(n);
-      } catch (n2) {
-        r2 = n2;
-      }
-    }), u2.__H = void 0, r2 && preact.options.__e(r2, u2.__v));
-  };
-  var g$2 = "function" == typeof requestAnimationFrame;
-  function j$2(n) {
-    var t2, r2 = function() {
-      clearTimeout(u2), g$2 && cancelAnimationFrame(t2), setTimeout(n);
-    }, u2 = setTimeout(r2, 100);
-    g$2 && (t2 = requestAnimationFrame(r2));
-  }
-  function k$2(n) {
-    var t2 = r, u2 = n.__c;
-    "function" == typeof u2 && (n.__c = void 0, u2()), r = t2;
-  }
-  function w$2(n) {
-    var t2 = r;
-    n.__c = n.__(), r = t2;
-  }
-  function z$2(n, t2) {
-    return !n || n.length !== t2.length || t2.some(function(t3, r2) {
-      return t3 !== n[r2];
-    });
-  }
-  function B$2(n, t2) {
-    return "function" == typeof t2 ? t2(n) : t2;
-  }
-  var f$1 = 0;
-  function u(e2, t2, n, o2, i2, u2) {
-    var a2, c2, p2 = {};
-    for (c2 in t2)
-      "ref" == c2 ? a2 = t2[c2] : p2[c2] = t2[c2];
-    var l2 = { type: e2, props: p2, key: n, ref: a2, __k: null, __: null, __b: 0, __e: null, __d: void 0, __c: null, constructor: void 0, __v: --f$1, __i: -1, __u: 0, __source: i2, __self: u2 };
-    if ("function" == typeof e2 && (a2 = e2.defaultProps))
-      for (c2 in a2)
-        void 0 === p2[c2] && (p2[c2] = a2[c2]);
-    return preact.options.vnode && preact.options.vnode(l2), l2;
-  }
-  const createSimpleContext = (data) => {
-    const MyContext = preact.createContext({});
-    const Provider = (props) => {
-      const [myData, setMyData] = h(data);
-      const setValue = (newData) => {
-        setMyData({
-          ...myData,
-          ...newData
-        });
-      };
-      return u(MyContext.Provider, {
-        value: {
-          value: myData,
-          setValue
-        },
-        children: props.children
-      });
-    };
-    return {
-      Provider,
-      useContext: () => q$2(MyContext)
-    };
-  };
-  const WaContext = createSimpleContext({});
-  const useFullScreenModalBehaviour = ({
-    closeModal,
-    isOpen
-  }) => {
-    const actualCloseModal = (ev) => {
-      ev.stopPropagation();
-      closeModal();
-    };
-    return {
-      isOpen,
-      closeModal: actualCloseModal
-    };
-  };
   var __assign = function() {
     __assign = Object.assign || function __assign2(t2) {
-      for (var s2, i2 = 1, n = arguments.length; i2 < n; i2++) {
+      for (var s2, i2 = 1, n2 = arguments.length; i2 < n2; i2++) {
         s2 = arguments[i2];
         for (var p2 in s2)
           if (Object.prototype.hasOwnProperty.call(s2, p2))
@@ -252,93 +42,255 @@
       }
     return to.concat(ar || Array.prototype.slice.call(from2));
   }
-  function g$1(n, t2) {
-    for (var e2 in t2)
-      n[e2] = t2[e2];
-    return n;
+  var t$1, r$1, u$2, i$1, o$1 = 0, f$3 = [], c$1 = [], e$1 = preact.options.__b, a$1 = preact.options.__r, v$2 = preact.options.diffed, l$1 = preact.options.__c, m$2 = preact.options.unmount;
+  function d$1(t2, u2) {
+    preact.options.__h && preact.options.__h(r$1, t2, o$1 || u2), o$1 = 0;
+    var i2 = r$1.__H || (r$1.__H = { __: [], __h: [] });
+    return t2 >= i2.__.length && i2.__.push({ __V: c$1 }), i2.__[t2];
   }
-  function C$1(n, t2) {
-    for (var e2 in n)
+  function h$1(n2) {
+    return o$1 = 1, s$1(B$2, n2);
+  }
+  function s$1(n2, u2, i2) {
+    var o2 = d$1(t$1++, 2);
+    if (o2.t = n2, !o2.__c && (o2.__ = [i2 ? i2(u2) : B$2(void 0, u2), function(n3) {
+      var t2 = o2.__N ? o2.__N[0] : o2.__[0], r2 = o2.t(t2, n3);
+      t2 !== r2 && (o2.__N = [r2, o2.__[1]], o2.__c.setState({}));
+    }], o2.__c = r$1, !r$1.u)) {
+      var f2 = function(n3, t2, r2) {
+        if (!o2.__c.__H)
+          return true;
+        var u3 = o2.__c.__H.__.filter(function(n4) {
+          return n4.__c;
+        });
+        if (u3.every(function(n4) {
+          return !n4.__N;
+        }))
+          return !c2 || c2.call(this, n3, t2, r2);
+        var i3 = false;
+        return u3.forEach(function(n4) {
+          if (n4.__N) {
+            var t3 = n4.__[0];
+            n4.__ = n4.__N, n4.__N = void 0, t3 !== n4.__[0] && (i3 = true);
+          }
+        }), !(!i3 && o2.__c.props === n3) && (!c2 || c2.call(this, n3, t2, r2));
+      };
+      r$1.u = true;
+      var c2 = r$1.shouldComponentUpdate, e2 = r$1.componentWillUpdate;
+      r$1.componentWillUpdate = function(n3, t2, r2) {
+        if (this.__e) {
+          var u3 = c2;
+          c2 = void 0, f2(n3, t2, r2), c2 = u3;
+        }
+        e2 && e2.call(this, n3, t2, r2);
+      }, r$1.shouldComponentUpdate = f2;
+    }
+    return o2.__N || o2.__;
+  }
+  function p$1(u2, i2) {
+    var o2 = d$1(t$1++, 3);
+    !preact.options.__s && z$2(o2.__H, i2) && (o2.__ = u2, o2.i = i2, r$1.__H.__h.push(o2));
+  }
+  function y$2(u2, i2) {
+    var o2 = d$1(t$1++, 4);
+    !preact.options.__s && z$2(o2.__H, i2) && (o2.__ = u2, o2.i = i2, r$1.__h.push(o2));
+  }
+  function _$1(n2) {
+    return o$1 = 5, F$2(function() {
+      return { current: n2 };
+    }, []);
+  }
+  function A$2(n2, t2, r2) {
+    o$1 = 6, y$2(function() {
+      return "function" == typeof n2 ? (n2(t2()), function() {
+        return n2(null);
+      }) : n2 ? (n2.current = t2(), function() {
+        return n2.current = null;
+      }) : void 0;
+    }, null == r2 ? r2 : r2.concat(n2));
+  }
+  function F$2(n2, r2) {
+    var u2 = d$1(t$1++, 7);
+    return z$2(u2.__H, r2) ? (u2.__V = n2(), u2.i = r2, u2.__h = n2, u2.__V) : u2.__;
+  }
+  function T$2(n2, t2) {
+    return o$1 = 8, F$2(function() {
+      return n2;
+    }, t2);
+  }
+  function q$2(n2) {
+    var u2 = r$1.context[n2.__c], i2 = d$1(t$1++, 9);
+    return i2.c = n2, u2 ? (null == i2.__ && (i2.__ = true, u2.sub(r$1)), u2.props.value) : n2.__;
+  }
+  function x$3(t2, r2) {
+    preact.options.useDebugValue && preact.options.useDebugValue(r2 ? r2(t2) : t2);
+  }
+  function V$2() {
+    var n2 = d$1(t$1++, 11);
+    if (!n2.__) {
+      for (var u2 = r$1.__v; null !== u2 && !u2.__m && null !== u2.__; )
+        u2 = u2.__;
+      var i2 = u2.__m || (u2.__m = [0, 0]);
+      n2.__ = "P" + i2[0] + "-" + i2[1]++;
+    }
+    return n2.__;
+  }
+  function b$1() {
+    for (var t2; t2 = f$3.shift(); )
+      if (t2.__P && t2.__H)
+        try {
+          t2.__H.__h.forEach(k$2), t2.__H.__h.forEach(w$3), t2.__H.__h = [];
+        } catch (r2) {
+          t2.__H.__h = [], preact.options.__e(r2, t2.__v);
+        }
+  }
+  preact.options.__b = function(n2) {
+    r$1 = null, e$1 && e$1(n2);
+  }, preact.options.__r = function(n2) {
+    a$1 && a$1(n2), t$1 = 0;
+    var i2 = (r$1 = n2.__c).__H;
+    i2 && (u$2 === r$1 ? (i2.__h = [], r$1.__h = [], i2.__.forEach(function(n3) {
+      n3.__N && (n3.__ = n3.__N), n3.__V = c$1, n3.__N = n3.i = void 0;
+    })) : (i2.__h.forEach(k$2), i2.__h.forEach(w$3), i2.__h = [], t$1 = 0)), u$2 = r$1;
+  }, preact.options.diffed = function(t2) {
+    v$2 && v$2(t2);
+    var o2 = t2.__c;
+    o2 && o2.__H && (o2.__H.__h.length && (1 !== f$3.push(o2) && i$1 === preact.options.requestAnimationFrame || ((i$1 = preact.options.requestAnimationFrame) || j$3)(b$1)), o2.__H.__.forEach(function(n2) {
+      n2.i && (n2.__H = n2.i), n2.__V !== c$1 && (n2.__ = n2.__V), n2.i = void 0, n2.__V = c$1;
+    })), u$2 = r$1 = null;
+  }, preact.options.__c = function(t2, r2) {
+    r2.some(function(t3) {
+      try {
+        t3.__h.forEach(k$2), t3.__h = t3.__h.filter(function(n2) {
+          return !n2.__ || w$3(n2);
+        });
+      } catch (u2) {
+        r2.some(function(n2) {
+          n2.__h && (n2.__h = []);
+        }), r2 = [], preact.options.__e(u2, t3.__v);
+      }
+    }), l$1 && l$1(t2, r2);
+  }, preact.options.unmount = function(t2) {
+    m$2 && m$2(t2);
+    var r2, u2 = t2.__c;
+    u2 && u2.__H && (u2.__H.__.forEach(function(n2) {
+      try {
+        k$2(n2);
+      } catch (n3) {
+        r2 = n3;
+      }
+    }), u2.__H = void 0, r2 && preact.options.__e(r2, u2.__v));
+  };
+  var g$3 = "function" == typeof requestAnimationFrame;
+  function j$3(n2) {
+    var t2, r2 = function() {
+      clearTimeout(u2), g$3 && cancelAnimationFrame(t2), setTimeout(n2);
+    }, u2 = setTimeout(r2, 100);
+    g$3 && (t2 = requestAnimationFrame(r2));
+  }
+  function k$2(n2) {
+    var t2 = r$1, u2 = n2.__c;
+    "function" == typeof u2 && (n2.__c = void 0, u2()), r$1 = t2;
+  }
+  function w$3(n2) {
+    var t2 = r$1;
+    n2.__c = n2.__(), r$1 = t2;
+  }
+  function z$2(n2, t2) {
+    return !n2 || n2.length !== t2.length || t2.some(function(t3, r2) {
+      return t3 !== n2[r2];
+    });
+  }
+  function B$2(n2, t2) {
+    return "function" == typeof t2 ? t2(n2) : t2;
+  }
+  function g$2(n2, t2) {
+    for (var e2 in t2)
+      n2[e2] = t2[e2];
+    return n2;
+  }
+  function C$1(n2, t2) {
+    for (var e2 in n2)
       if ("__source" !== e2 && !(e2 in t2))
         return true;
     for (var r2 in t2)
-      if ("__source" !== r2 && n[r2] !== t2[r2])
+      if ("__source" !== r2 && n2[r2] !== t2[r2])
         return true;
     return false;
   }
-  function E(n) {
-    this.props = n;
+  function E(n2) {
+    this.props = n2;
   }
-  function w$1(n, e2) {
-    function r2(n2) {
-      var t2 = this.props.ref, r3 = t2 == n2.ref;
-      return !r3 && t2 && (t2.call ? t2(null) : t2.current = null), e2 ? !e2(this.props, n2) || !r3 : C$1(this.props, n2);
+  function w$2(n2, e2) {
+    function r2(n3) {
+      var t2 = this.props.ref, r3 = t2 == n3.ref;
+      return !r3 && t2 && (t2.call ? t2(null) : t2.current = null), e2 ? !e2(this.props, n3) || !r3 : C$1(this.props, n3);
     }
     function u2(e3) {
-      return this.shouldComponentUpdate = r2, preact.createElement(n, e3);
+      return this.shouldComponentUpdate = r2, preact.createElement(n2, e3);
     }
-    return u2.displayName = "Memo(" + (n.displayName || n.name) + ")", u2.prototype.isReactComponent = true, u2.__f = true, u2;
+    return u2.displayName = "Memo(" + (n2.displayName || n2.name) + ")", u2.prototype.isReactComponent = true, u2.__f = true, u2;
   }
-  (E.prototype = new preact.Component()).isPureReactComponent = true, E.prototype.shouldComponentUpdate = function(n, t2) {
-    return C$1(this.props, n) || C$1(this.state, t2);
+  (E.prototype = new preact.Component()).isPureReactComponent = true, E.prototype.shouldComponentUpdate = function(n2, t2) {
+    return C$1(this.props, n2) || C$1(this.state, t2);
   };
-  var x$1 = preact.options.__b;
-  preact.options.__b = function(n) {
-    n.type && n.type.__f && n.ref && (n.props.ref = n.ref, n.ref = null), x$1 && x$1(n);
+  var x$2 = preact.options.__b;
+  preact.options.__b = function(n2) {
+    n2.type && n2.type.__f && n2.ref && (n2.props.ref = n2.ref, n2.ref = null), x$2 && x$2(n2);
   };
   var R$1 = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.forward_ref") || 3911;
-  function N(n) {
+  function N$1(n2) {
     function t2(t3) {
-      var e2 = g$1({}, t3);
-      return delete e2.ref, n(e2, t3.ref || null);
+      var e2 = g$2({}, t3);
+      return delete e2.ref, n2(e2, t3.ref || null);
     }
-    return t2.$$typeof = R$1, t2.render = t2, t2.prototype.isReactComponent = t2.__f = true, t2.displayName = "ForwardRef(" + (n.displayName || n.name) + ")", t2;
+    return t2.$$typeof = R$1, t2.render = t2, t2.prototype.isReactComponent = t2.__f = true, t2.displayName = "ForwardRef(" + (n2.displayName || n2.name) + ")", t2;
   }
-  var k$1 = function(n, t2) {
-    return null == n ? null : preact.toChildArray(preact.toChildArray(n).map(t2));
-  }, A$1 = { map: k$1, forEach: k$1, count: function(n) {
-    return n ? preact.toChildArray(n).length : 0;
-  }, only: function(n) {
-    var t2 = preact.toChildArray(n);
+  var k$1 = function(n2, t2) {
+    return null == n2 ? null : preact.toChildArray(preact.toChildArray(n2).map(t2));
+  }, A$1 = { map: k$1, forEach: k$1, count: function(n2) {
+    return n2 ? preact.toChildArray(n2).length : 0;
+  }, only: function(n2) {
+    var t2 = preact.toChildArray(n2);
     if (1 !== t2.length)
       throw "Children.only";
     return t2[0];
   }, toArray: preact.toChildArray }, O$1 = preact.options.__e;
-  preact.options.__e = function(n, t2, e2, r2) {
-    if (n.then) {
+  preact.options.__e = function(n2, t2, e2, r2) {
+    if (n2.then) {
       for (var u2, o2 = t2; o2 = o2.__; )
         if ((u2 = o2.__c) && u2.__c)
-          return null == t2.__e && (t2.__e = e2.__e, t2.__k = e2.__k), u2.__c(n, t2);
+          return null == t2.__e && (t2.__e = e2.__e, t2.__k = e2.__k), u2.__c(n2, t2);
     }
-    O$1(n, t2, e2, r2);
+    O$1(n2, t2, e2, r2);
   };
   var T$1 = preact.options.unmount;
-  function F$1(n, t2, e2) {
-    return n && (n.__c && n.__c.__H && (n.__c.__H.__.forEach(function(n2) {
-      "function" == typeof n2.__c && n2.__c();
-    }), n.__c.__H = null), null != (n = g$1({}, n)).__c && (n.__c.__P === e2 && (n.__c.__P = t2), n.__c = null), n.__k = n.__k && n.__k.map(function(n2) {
-      return F$1(n2, t2, e2);
-    })), n;
+  function F$1(n2, t2, e2) {
+    return n2 && (n2.__c && n2.__c.__H && (n2.__c.__H.__.forEach(function(n3) {
+      "function" == typeof n3.__c && n3.__c();
+    }), n2.__c.__H = null), null != (n2 = g$2({}, n2)).__c && (n2.__c.__P === e2 && (n2.__c.__P = t2), n2.__c = null), n2.__k = n2.__k && n2.__k.map(function(n3) {
+      return F$1(n3, t2, e2);
+    })), n2;
   }
-  function I$1(n, t2, e2) {
-    return n && e2 && (n.__v = null, n.__k = n.__k && n.__k.map(function(n2) {
-      return I$1(n2, t2, e2);
-    }), n.__c && n.__c.__P === t2 && (n.__e && e2.appendChild(n.__e), n.__c.__e = true, n.__c.__P = e2)), n;
+  function I$1(n2, t2, e2) {
+    return n2 && e2 && (n2.__v = null, n2.__k = n2.__k && n2.__k.map(function(n3) {
+      return I$1(n3, t2, e2);
+    }), n2.__c && n2.__c.__P === t2 && (n2.__e && e2.appendChild(n2.__e), n2.__c.__e = true, n2.__c.__P = e2)), n2;
   }
   function L$1() {
     this.__u = 0, this.t = null, this.__b = null;
   }
-  function U$1(n) {
-    var t2 = n.__.__c;
-    return t2 && t2.__a && t2.__a(n);
+  function U$1(n2) {
+    var t2 = n2.__.__c;
+    return t2 && t2.__a && t2.__a(n2);
   }
-  function D$1(n) {
+  function D$1(n2) {
     var e2, r2, u2;
     function o2(o3) {
-      if (e2 || (e2 = n()).then(function(n2) {
-        r2 = n2.default || n2;
-      }, function(n2) {
-        u2 = n2;
+      if (e2 || (e2 = n2()).then(function(n3) {
+        r2 = n3.default || n3;
+      }, function(n3) {
+        u2 = n3;
       }), u2)
         throw u2;
       if (!r2)
@@ -347,13 +299,13 @@
     }
     return o2.displayName = "Lazy", o2.__f = true, o2;
   }
-  function M$1() {
+  function M$2() {
     this.u = null, this.o = null;
   }
-  preact.options.unmount = function(n) {
-    var t2 = n.__c;
-    t2 && t2.__R && t2.__R(), t2 && 32 & n.__u && (n.type = null), T$1 && T$1(n);
-  }, (L$1.prototype = new preact.Component()).__c = function(n, t2) {
+  preact.options.unmount = function(n2) {
+    var t2 = n2.__c;
+    t2 && t2.__R && t2.__R(), t2 && 32 & n2.__u && (n2.type = null), T$1 && T$1(n2);
+  }, (L$1.prototype = new preact.Component()).__c = function(n2, t2) {
     var e2 = t2.__c, r2 = this;
     null == r2.t && (r2.t = []), r2.t.push(e2);
     var u2 = U$1(r2.__v), o2 = false, i2 = function() {
@@ -363,18 +315,18 @@
     var l2 = function() {
       if (!--r2.__u) {
         if (r2.state.__a) {
-          var n2 = r2.state.__a;
-          r2.__v.__k[0] = I$1(n2, n2.__c.__P, n2.__c.__O);
+          var n3 = r2.state.__a;
+          r2.__v.__k[0] = I$1(n3, n3.__c.__P, n3.__c.__O);
         }
         var t3;
         for (r2.setState({ __a: r2.__b = null }); t3 = r2.t.pop(); )
           t3.forceUpdate();
       }
     };
-    r2.__u++ || 32 & t2.__u || r2.setState({ __a: r2.__b = r2.__v.__k[0] }), n.then(i2, i2);
+    r2.__u++ || 32 & t2.__u || r2.setState({ __a: r2.__b = r2.__v.__k[0] }), n2.then(i2, i2);
   }, L$1.prototype.componentWillUnmount = function() {
     this.t = [];
-  }, L$1.prototype.render = function(n, e2) {
+  }, L$1.prototype.render = function(n2, e2) {
     if (this.__b) {
       if (this.__v.__k) {
         var r2 = document.createElement("div"), o2 = this.__v.__k[0].__c;
@@ -382,75 +334,75 @@
       }
       this.__b = null;
     }
-    var i2 = e2.__a && preact.createElement(preact.Fragment, null, n.fallback);
-    return i2 && (i2.__u &= -33), [preact.createElement(preact.Fragment, null, e2.__a ? null : n.children), i2];
+    var i2 = e2.__a && preact.createElement(preact.Fragment, null, n2.fallback);
+    return i2 && (i2.__u &= -33), [preact.createElement(preact.Fragment, null, e2.__a ? null : n2.children), i2];
   };
-  var V$1 = function(n, t2, e2) {
-    if (++e2[1] === e2[0] && n.o.delete(t2), n.props.revealOrder && ("t" !== n.props.revealOrder[0] || !n.o.size))
-      for (e2 = n.u; e2; ) {
+  var V$1 = function(n2, t2, e2) {
+    if (++e2[1] === e2[0] && n2.o.delete(t2), n2.props.revealOrder && ("t" !== n2.props.revealOrder[0] || !n2.o.size))
+      for (e2 = n2.u; e2; ) {
         for (; e2.length > 3; )
           e2.pop()();
         if (e2[1] < e2[0])
           break;
-        n.u = e2 = e2[2];
+        n2.u = e2 = e2[2];
       }
   };
-  function W$1(n) {
+  function W$1(n2) {
     return this.getChildContext = function() {
-      return n.context;
-    }, n.children;
+      return n2.context;
+    }, n2.children;
   }
-  function P(n) {
-    var e2 = this, r2 = n.i;
+  function P(n2) {
+    var e2 = this, r2 = n2.i;
     e2.componentWillUnmount = function() {
       preact.render(null, e2.l), e2.l = null, e2.i = null;
-    }, e2.i && e2.i !== r2 && e2.componentWillUnmount(), e2.l || (e2.i = r2, e2.l = { nodeType: 1, parentNode: r2, childNodes: [], appendChild: function(n2) {
-      this.childNodes.push(n2), e2.i.appendChild(n2);
-    }, insertBefore: function(n2, t2) {
-      this.childNodes.push(n2), e2.i.appendChild(n2);
-    }, removeChild: function(n2) {
-      this.childNodes.splice(this.childNodes.indexOf(n2) >>> 1, 1), e2.i.removeChild(n2);
-    } }), preact.render(preact.createElement(W$1, { context: e2.context }, n.__v), e2.l);
+    }, e2.i && e2.i !== r2 && e2.componentWillUnmount(), e2.l || (e2.i = r2, e2.l = { nodeType: 1, parentNode: r2, childNodes: [], appendChild: function(n3) {
+      this.childNodes.push(n3), e2.i.appendChild(n3);
+    }, insertBefore: function(n3, t2) {
+      this.childNodes.push(n3), e2.i.appendChild(n3);
+    }, removeChild: function(n3) {
+      this.childNodes.splice(this.childNodes.indexOf(n3) >>> 1, 1), e2.i.removeChild(n3);
+    } }), preact.render(preact.createElement(W$1, { context: e2.context }, n2.__v), e2.l);
   }
-  function j$1(n, e2) {
-    var r2 = preact.createElement(P, { __v: n, i: e2 });
+  function j$2(n2, e2) {
+    var r2 = preact.createElement(P, { __v: n2, i: e2 });
     return r2.containerInfo = e2, r2;
   }
-  (M$1.prototype = new preact.Component()).__a = function(n) {
-    var t2 = this, e2 = U$1(t2.__v), r2 = t2.o.get(n);
+  (M$2.prototype = new preact.Component()).__a = function(n2) {
+    var t2 = this, e2 = U$1(t2.__v), r2 = t2.o.get(n2);
     return r2[0]++, function(u2) {
       var o2 = function() {
-        t2.props.revealOrder ? (r2.push(u2), V$1(t2, n, r2)) : u2();
+        t2.props.revealOrder ? (r2.push(u2), V$1(t2, n2, r2)) : u2();
       };
       e2 ? e2(o2) : o2();
     };
-  }, M$1.prototype.render = function(n) {
+  }, M$2.prototype.render = function(n2) {
     this.u = null, this.o = /* @__PURE__ */ new Map();
-    var t2 = preact.toChildArray(n.children);
-    n.revealOrder && "b" === n.revealOrder[0] && t2.reverse();
+    var t2 = preact.toChildArray(n2.children);
+    n2.revealOrder && "b" === n2.revealOrder[0] && t2.reverse();
     for (var e2 = t2.length; e2--; )
       this.o.set(t2[e2], this.u = [1, 0, this.u]);
-    return n.children;
-  }, M$1.prototype.componentDidUpdate = M$1.prototype.componentDidMount = function() {
-    var n = this;
+    return n2.children;
+  }, M$2.prototype.componentDidUpdate = M$2.prototype.componentDidMount = function() {
+    var n2 = this;
     this.o.forEach(function(t2, e2) {
-      V$1(n, e2, t2);
+      V$1(n2, e2, t2);
     });
   };
-  var z$1 = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.element") || 60103, B$1 = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image(!S)|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/, H$1 = /^on(Ani|Tra|Tou|BeforeInp|Compo)/, Z$1 = /[A-Z0-9]/g, Y$1 = "undefined" != typeof document, $$1 = function(n) {
-    return ("undefined" != typeof Symbol && "symbol" == typeof Symbol() ? /fil|che|rad/ : /fil|che|ra/).test(n);
+  var z$1 = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.element") || 60103, B$1 = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image(!S)|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/, H$2 = /^on(Ani|Tra|Tou|BeforeInp|Compo)/, Z$1 = /[A-Z0-9]/g, Y$1 = "undefined" != typeof document, $$2 = function(n2) {
+    return ("undefined" != typeof Symbol && "symbol" == typeof Symbol() ? /fil|che|rad/ : /fil|che|ra/).test(n2);
   };
-  function q$1(n, t2, e2) {
-    return null == t2.__k && (t2.textContent = ""), preact.render(n, t2), "function" == typeof e2 && e2(), n ? n.__c : null;
+  function q$1(n2, t2, e2) {
+    return null == t2.__k && (t2.textContent = ""), preact.render(n2, t2), "function" == typeof e2 && e2(), n2 ? n2.__c : null;
   }
-  function G$1(n, t2, e2) {
-    return preact.hydrate(n, t2), "function" == typeof e2 && e2(), n ? n.__c : null;
+  function G$1(n2, t2, e2) {
+    return preact.hydrate(n2, t2), "function" == typeof e2 && e2(), n2 ? n2.__c : null;
   }
   preact.Component.prototype.isReactComponent = {}, ["componentWillMount", "componentWillReceiveProps", "componentWillUpdate"].forEach(function(t2) {
     Object.defineProperty(preact.Component.prototype, t2, { configurable: true, get: function() {
       return this["UNSAFE_" + t2];
-    }, set: function(n) {
-      Object.defineProperty(this, t2, { configurable: true, writable: true, value: n });
+    }, set: function(n2) {
+      Object.defineProperty(this, t2, { configurable: true, writable: true, value: n2 });
     } });
   });
   var J$1 = preact.options.event;
@@ -462,95 +414,95 @@
   function X$1() {
     return this.defaultPrevented;
   }
-  preact.options.event = function(n) {
-    return J$1 && (n = J$1(n)), n.persist = K$1, n.isPropagationStopped = Q$1, n.isDefaultPrevented = X$1, n.nativeEvent = n;
+  preact.options.event = function(n2) {
+    return J$1 && (n2 = J$1(n2)), n2.persist = K$1, n2.isPropagationStopped = Q$1, n2.isDefaultPrevented = X$1, n2.nativeEvent = n2;
   };
   var nn, tn = { enumerable: false, configurable: true, get: function() {
     return this.class;
   } }, en = preact.options.vnode;
-  preact.options.vnode = function(n) {
-    "string" == typeof n.type && function(n2) {
-      var t2 = n2.props, e2 = n2.type, u2 = {};
+  preact.options.vnode = function(n2) {
+    "string" == typeof n2.type && function(n3) {
+      var t2 = n3.props, e2 = n3.type, u2 = {};
       for (var o2 in t2) {
         var i2 = t2[o2];
         if (!("value" === o2 && "defaultValue" in t2 && null == i2 || Y$1 && "children" === o2 && "noscript" === e2 || "class" === o2 || "className" === o2)) {
           var l2 = o2.toLowerCase();
-          "defaultValue" === o2 && "value" in t2 && null == t2.value ? o2 = "value" : "download" === o2 && true === i2 ? i2 = "" : "ondoubleclick" === l2 ? o2 = "ondblclick" : "onchange" !== l2 || "input" !== e2 && "textarea" !== e2 || $$1(t2.type) ? "onfocus" === l2 ? o2 = "onfocusin" : "onblur" === l2 ? o2 = "onfocusout" : H$1.test(o2) ? o2 = l2 : -1 === e2.indexOf("-") && B$1.test(o2) ? o2 = o2.replace(Z$1, "-$&").toLowerCase() : null === i2 && (i2 = void 0) : l2 = o2 = "oninput", "oninput" === l2 && u2[o2 = l2] && (o2 = "oninputCapture"), u2[o2] = i2;
+          "defaultValue" === o2 && "value" in t2 && null == t2.value ? o2 = "value" : "download" === o2 && true === i2 ? i2 = "" : "ondoubleclick" === l2 ? o2 = "ondblclick" : "onchange" !== l2 || "input" !== e2 && "textarea" !== e2 || $$2(t2.type) ? "onfocus" === l2 ? o2 = "onfocusin" : "onblur" === l2 ? o2 = "onfocusout" : H$2.test(o2) ? o2 = l2 : -1 === e2.indexOf("-") && B$1.test(o2) ? o2 = o2.replace(Z$1, "-$&").toLowerCase() : null === i2 && (i2 = void 0) : l2 = o2 = "oninput", "oninput" === l2 && u2[o2 = l2] && (o2 = "oninputCapture"), u2[o2] = i2;
         }
       }
-      "select" == e2 && u2.multiple && Array.isArray(u2.value) && (u2.value = preact.toChildArray(t2.children).forEach(function(n3) {
-        n3.props.selected = -1 != u2.value.indexOf(n3.props.value);
-      })), "select" == e2 && null != u2.defaultValue && (u2.value = preact.toChildArray(t2.children).forEach(function(n3) {
-        n3.props.selected = u2.multiple ? -1 != u2.defaultValue.indexOf(n3.props.value) : u2.defaultValue == n3.props.value;
-      })), t2.class && !t2.className ? (u2.class = t2.class, Object.defineProperty(u2, "className", tn)) : (t2.className && !t2.class || t2.class && t2.className) && (u2.class = u2.className = t2.className), n2.props = u2;
-    }(n), n.$$typeof = z$1, en && en(n);
+      "select" == e2 && u2.multiple && Array.isArray(u2.value) && (u2.value = preact.toChildArray(t2.children).forEach(function(n4) {
+        n4.props.selected = -1 != u2.value.indexOf(n4.props.value);
+      })), "select" == e2 && null != u2.defaultValue && (u2.value = preact.toChildArray(t2.children).forEach(function(n4) {
+        n4.props.selected = u2.multiple ? -1 != u2.defaultValue.indexOf(n4.props.value) : u2.defaultValue == n4.props.value;
+      })), t2.class && !t2.className ? (u2.class = t2.class, Object.defineProperty(u2, "className", tn)) : (t2.className && !t2.class || t2.class && t2.className) && (u2.class = u2.className = t2.className), n3.props = u2;
+    }(n2), n2.$$typeof = z$1, en && en(n2);
   };
   var rn = preact.options.__r;
-  preact.options.__r = function(n) {
-    rn && rn(n), nn = n.__c;
+  preact.options.__r = function(n2) {
+    rn && rn(n2), nn = n2.__c;
   };
   var un = preact.options.diffed;
-  preact.options.diffed = function(n) {
-    un && un(n);
-    var t2 = n.props, e2 = n.__e;
-    null != e2 && "textarea" === n.type && "value" in t2 && t2.value !== e2.value && (e2.value = null == t2.value ? "" : t2.value), nn = null;
+  preact.options.diffed = function(n2) {
+    un && un(n2);
+    var t2 = n2.props, e2 = n2.__e;
+    null != e2 && "textarea" === n2.type && "value" in t2 && t2.value !== e2.value && (e2.value = null == t2.value ? "" : t2.value), nn = null;
   };
-  var on = { ReactCurrentDispatcher: { current: { readContext: function(n) {
-    return nn.__n[n.__c].props.value;
+  var on = { ReactCurrentDispatcher: { current: { readContext: function(n2) {
+    return nn.__n[n2.__c].props.value;
   } } } };
-  function cn(n) {
-    return preact.createElement.bind(null, n);
+  function cn(n2) {
+    return preact.createElement.bind(null, n2);
   }
-  function fn(n) {
-    return !!n && n.$$typeof === z$1;
+  function fn(n2) {
+    return !!n2 && n2.$$typeof === z$1;
   }
-  function an(n) {
-    return fn(n) && n.type === preact.Fragment;
+  function an(n2) {
+    return fn(n2) && n2.type === preact.Fragment;
   }
-  function sn(n) {
-    return fn(n) ? preact.cloneElement.apply(null, arguments) : n;
+  function sn(n2) {
+    return fn(n2) ? preact.cloneElement.apply(null, arguments) : n2;
   }
-  function hn(n) {
-    return !!n.__k && (preact.render(null, n), true);
+  function hn(n2) {
+    return !!n2.__k && (preact.render(null, n2), true);
   }
-  function vn(n) {
-    return n && (n.base || 1 === n.nodeType && n) || null;
+  function vn(n2) {
+    return n2 && (n2.base || 1 === n2.nodeType && n2) || null;
   }
-  var dn = function(n, t2) {
-    return n(t2);
-  }, pn = function(n, t2) {
-    return n(t2);
+  var dn = function(n2, t2) {
+    return n2(t2);
+  }, pn = function(n2, t2) {
+    return n2(t2);
   }, mn = preact.Fragment;
-  function yn(n) {
-    n();
+  function yn(n2) {
+    n2();
   }
-  function _n(n) {
-    return n;
+  function _n(n2) {
+    return n2;
   }
   function bn() {
     return [false, yn];
   }
-  var Sn = y$1, gn = fn;
-  function Cn(n, t2) {
-    var e2 = t2(), r2 = h({ h: { __: e2, v: t2 } }), u2 = r2[0].h, o2 = r2[1];
-    return y$1(function() {
+  var Sn = y$2, gn = fn;
+  function Cn(n2, t2) {
+    var e2 = t2(), r2 = h$1({ h: { __: e2, v: t2 } }), u2 = r2[0].h, o2 = r2[1];
+    return y$2(function() {
       u2.__ = e2, u2.v = t2, En(u2) && o2({ h: u2 });
-    }, [n, e2, t2]), p(function() {
-      return En(u2) && o2({ h: u2 }), n(function() {
+    }, [n2, e2, t2]), p$1(function() {
+      return En(u2) && o2({ h: u2 }), n2(function() {
         En(u2) && o2({ h: u2 });
       });
-    }, [n]), e2;
+    }, [n2]), e2;
   }
-  function En(n) {
-    var t2, e2, r2 = n.v, u2 = n.__;
+  function En(n2) {
+    var t2, e2, r2 = n2.v, u2 = n2.__;
     try {
       var o2 = r2();
       return !((t2 = u2) === (e2 = o2) && (0 !== t2 || 1 / t2 == 1 / e2) || t2 != t2 && e2 != e2);
-    } catch (n2) {
+    } catch (n3) {
       return true;
     }
   }
-  var wn = { useState: h, useId: V$2, useReducer: s, useEffect: p, useLayoutEffect: y$1, useInsertionEffect: Sn, useTransition: bn, useDeferredValue: _n, useSyncExternalStore: Cn, startTransition: yn, useRef: _$1, useImperativeHandle: A$2, useMemo: F$2, useCallback: T$2, useContext: q$2, useDebugValue: x$2, version: "17.0.2", Children: A$1, render: q$1, hydrate: G$1, unmountComponentAtNode: hn, createPortal: j$1, createElement: preact.createElement, createContext: preact.createContext, createFactory: cn, cloneElement: sn, createRef: preact.createRef, Fragment: preact.Fragment, isValidElement: fn, isElement: gn, isFragment: an, findDOMNode: vn, Component: preact.Component, PureComponent: E, memo: w$1, forwardRef: N, flushSync: pn, unstable_batchedUpdates: dn, StrictMode: mn, Suspense: L$1, SuspenseList: M$1, lazy: D$1, __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: on };
+  var wn = { useState: h$1, useId: V$2, useReducer: s$1, useEffect: p$1, useLayoutEffect: y$2, useInsertionEffect: Sn, useTransition: bn, useDeferredValue: _n, useSyncExternalStore: Cn, startTransition: yn, useRef: _$1, useImperativeHandle: A$2, useMemo: F$2, useCallback: T$2, useContext: q$2, useDebugValue: x$3, version: "17.0.2", Children: A$1, render: q$1, hydrate: G$1, unmountComponentAtNode: hn, createPortal: j$2, createElement: preact.createElement, createContext: preact.createContext, createFactory: cn, cloneElement: sn, createRef: preact.createRef, Fragment: preact.Fragment, isValidElement: fn, isElement: gn, isFragment: an, findDOMNode: vn, Component: preact.Component, PureComponent: E, memo: w$2, forwardRef: N$1, flushSync: pn, unstable_batchedUpdates: dn, StrictMode: mn, Suspense: L$1, SuspenseList: M$2, lazy: D$1, __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: on };
   var MS = "-ms-";
   var MOZ = "-moz-";
   var WEBKIT = "-webkit-";
@@ -1131,7 +1083,7 @@
     strokeWidth: 1
   };
   var define_process_env_default = {};
-  var f = "undefined" != typeof process && void 0 !== define_process_env_default && (define_process_env_default.REACT_APP_SC_ATTR || define_process_env_default.SC_ATTR) || "data-styled", m = "active", y = "data-styled-version", v = "6.1.8", g = "/*!sc*/\n", S = "undefined" != typeof window && "HTMLElement" in window, w = Boolean("boolean" == typeof SC_DISABLE_SPEEDY ? SC_DISABLE_SPEEDY : "undefined" != typeof process && void 0 !== define_process_env_default && void 0 !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY && "" !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY ? "false" !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY && define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY : "undefined" != typeof process && void 0 !== define_process_env_default && void 0 !== define_process_env_default.SC_DISABLE_SPEEDY && "" !== define_process_env_default.SC_DISABLE_SPEEDY ? "false" !== define_process_env_default.SC_DISABLE_SPEEDY && define_process_env_default.SC_DISABLE_SPEEDY : false), _ = Object.freeze([]), C = Object.freeze({});
+  var f$2 = "undefined" != typeof process && void 0 !== define_process_env_default && (define_process_env_default.REACT_APP_SC_ATTR || define_process_env_default.SC_ATTR) || "data-styled", m$1 = "active", y$1 = "data-styled-version", v$1 = "6.1.8", g$1 = "/*!sc*/\n", S = "undefined" != typeof window && "HTMLElement" in window, w$1 = Boolean("boolean" == typeof SC_DISABLE_SPEEDY ? SC_DISABLE_SPEEDY : "undefined" != typeof process && void 0 !== define_process_env_default && void 0 !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY && "" !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY ? "false" !== define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY && define_process_env_default.REACT_APP_SC_DISABLE_SPEEDY : "undefined" != typeof process && void 0 !== define_process_env_default && void 0 !== define_process_env_default.SC_DISABLE_SPEEDY && "" !== define_process_env_default.SC_DISABLE_SPEEDY ? "false" !== define_process_env_default.SC_DISABLE_SPEEDY && define_process_env_default.SC_DISABLE_SPEEDY : false), _ = Object.freeze([]), C = Object.freeze({});
   function I(e2, t2, n2) {
     return void 0 === n2 && (n2 = C), e2.theme !== n2.theme && e2.theme || t2 || n2.theme;
   }
@@ -1139,24 +1091,24 @@
   function R(e2) {
     return e2.replace(O, "-").replace(D, "");
   }
-  var T = /(a)(d)/gi, k = 52, j = function(e2) {
+  var T = /(a)(d)/gi, k = 52, j$1 = function(e2) {
     return String.fromCharCode(e2 + (e2 > 25 ? 39 : 97));
   };
-  function x(e2) {
+  function x$1(e2) {
     var t2, n2 = "";
     for (t2 = Math.abs(e2); t2 > k; t2 = t2 / k | 0)
-      n2 = j(t2 % k) + n2;
-    return (j(t2 % k) + n2).replace(T, "$1-$2");
+      n2 = j$1(t2 % k) + n2;
+    return (j$1(t2 % k) + n2).replace(T, "$1-$2");
   }
-  var V, F = 5381, M = function(e2, t2) {
+  var V, F = 5381, M$1 = function(e2, t2) {
     for (var n2 = t2.length; n2; )
       e2 = 33 * e2 ^ t2.charCodeAt(--n2);
     return e2;
-  }, $ = function(e2) {
-    return M(F, e2);
+  }, $$1 = function(e2) {
+    return M$1(F, e2);
   };
   function z(e2) {
-    return x($(e2) >>> 0);
+    return x$1($$1(e2) >>> 0);
   }
   function B(e2) {
     return e2.displayName || e2.name || "Component";
@@ -1164,7 +1116,7 @@
   function L(e2) {
     return "string" == typeof e2 && true;
   }
-  var G = "function" == typeof Symbol && Symbol.for, Y = G ? Symbol.for("react.memo") : 60115, W = G ? Symbol.for("react.forward_ref") : 60112, q = { childContextTypes: true, contextType: true, contextTypes: true, defaultProps: true, displayName: true, getDefaultProps: true, getDerivedStateFromError: true, getDerivedStateFromProps: true, mixins: true, propTypes: true, type: true }, H = { name: true, length: true, prototype: true, caller: true, callee: true, arguments: true, arity: true }, U = { $$typeof: true, compare: true, defaultProps: true, displayName: true, propTypes: true, type: true }, J = ((V = {})[W] = { $$typeof: true, render: true, defaultProps: true, displayName: true, propTypes: true }, V[Y] = U, V);
+  var G = "function" == typeof Symbol && Symbol.for, Y = G ? Symbol.for("react.memo") : 60115, W = G ? Symbol.for("react.forward_ref") : 60112, q = { childContextTypes: true, contextType: true, contextTypes: true, defaultProps: true, displayName: true, getDefaultProps: true, getDerivedStateFromError: true, getDerivedStateFromProps: true, mixins: true, propTypes: true, type: true }, H$1 = { name: true, length: true, prototype: true, caller: true, callee: true, arguments: true, arity: true }, U = { $$typeof: true, compare: true, defaultProps: true, displayName: true, propTypes: true, type: true }, J = ((V = {})[W] = { $$typeof: true, render: true, defaultProps: true, displayName: true, propTypes: true }, V[Y] = U, V);
   function X(e2) {
     return ("type" in (t2 = e2) && t2.type.$$typeof) === Y ? U : "$$typeof" in e2 ? J[e2.$$typeof] : q;
     var t2;
@@ -1180,7 +1132,7 @@
       Q && (r2 = r2.concat(Q(t2)));
       for (var s2 = X(e2), i2 = X(t2), a2 = 0; a2 < r2.length; ++a2) {
         var c2 = r2[a2];
-        if (!(c2 in H || n2 && n2[c2] || i2 && c2 in i2 || s2 && c2 in s2)) {
+        if (!(c2 in H$1 || n2 && n2[c2] || i2 && c2 in i2 || s2 && c2 in s2)) {
           var l2 = ee(t2, c2);
           try {
             Z(e2, c2, l2);
@@ -1260,7 +1212,7 @@
       if (e3 >= this.length || 0 === this.groupSizes[e3])
         return t2;
       for (var n2 = this.groupSizes[e3], o2 = this.indexOfGroup(e3), r2 = o2 + n2, s2 = o2; s2 < r2; s2++)
-        t2 += "".concat(this.tag.getRule(s2)).concat(g);
+        t2 += "".concat(this.tag.getRule(s2)).concat(g$1);
       return t2;
     }, e2;
   }(), me = /* @__PURE__ */ new Map(), ye = /* @__PURE__ */ new Map(), ve = 1, ge = function(e2) {
@@ -1272,11 +1224,11 @@
     return me.set(e2, t2), ye.set(t2, e2), t2;
   }, Se = function(e2, t2) {
     ve = t2 + 1, me.set(e2, t2), ye.set(t2, e2);
-  }, we = "style[".concat(f, "][").concat(y, '="').concat(v, '"]'), be = new RegExp("^".concat(f, '\\.g(\\d+)\\[id="([\\w\\d-]+)"\\].*?"([^"]*)')), Ee = function(e2, t2, n2) {
+  }, we = "style[".concat(f$2, "][").concat(y$1, '="').concat(v$1, '"]'), be = new RegExp("^".concat(f$2, '\\.g(\\d+)\\[id="([\\w\\d-]+)"\\].*?"([^"]*)')), Ee = function(e2, t2, n2) {
     for (var o2, r2 = n2.split(","), s2 = 0, i2 = r2.length; s2 < i2; s2++)
       (o2 = r2[s2]) && e2.registerName(t2, o2);
   }, Ne = function(e2, t2) {
-    for (var n2, o2 = (null !== (n2 = t2.textContent) && void 0 !== n2 ? n2 : "").split(g), r2 = [], s2 = 0, i2 = o2.length; s2 < i2; s2++) {
+    for (var n2, o2 = (null !== (n2 = t2.textContent) && void 0 !== n2 ? n2 : "").split(g$1), r2 = [], s2 = 0, i2 = o2.length; s2 < i2; s2++) {
       var a2 = o2[s2].trim();
       if (a2) {
         var c2 = a2.match(be);
@@ -1293,10 +1245,10 @@
   }
   var _e = function(e2) {
     var t2 = document.head, n2 = e2 || t2, o2 = document.createElement("style"), r2 = function(e3) {
-      var t3 = Array.from(e3.querySelectorAll("style[".concat(f, "]")));
+      var t3 = Array.from(e3.querySelectorAll("style[".concat(f$2, "]")));
       return t3[t3.length - 1];
     }(n2), s2 = void 0 !== r2 ? r2.nextSibling : null;
-    o2.setAttribute(f, m), o2.setAttribute(y, v);
+    o2.setAttribute(f$2, m$1), o2.setAttribute(y$1, v$1);
     var i2 = Pe();
     return i2 && o2.setAttribute("nonce", i2), n2.insertBefore(o2, s2), o2;
   }, Ce = function() {
@@ -1350,14 +1302,14 @@
     }, e2.prototype.getRule = function(e3) {
       return e3 < this.length ? this.rules[e3] : "";
     }, e2;
-  }(), Oe = S, De = { isServer: !S, useCSSOMInjection: !w }, Re = function() {
+  }(), Oe = S, De = { isServer: !S, useCSSOMInjection: !w$1 }, Re = function() {
     function e2(e3, n2, o2) {
       void 0 === e3 && (e3 = C), void 0 === n2 && (n2 = {});
       var r2 = this;
       this.options = __assign(__assign({}, De), e3), this.gs = n2, this.names = new Map(o2), this.server = !!e3.isServer, !this.server && S && Oe && (Oe = false, function(e4) {
         for (var t2 = document.querySelectorAll(we), n3 = 0, o3 = t2.length; n3 < o3; n3++) {
           var r3 = t2[n3];
-          r3 && r3.getAttribute(f) !== m && (Ne(e4, r3), r3.parentNode && r3.parentNode.removeChild(r3));
+          r3 && r3.getAttribute(f$2) !== m$1 && (Ne(e4, r3), r3.parentNode && r3.parentNode.removeChild(r3));
         }
       }(this)), ue(this, function() {
         return function(e4) {
@@ -1370,10 +1322,10 @@
             var s3 = e4.names.get(r4), i2 = t2.getGroup(n4);
             if (void 0 === s3 || 0 === i2.length)
               return "continue";
-            var a2 = "".concat(f, ".g").concat(n4, '[id="').concat(r4, '"]'), c2 = "";
+            var a2 = "".concat(f$2, ".g").concat(n4, '[id="').concat(r4, '"]'), c2 = "";
             void 0 !== s3 && s3.forEach(function(e5) {
               e5.length > 0 && (c2 += "".concat(e5, ","));
-            }), o3 += "".concat(i2).concat(a2, '{content:"').concat(c2, '"}').concat(g);
+            }), o3 += "".concat(i2).concat(a2, '{content:"').concat(c2, '"}').concat(g$1);
           }, s2 = 0; s2 < n3; s2++)
             r3(s2);
           return o3;
@@ -1435,7 +1387,7 @@
       })))), p3;
     };
     return p2.hash = c2.length ? c2.reduce(function(e3, t3) {
-      return t3.name || he(15), M(e3, t3.name);
+      return t3.name || he(15), M$1(e3, t3.name);
     }, F).toString() : "", p2;
   }
   var Ve = new Re(), Fe = xe(), Me = wn.createContext({ shouldForwardProp: void 0, styleSheet: Ve, stylis: Fe });
@@ -1504,9 +1456,9 @@
     }
     return true;
   }
-  var Xe = $(v), Ze = function() {
+  var Xe = $$1(v$1), Ze = function() {
     function e2(e3, t2, n2) {
-      this.rules = e3, this.staticRulesId = "", this.isStatic = (void 0 === n2 || n2.isStatic) && Je(e3), this.componentId = t2, this.baseHash = M(Xe, t2), this.baseStyle = n2, Re.registerId(t2);
+      this.rules = e3, this.staticRulesId = "", this.isStatic = (void 0 === n2 || n2.isStatic) && Je(e3), this.componentId = t2, this.baseHash = M$1(Xe, t2), this.baseStyle = n2, Re.registerId(t2);
     }
     return e2.prototype.generateAndInjectStyles = function(e3, t2, n2) {
       var o2 = this.baseStyle ? this.baseStyle.generateAndInjectStyles(e3, t2, n2) : "";
@@ -1514,7 +1466,7 @@
         if (this.staticRulesId && t2.hasNameForId(this.componentId, this.staticRulesId))
           o2 = ie(o2, this.staticRulesId);
         else {
-          var r2 = ae(Ue(this.rules, e3, t2, n2)), s2 = x(M(this.baseHash, r2) >>> 0);
+          var r2 = ae(Ue(this.rules, e3, t2, n2)), s2 = x$1(M$1(this.baseHash, r2) >>> 0);
           if (!t2.hasNameForId(this.componentId, s2)) {
             var i2 = n2(r2, ".".concat(s2), void 0, this.componentId);
             t2.insertRules(this.componentId, s2, i2);
@@ -1522,17 +1474,17 @@
           o2 = ie(o2, s2), this.staticRulesId = s2;
         }
       else {
-        for (var a2 = M(this.baseHash, n2.hash), c2 = "", l2 = 0; l2 < this.rules.length; l2++) {
+        for (var a2 = M$1(this.baseHash, n2.hash), c2 = "", l2 = 0; l2 < this.rules.length; l2++) {
           var u2 = this.rules[l2];
           if ("string" == typeof u2)
             c2 += u2;
           else if (u2) {
             var p2 = ae(Ue(u2, e3, t2, n2));
-            a2 = M(a2, p2 + l2), c2 += p2;
+            a2 = M$1(a2, p2 + l2), c2 += p2;
           }
         }
         if (c2) {
-          var d2 = x(a2 >>> 0);
+          var d2 = x$1(a2 >>> 0);
           t2.hasNameForId(this.componentId, d2) || t2.insertRules(this.componentId, d2, n2(c2, ".".concat(d2), void 0, this.componentId)), o2 = ie(o2, d2);
         }
       }
@@ -1540,12 +1492,28 @@
     }, e2;
   }(), Ke = wn.createContext(void 0);
   Ke.Consumer;
+  function tt(e2) {
+    var n2 = wn.useContext(Ke), r2 = F$2(function() {
+      return function(e3, n3) {
+        if (!e3)
+          throw he(14);
+        if (re(e3)) {
+          var o2 = e3(n3);
+          return o2;
+        }
+        if (Array.isArray(e3) || "object" != typeof e3)
+          throw he(8);
+        return n3 ? __assign(__assign({}, n3), e3) : e3;
+      }(e2.theme, n2);
+    }, [e2.theme, n2]);
+    return e2.children ? wn.createElement(Ke.Provider, { value: r2 }, e2.children) : null;
+  }
   var nt = {};
   function rt(e2, r2, s2) {
     var i2 = se(e2), a2 = e2, c2 = !L(e2), p2 = r2.attrs, d2 = void 0 === p2 ? _ : p2, h2 = r2.componentId, f2 = void 0 === h2 ? function(e3, t2) {
       var n2 = "string" != typeof e3 ? "sc" : R(e3);
       nt[n2] = (nt[n2] || 0) + 1;
-      var o2 = "".concat(n2, "-").concat(z(v + n2 + nt[n2]));
+      var o2 = "".concat(n2, "-").concat(z(v$1 + n2 + nt[n2]));
       return t2 ? "".concat(t2, "-").concat(o2) : o2;
     }(r2.displayName, r2.parentComponentId) : h2, m2 = r2.displayName, y2 = void 0 === m2 ? function(e3) {
       return L(e3) ? "styled.".concat(e3) : "Styled(".concat(B(e3), ")");
@@ -1634,7 +1602,430 @@
   A.forEach(function(e2) {
     ut[e2] = lt(e2);
   });
-  const Container$1 = ut.div`
+  function ht(t2) {
+    for (var n2 = [], o2 = 1; o2 < arguments.length; o2++)
+      n2[o2 - 1] = arguments[o2];
+    var r2 = ae(at.apply(void 0, __spreadArray([t2], n2, false))), s2 = z(r2);
+    return new Ge(s2, r2);
+  }
+  var f$1 = 0;
+  function u$1(e2, t2, n2, o2, i2, u2) {
+    var a2, c2, p2 = {};
+    for (c2 in t2)
+      "ref" == c2 ? a2 = t2[c2] : p2[c2] = t2[c2];
+    var l2 = { type: e2, props: p2, key: n2, ref: a2, __k: null, __: null, __b: 0, __e: null, __d: void 0, __c: null, constructor: void 0, __v: --f$1, __i: -1, __u: 0, __source: i2, __self: u2 };
+    if ("function" == typeof e2 && (a2 = e2.defaultProps))
+      for (c2 in a2)
+        void 0 === p2[c2] && (p2[c2] = a2[c2]);
+    return preact.options.vnode && preact.options.vnode(l2), l2;
+  }
+  const createSimpleContext = (data) => {
+    const MyContext = preact.createContext({});
+    const Provider = (props) => {
+      const [myData, setMyData] = h$1(data);
+      const setValue = (newData) => {
+        console.log(newData);
+        setMyData({
+          ...myData,
+          ...newData
+        });
+      };
+      return u$1(MyContext.Provider, {
+        value: {
+          value: myData,
+          setValue
+        },
+        children: props.children
+      });
+    };
+    return {
+      Provider,
+      useContext: () => q$2(MyContext)
+    };
+  };
+  const AppContext = createSimpleContext({
+    theme: "light",
+    alert: {
+      message: "Mensagem aqui!",
+      type: "hidden",
+      render: false
+    },
+    openChat: ""
+  });
+  var r = { grad: 0.9, turn: 360, rad: 360 / (2 * Math.PI) }, t = function(r2) {
+    return "string" == typeof r2 ? r2.length > 0 : "number" == typeof r2;
+  }, n = function(r2, t2, n2) {
+    return void 0 === t2 && (t2 = 0), void 0 === n2 && (n2 = Math.pow(10, t2)), Math.round(n2 * r2) / n2 + 0;
+  }, e = function(r2, t2, n2) {
+    return void 0 === t2 && (t2 = 0), void 0 === n2 && (n2 = 1), r2 > n2 ? n2 : r2 > t2 ? r2 : t2;
+  }, u = function(r2) {
+    return (r2 = isFinite(r2) ? r2 % 360 : 0) > 0 ? r2 : r2 + 360;
+  }, a = function(r2) {
+    return { r: e(r2.r, 0, 255), g: e(r2.g, 0, 255), b: e(r2.b, 0, 255), a: e(r2.a) };
+  }, o = function(r2) {
+    return { r: n(r2.r), g: n(r2.g), b: n(r2.b), a: n(r2.a, 3) };
+  }, i = /^#([0-9a-f]{3,8})$/i, s = function(r2) {
+    var t2 = r2.toString(16);
+    return t2.length < 2 ? "0" + t2 : t2;
+  }, h = function(r2) {
+    var t2 = r2.r, n2 = r2.g, e2 = r2.b, u2 = r2.a, a2 = Math.max(t2, n2, e2), o2 = a2 - Math.min(t2, n2, e2), i2 = o2 ? a2 === t2 ? (n2 - e2) / o2 : a2 === n2 ? 2 + (e2 - t2) / o2 : 4 + (t2 - n2) / o2 : 0;
+    return { h: 60 * (i2 < 0 ? i2 + 6 : i2), s: a2 ? o2 / a2 * 100 : 0, v: a2 / 255 * 100, a: u2 };
+  }, b = function(r2) {
+    var t2 = r2.h, n2 = r2.s, e2 = r2.v, u2 = r2.a;
+    t2 = t2 / 360 * 6, n2 /= 100, e2 /= 100;
+    var a2 = Math.floor(t2), o2 = e2 * (1 - n2), i2 = e2 * (1 - (t2 - a2) * n2), s2 = e2 * (1 - (1 - t2 + a2) * n2), h2 = a2 % 6;
+    return { r: 255 * [e2, i2, o2, o2, s2, e2][h2], g: 255 * [s2, e2, e2, i2, o2, o2][h2], b: 255 * [o2, o2, s2, e2, e2, i2][h2], a: u2 };
+  }, g = function(r2) {
+    return { h: u(r2.h), s: e(r2.s, 0, 100), l: e(r2.l, 0, 100), a: e(r2.a) };
+  }, d = function(r2) {
+    return { h: n(r2.h), s: n(r2.s), l: n(r2.l), a: n(r2.a, 3) };
+  }, f = function(r2) {
+    return b((n2 = (t2 = r2).s, { h: t2.h, s: (n2 *= ((e2 = t2.l) < 50 ? e2 : 100 - e2) / 100) > 0 ? 2 * n2 / (e2 + n2) * 100 : 0, v: e2 + n2, a: t2.a }));
+    var t2, n2, e2;
+  }, c = function(r2) {
+    return { h: (t2 = h(r2)).h, s: (u2 = (200 - (n2 = t2.s)) * (e2 = t2.v) / 100) > 0 && u2 < 200 ? n2 * e2 / 100 / (u2 <= 100 ? u2 : 200 - u2) * 100 : 0, l: u2 / 2, a: t2.a };
+    var t2, n2, e2, u2;
+  }, l = /^hsla?\(\s*([+-]?\d*\.?\d+)(deg|rad|grad|turn)?\s*,\s*([+-]?\d*\.?\d+)%\s*,\s*([+-]?\d*\.?\d+)%\s*(?:,\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i, p = /^hsla?\(\s*([+-]?\d*\.?\d+)(deg|rad|grad|turn)?\s+([+-]?\d*\.?\d+)%\s+([+-]?\d*\.?\d+)%\s*(?:\/\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i, v = /^rgba?\(\s*([+-]?\d*\.?\d+)(%)?\s*,\s*([+-]?\d*\.?\d+)(%)?\s*,\s*([+-]?\d*\.?\d+)(%)?\s*(?:,\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i, m = /^rgba?\(\s*([+-]?\d*\.?\d+)(%)?\s+([+-]?\d*\.?\d+)(%)?\s+([+-]?\d*\.?\d+)(%)?\s*(?:\/\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i, y = { string: [[function(r2) {
+    var t2 = i.exec(r2);
+    return t2 ? (r2 = t2[1]).length <= 4 ? { r: parseInt(r2[0] + r2[0], 16), g: parseInt(r2[1] + r2[1], 16), b: parseInt(r2[2] + r2[2], 16), a: 4 === r2.length ? n(parseInt(r2[3] + r2[3], 16) / 255, 2) : 1 } : 6 === r2.length || 8 === r2.length ? { r: parseInt(r2.substr(0, 2), 16), g: parseInt(r2.substr(2, 2), 16), b: parseInt(r2.substr(4, 2), 16), a: 8 === r2.length ? n(parseInt(r2.substr(6, 2), 16) / 255, 2) : 1 } : null : null;
+  }, "hex"], [function(r2) {
+    var t2 = v.exec(r2) || m.exec(r2);
+    return t2 ? t2[2] !== t2[4] || t2[4] !== t2[6] ? null : a({ r: Number(t2[1]) / (t2[2] ? 100 / 255 : 1), g: Number(t2[3]) / (t2[4] ? 100 / 255 : 1), b: Number(t2[5]) / (t2[6] ? 100 / 255 : 1), a: void 0 === t2[7] ? 1 : Number(t2[7]) / (t2[8] ? 100 : 1) }) : null;
+  }, "rgb"], [function(t2) {
+    var n2 = l.exec(t2) || p.exec(t2);
+    if (!n2)
+      return null;
+    var e2, u2, a2 = g({ h: (e2 = n2[1], u2 = n2[2], void 0 === u2 && (u2 = "deg"), Number(e2) * (r[u2] || 1)), s: Number(n2[3]), l: Number(n2[4]), a: void 0 === n2[5] ? 1 : Number(n2[5]) / (n2[6] ? 100 : 1) });
+    return f(a2);
+  }, "hsl"]], object: [[function(r2) {
+    var n2 = r2.r, e2 = r2.g, u2 = r2.b, o2 = r2.a, i2 = void 0 === o2 ? 1 : o2;
+    return t(n2) && t(e2) && t(u2) ? a({ r: Number(n2), g: Number(e2), b: Number(u2), a: Number(i2) }) : null;
+  }, "rgb"], [function(r2) {
+    var n2 = r2.h, e2 = r2.s, u2 = r2.l, a2 = r2.a, o2 = void 0 === a2 ? 1 : a2;
+    if (!t(n2) || !t(e2) || !t(u2))
+      return null;
+    var i2 = g({ h: Number(n2), s: Number(e2), l: Number(u2), a: Number(o2) });
+    return f(i2);
+  }, "hsl"], [function(r2) {
+    var n2 = r2.h, a2 = r2.s, o2 = r2.v, i2 = r2.a, s2 = void 0 === i2 ? 1 : i2;
+    if (!t(n2) || !t(a2) || !t(o2))
+      return null;
+    var h2 = function(r3) {
+      return { h: u(r3.h), s: e(r3.s, 0, 100), v: e(r3.v, 0, 100), a: e(r3.a) };
+    }({ h: Number(n2), s: Number(a2), v: Number(o2), a: Number(s2) });
+    return b(h2);
+  }, "hsv"]] }, N = function(r2, t2) {
+    for (var n2 = 0; n2 < t2.length; n2++) {
+      var e2 = t2[n2][0](r2);
+      if (e2)
+        return [e2, t2[n2][1]];
+    }
+    return [null, void 0];
+  }, x = function(r2) {
+    return "string" == typeof r2 ? N(r2.trim(), y.string) : "object" == typeof r2 && null !== r2 ? N(r2, y.object) : [null, void 0];
+  }, M = function(r2, t2) {
+    var n2 = c(r2);
+    return { h: n2.h, s: e(n2.s + 100 * t2, 0, 100), l: n2.l, a: n2.a };
+  }, H = function(r2) {
+    return (299 * r2.r + 587 * r2.g + 114 * r2.b) / 1e3 / 255;
+  }, $ = function(r2, t2) {
+    var n2 = c(r2);
+    return { h: n2.h, s: n2.s, l: e(n2.l + 100 * t2, 0, 100), a: n2.a };
+  }, j = function() {
+    function r2(r3) {
+      this.parsed = x(r3)[0], this.rgba = this.parsed || { r: 0, g: 0, b: 0, a: 1 };
+    }
+    return r2.prototype.isValid = function() {
+      return null !== this.parsed;
+    }, r2.prototype.brightness = function() {
+      return n(H(this.rgba), 2);
+    }, r2.prototype.isDark = function() {
+      return H(this.rgba) < 0.5;
+    }, r2.prototype.isLight = function() {
+      return H(this.rgba) >= 0.5;
+    }, r2.prototype.toHex = function() {
+      return r3 = o(this.rgba), t2 = r3.r, e2 = r3.g, u2 = r3.b, i2 = (a2 = r3.a) < 1 ? s(n(255 * a2)) : "", "#" + s(t2) + s(e2) + s(u2) + i2;
+      var r3, t2, e2, u2, a2, i2;
+    }, r2.prototype.toRgb = function() {
+      return o(this.rgba);
+    }, r2.prototype.toRgbString = function() {
+      return r3 = o(this.rgba), t2 = r3.r, n2 = r3.g, e2 = r3.b, (u2 = r3.a) < 1 ? "rgba(" + t2 + ", " + n2 + ", " + e2 + ", " + u2 + ")" : "rgb(" + t2 + ", " + n2 + ", " + e2 + ")";
+      var r3, t2, n2, e2, u2;
+    }, r2.prototype.toHsl = function() {
+      return d(c(this.rgba));
+    }, r2.prototype.toHslString = function() {
+      return r3 = d(c(this.rgba)), t2 = r3.h, n2 = r3.s, e2 = r3.l, (u2 = r3.a) < 1 ? "hsla(" + t2 + ", " + n2 + "%, " + e2 + "%, " + u2 + ")" : "hsl(" + t2 + ", " + n2 + "%, " + e2 + "%)";
+      var r3, t2, n2, e2, u2;
+    }, r2.prototype.toHsv = function() {
+      return r3 = h(this.rgba), { h: n(r3.h), s: n(r3.s), v: n(r3.v), a: n(r3.a, 3) };
+      var r3;
+    }, r2.prototype.invert = function() {
+      return w({ r: 255 - (r3 = this.rgba).r, g: 255 - r3.g, b: 255 - r3.b, a: r3.a });
+      var r3;
+    }, r2.prototype.saturate = function(r3) {
+      return void 0 === r3 && (r3 = 0.1), w(M(this.rgba, r3));
+    }, r2.prototype.desaturate = function(r3) {
+      return void 0 === r3 && (r3 = 0.1), w(M(this.rgba, -r3));
+    }, r2.prototype.grayscale = function() {
+      return w(M(this.rgba, -1));
+    }, r2.prototype.lighten = function(r3) {
+      return void 0 === r3 && (r3 = 0.1), w($(this.rgba, r3));
+    }, r2.prototype.darken = function(r3) {
+      return void 0 === r3 && (r3 = 0.1), w($(this.rgba, -r3));
+    }, r2.prototype.rotate = function(r3) {
+      return void 0 === r3 && (r3 = 15), this.hue(this.hue() + r3);
+    }, r2.prototype.alpha = function(r3) {
+      return "number" == typeof r3 ? w({ r: (t2 = this.rgba).r, g: t2.g, b: t2.b, a: r3 }) : n(this.rgba.a, 3);
+      var t2;
+    }, r2.prototype.hue = function(r3) {
+      var t2 = c(this.rgba);
+      return "number" == typeof r3 ? w({ h: r3, s: t2.s, l: t2.l, a: t2.a }) : n(t2.h);
+    }, r2.prototype.isEqual = function(r3) {
+      return this.toHex() === w(r3).toHex();
+    }, r2;
+  }(), w = function(r2) {
+    return r2 instanceof j ? r2 : new j(r2);
+  };
+  const createColorList = (color2) => {
+    const [hue, saturation, brightness] = color2;
+    return {
+      default: color2,
+      withSaturation: (sat) => [hue, sat, brightness],
+      withBrigthness: (bright) => [hue, saturation, bright],
+      addSaturation: (sat) => [hue, saturation + sat, brightness],
+      addBrightness: (bright) => [hue, saturation, bright + brightness]
+    };
+  };
+  const colors = {
+    dark: {
+      background: createColorList([173, 91, 22]),
+      text: createColorList([200, 3, 94]),
+      redFail: createColorList([6, 82, 62]),
+      greenSuccess: createColorList([146, 79, 81]),
+      primary: createColorList([175, 95, 41]),
+      secundary: createColorList([176, 97, 60]),
+      tertiary: createColorList([159, 86, 76]),
+      icon: createColorList([203, 16, 63])
+    },
+    light: {
+      background: createColorList([216, 2, 96]),
+      text: createColorList([100, 7, 18]),
+      redFail: createColorList([0, 56, 92]),
+      greenSuccess: createColorList([123, 39, 84]),
+      primary: createColorList([146, 64, 92]),
+      secundary: createColorList([147, 40, 96]),
+      tertuary: createColorList([149, 18, 99]),
+      icon: createColorList([202, 24, 44])
+    }
+  };
+  const color = ([h2, s2, v2]) => {
+    const color2 = new j({
+      h: h2,
+      s: s2,
+      v: v2
+    });
+    return color2.toHex();
+  };
+  const getThemedColors = (theme) => {
+    if (theme.variant === "dark")
+      return colors.dark;
+    return colors.light;
+  };
+  const AlertContainer = ut.div`
+	position: relative;
+	transition: top ease-in-out 0.5s;
+	top: ${({
+  shown
+}) => shown ? "0px" : "-205px"};
+	display: flex;
+	justify-content: flex-end;
+	padding: 5px 10px;
+`;
+  const AlertBody = ut.div`
+	background: ${({
+  theme
+}) => color(getThemedColors(theme).background.default)};
+	color: ${({
+  theme
+}) => color(getThemedColors(theme).text.default)};
+	width: 33%;
+	height: 100px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	box-shadow: black 2px 2px 5px 2px;
+	pointer-events: auto;
+`;
+  const IconContainer$1 = ut.div`
+	width: 3rem;
+	height: 3rem;
+	padding: 20px;
+	color: ${({
+  color: color2
+}) => color2};
+`;
+  function CheckIcon(props) {
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      ...props,
+      children: u$1("path", {
+        d: "M12.736 3.97a.733.733 0 011.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 01-1.065.02L3.217 8.384a.757.757 0 010-1.06.733.733 0 011.047 0l3.052 3.093 5.4-6.425a.247.247 0 01.02-.022z"
+      })
+    });
+  }
+  function ExclamationIcon(props) {
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      ...props,
+      children: u$1("path", {
+        d: "M7.005 3.1a1 1 0 111.99 0l-.388 6.35a.61.61 0 01-1.214 0L7.005 3.1zM7 12a1 1 0 112 0 1 1 0 01-2 0z"
+      })
+    });
+  }
+  function XIcon(props) {
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      ...props,
+      children: u$1("path", {
+        d: "M4.646 4.646a.5.5 0 01.708 0L8 7.293l2.646-2.647a.5.5 0 01.708.708L8.707 8l2.647 2.646a.5.5 0 01-.708.708L8 8.707l-2.646 2.647a.5.5 0 01-.708-.708L7.293 8 4.646 5.354a.5.5 0 010-.708z"
+      })
+    });
+  }
+  function CircleIcon(props) {
+    const theme = q$2(Ke);
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      stroke: color(getThemedColors(theme).primary.default),
+      ...props,
+      children: u$1("circle", {
+        cx: "8",
+        cy: "8",
+        r: 7,
+        fill: "none",
+        strokeWidth: 1
+      })
+    });
+  }
+  function PlusIcon(props) {
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      ...props,
+      children: u$1("path", {
+        d: "M8 4a.5.5 0 01.5.5v3h3a.5.5 0 010 1h-3v3a.5.5 0 01-1 0v-3h-3a.5.5 0 010-1h3v-3A.5.5 0 018 4z"
+      })
+    });
+  }
+  function WhatsappIcon(props) {
+    return u$1("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 16 16",
+      height: "1em",
+      width: "1em",
+      ...props,
+      children: u$1("path", {
+        d: "M13.601 2.326A7.854 7.854 0 007.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 003.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0013.6 2.326zM7.994 14.521a6.573 6.573 0 01-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 01-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 014.66 1.931 6.557 6.557 0 011.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 00-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
+      })
+    });
+  }
+  const useAlertBehavior = () => {
+    const {
+      type,
+      render: render2
+    } = AppContext.useContext().value.alert;
+    const Icon = () => {
+      if (type === "fail") {
+        return XIcon;
+      }
+      if (type === "warning") {
+        return ExclamationIcon;
+      }
+      return CheckIcon;
+    };
+    const getColor = () => {
+      if (type === "fail") {
+        return color(getThemedColors("dark").redFail.default);
+      }
+      if (type === "warning") {
+        return color(getThemedColors("dark").text.default);
+      }
+      return color(getThemedColors("dark").greenSuccess.default);
+    };
+    return {
+      Icon: Icon(),
+      iconColor: getColor(),
+      shown: type !== "hidden",
+      render: render2
+    };
+  };
+  const Render = ({
+    children,
+    when
+  }) => {
+    const shouldRender = typeof when === "function" ? when() : when;
+    if (shouldRender) {
+      return children;
+    } else {
+      return null;
+    }
+  };
+  const AlertComponent = () => {
+    const {
+      alert
+    } = AppContext.useContext().value;
+    const {
+      Icon,
+      iconColor,
+      shown,
+      render: render2
+    } = useAlertBehavior();
+    return u$1(Render, {
+      when: render2,
+      children: u$1(AlertContainer, {
+        shown,
+        children: u$1(AlertBody, {
+          children: [u$1(IconContainer$1, {
+            color: iconColor,
+            children: u$1(Icon, {
+              width: "3rem",
+              height: "3rem"
+            })
+          }), u$1("h1", {
+            children: alert.message
+          })]
+        })
+      })
+    });
+  };
+  const WaContext = createSimpleContext({});
+  const useFullScreenModalBehaviour = ({
+    closeModal,
+    isOpen
+  }) => {
+    const actualCloseModal = (ev) => {
+      ev.stopPropagation();
+      closeModal();
+    };
+    return {
+      isOpen,
+      closeModal: actualCloseModal
+    };
+  };
+  const Container$2 = ut.div`
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.65);
@@ -1642,6 +2033,7 @@
 	justify-content: center;
 	align-items: center;
 	pointer-events: auto;
+	backdrop-filter: blur(2px);
 `;
   ut.div`
 	min-width: 1px;
@@ -1657,28 +2049,84 @@
     const Children = preact.cloneElement(props.children, {
       onclick: (ev) => ev.stopPropagation()
     });
-    return u(Container$1, {
+    return u$1(Container$2, {
       onClick: props.closeModal,
       children: Children
     });
   };
-  const Render = ({
-    children,
-    when
-  }) => {
-    const shouldRender = typeof when === "function" ? when() : when;
-    if (shouldRender) {
-      return children;
-    } else {
-      return null;
+  const rotationAnimation = ht`
+    from { 
+        transform: rotate(0deg); 
     }
+    to { 
+        transform: rotate(360deg); 
+    }
+`;
+  const ringAnimation = ht`
+    0% {
+      stroke-dasharray: 5, 40;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 40, 5;
+      stroke-dashoffset: 0;
+    }
+    100% {
+    stroke-dasharray: 5, 40;
+      stroke-dashoffset: -45;
+    }
+`;
+  const Container$1 = ut(ut.div`
+	animation: ${rotationAnimation};
+	animation-duration: 3s;
+	animation-direction: normal;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+`).attrs((props) => ({
+    style: {
+      // transition: 'all 2s ease-in-out',
+      // transform: props.full ? 'rotate(360deg)' : 'rotate(0deg)',
+    }
+  }))``;
+  const _MyCircle = ut(CircleIcon)`
+	stroke-linecap: round;
+	stroke-dasharray: 0;
+	stroke-dashoffset: 0;
+	display: block;
+	animation: ${ringAnimation};
+	animation-duration: 3s;
+	animation-direction: normal;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+`;
+  const MyCircle = ut(_MyCircle).attrs((props) => ({
+    style: {}
+  }))``;
+  const LoadingRing = ({
+    size
+  }) => {
+    const [count, setCount] = h$1(0);
+    p$1(() => {
+      setCount(1);
+      const ival = setInterval(() => setCount((count2) => count2 + 1), 1e3);
+      return () => clearInterval(ival);
+    }, []);
+    return u$1(Container$1, {
+      full: count % 2 === 0,
+      children: u$1(MyCircle, {
+        count,
+        width: size,
+        height: size
+      })
+    });
   };
   const useMessageRevalerLogic = () => {
-    const [currentMessageId, setCurrentMessageId] = h(null);
-    const [loading, setLoading] = h(false);
-    const [media, setMedia] = h(null);
-    const [messageType, setMessageType] = h(null);
-    const [modalOpen, setModalOpen] = h(false);
+    const [currentMessageId, setCurrentMessageId] = h$1(null);
+    const [loading, setLoading] = h$1(false);
+    const [media, setMedia] = h$1(null);
+    const [messageType, setMessageType] = h$1(null);
+    const [messageObj, setMessageObj] = h$1({});
+    const [modalOpen, setModalOpen] = h$1(false);
     const {
       value: Wa
     } = WaContext.useContext();
@@ -1693,7 +2141,7 @@
       const messageId = getMessageId(ev);
       setCurrentMessageId(messageId);
     };
-    p(() => {
+    p$1(() => {
       if (!Wa.Client) {
         return;
       } else {
@@ -1711,13 +2159,14 @@
       if (!!currentMessageId) {
         setModalOpen(true);
         setLoading(true);
+        setMessageObj(message);
       }
       const media2 = await Wa.Client.downloadMediaFromMessage(currentMessageId);
       setMedia(media2 ?? null);
       setLoading(false);
       setMessageType(message.type);
     };
-    p(() => {
+    p$1(() => {
       downloadAndShowMedia();
     }, [currentMessageId]);
     const closeModal = () => {
@@ -1730,7 +2179,8 @@
       messageType,
       loading,
       closeModal,
-      modalOpen
+      modalOpen,
+      messageObj
     };
   };
   const setupMessageRevealer = (onClickMessage) => {
@@ -1778,16 +2228,15 @@
     messageType
   }) => {
     const srcString = `data:${media.mimetype};base64,${media.data}`;
-    console.log(messageType);
     if (messageType === "image") {
-      return u(Image$1, {
+      return u$1(Image$1, {
         src: srcString
       });
     }
     if (messageType === "video" || messageType === "audio" || messageType === "ptt") {
-      return u(Multimidia, {
+      return u$1(Multimidia, {
         controls: true,
-        children: u("source", {
+        children: u$1("source", {
           src: srcString
         })
       });
@@ -1795,51 +2244,285 @@
     return null;
   };
   const Container = ut.div`
-	width: 85%;
 	height: 75%;
-	background: rgb(255, 255, 255);
+	background: ${({
+  theme
+}) => color(getThemedColors(theme).background.default)};
 	border-radius: 15px;
-	padding: 1.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	overflow: hidden;
+	max-width: 75%;
+`;
+  const ImageContainer = ut.div`
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 `;
+  const CaptionContainer = ut.div`
+	height: 10%;
+	width: 75%;
+	top: calc(90%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-break: auto;
+	overflow: scroll;
+	display: inline-block;
+	position: absolute;
+	text-align: center;
+`;
   const MessageRevealer = () => {
     const {
-      currentMessageId,
       loading,
       media,
       messageType,
       closeModal,
-      modalOpen
+      modalOpen,
+      messageObj
     } = useMessageRevalerLogic();
-    return u(FullScreenModal, {
+    return u$1(FullScreenModal, {
       isOpen: modalOpen,
       closeModal,
-      children: u(Container, {
-        children: u(preact.Fragment, {
-          children: [u(Render, {
-            when: loading,
-            children: u("h1", {
-              children: "Loading..."
-            })
-          }), u(Render, {
-            when: !loading,
-            children: u(MediaPreview, {
-              messageType,
-              media
-            })
-          })]
-        })
+      children: u$1(preact.Fragment, {
+        children: [u$1(Render, {
+          when: loading,
+          children: u$1(LoadingRing, {
+            size: "12rem"
+          })
+        }), u$1(Render, {
+          when: !loading,
+          children: u$1(Container, {
+            children: [u$1(ImageContainer, {
+              children: u$1(MediaPreview, {
+                messageType,
+                media
+              })
+            }), u$1(CaptionContainer, {
+              children: u$1("span", {
+                children: messageObj.body
+              })
+            })]
+          })
+        })]
       })
     });
+  };
+  const forExpression = (exp) => {
+    return new Promise((resolve) => {
+      const checker = setInterval(() => {
+        const done = exp();
+        if (done) {
+          clearInterval(checker);
+          resolve(true);
+        }
+      }, 1e3);
+    });
+  };
+  const elementGetsVisible = async (selector) => {
+    await forExpression(() => !!document.querySelector(selector));
+    return document.querySelector(selector);
+  };
+  const setupChatTools = async (onChatLoads) => {
+    const chatContainer = await elementGetsVisible("#app > div > div > :nth-child(4)");
+    const chatObserver = new MutationObserver(onChatLoads);
+    chatObserver.observe(chatContainer, {
+      subtree: true,
+      attributes: true,
+      childList: true
+    });
+  };
+  const useChatToolsBehaviour = () => {
+    const [messageId, setMessageId] = h$1(null);
+    const {
+      Client: Client2
+    } = WaContext.useContext().value;
+    const {
+      value: app,
+      setValue: setAppContext
+    } = AppContext.useContext();
+    const onChatLoads = async () => {
+      const someMessageId = (await elementGetsVisible("[data-id]")).getAttribute("data-id");
+      setMessageId(someMessageId);
+    };
+    const getChatInfo = async () => {
+      if (!messageId) {
+        return;
+      }
+      const chatId = await Client2.getMessageById(messageId).then((message) => message == null ? void 0 : message.id.remote);
+      setAppContext({
+        openChat: chatId
+      });
+    };
+    p$1(() => {
+      getChatInfo();
+    }, [messageId]);
+    p$1(() => {
+      if (Client2) {
+        setupChatTools(onChatLoads);
+      }
+    }, [Client2]);
+  };
+  const Button = ut.button`
+	width: 3rem;
+	height: 3rem;
+	background: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: ${({
+  theme
+}) => color(getThemedColors(theme).icon.default)};
+`;
+  const IconContainer = ut.div`
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+  const WhatsappIconContainer = ut.div`
+	position: absolute;
+`;
+  const FirstPlusContainer = ut.div`
+	position: absolute;
+	top: -0.3rem;
+	left: 0.2rem;
+`;
+  const SecondPlusContainer = ut.div`
+	position: absolute;
+	top: -0.3rem;
+	left: 0.7rem;
+`;
+  const WhatsappPlusPlusButton = ({
+    onClick
+  }) => {
+    return u$1(Button, {
+      onClick,
+      children: u$1(IconContainer, {
+        children: [u$1(WhatsappIconContainer, {
+          children: u$1(WhatsappIcon, {
+            width: "1.7rem",
+            height: "1.7rem"
+          })
+        }), u$1(FirstPlusContainer, {
+          children: u$1(PlusIcon, {
+            width: "1.7rem",
+            height: "1.7rem"
+          })
+        }), u$1(SecondPlusContainer, {
+          children: u$1(PlusIcon, {
+            width: "1.7rem",
+            height: "1.7rem"
+          })
+        })]
+      })
+    });
+  };
+  const ChatTools = () => {
+    useChatToolsBehaviour();
+    const root = document.querySelector("footer > div");
+    const appContext = AppContext.useContext().value;
+    if (!root) {
+      return null;
+    }
+    const onClick = () => console.log(appContext);
+    return j$2(u$1(WhatsappPlusPlusButton, {
+      onClick
+    }), root);
+  };
+  const eventCallbackMap = {
+    setItem: {},
+    removeItem: {}
+  };
+  Storage.prototype.setItem = new Proxy(Storage.prototype.setItem, {
+    apply(target, thisArg, argumentList) {
+      const payload = {
+        key: argumentList[0],
+        oldValue: JSON.parse(thisArg.getItem(argumentList[0])),
+        newValue: JSON.parse(argumentList[1])
+      };
+      Object.values(eventCallbackMap.setItem).forEach((handler) => {
+        handler(payload);
+      });
+      return Reflect.apply(target, thisArg, argumentList);
+    }
+  });
+  Storage.prototype.removeItem = new Proxy(Storage.prototype.removeItem, {
+    apply(target, thisArg, argumentList) {
+      const payload = {
+        key: argumentList[0],
+        oldValue: JSON.parse(thisArg.getItem(argumentList[0]))
+      };
+      Object.values(eventCallbackMap.removeItem).forEach((handler) => {
+        handler(payload);
+      });
+      return Reflect.apply(target, thisArg, argumentList);
+    }
+  });
+  const useSetItemListener = (callback, key) => {
+    if (!eventCallbackMap.setItem[key]) {
+      eventCallbackMap.setItem[key] = callback;
+    }
+  };
+  const useWaLoadEffect = (cb, dependencyArray) => {
+    const {
+      Client: Client2
+    } = WaContext.useContext().value;
+    p$1(() => {
+      if (Client2) {
+        return cb();
+      }
+    }, [Client2]);
+  };
+  const ThemeSync = () => {
+    const {
+      setValue: setTheme
+    } = AppContext.useContext();
+    useWaLoadEffect(() => {
+      const currentTheme = JSON.parse(localStorage.getItem("theme"));
+      setUserTheme(currentTheme);
+    });
+    const getSystemThemePreference = () => {
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
+      return "light";
+    };
+    const setUserTheme = (theme) => {
+      if (theme === "light") {
+        setTheme({
+          theme: "light"
+        });
+      } else if (theme === "dark") {
+        setTheme({
+          theme: "dark"
+        });
+      } else {
+        setTheme({
+          theme: getSystemThemePreference()
+        });
+      }
+    };
+    useSetItemListener(({
+      key,
+      newValue
+    }) => {
+      if (key !== "theme") {
+        return;
+      }
+      setUserTheme(newValue);
+    }, "theme-sync");
+    return u$1(preact.Fragment, {});
   };
   const AllModules = () => {
     const {
       value: Wa
     } = WaContext.useContext();
-    const [modulesReady, setModulesReady] = h(false);
-    p(() => {
+    const [modulesReady, setModulesReady] = h$1(false);
+    p$1(() => {
       if (!!Wa) {
         setModulesReady(true);
       }
@@ -1847,8 +2530,8 @@
     if (!modulesReady) {
       return null;
     } else {
-      return u(preact.Fragment, {
-        children: u(MessageRevealer, {})
+      return u$1(preact.Fragment, {
+        children: [u$1(MessageRevealer, {}), u$1(ChatTools, {}), u$1(ThemeSync, {})]
       });
     }
   };
@@ -3183,8 +3866,8 @@ ${this.address}` : this.name || this.address || "";
             filteredData.push(sum / blockSize);
           }
           const multiplier = Math.pow(Math.max(...filteredData), -1);
-          const normalizedData = filteredData.map((n) => n * multiplier);
-          const waveform = new Uint8Array(normalizedData.map((n) => Math.floor(100 * n)));
+          const normalizedData = filteredData.map((n2) => n2 * multiplier);
+          const waveform = new Uint8Array(normalizedData.map((n2) => Math.floor(100 * n2)));
           return waveform;
         } catch (e2) {
           return void 0;
@@ -3521,31 +4204,12 @@ ${this.address}` : this.name || this.address || "";
       Store: window.Store
     };
   };
-  const forExpression = (exp) => {
-    return new Promise((resolve) => {
-      const checker = setInterval(() => {
-        const done = exp();
-        if (done) {
-          clearInterval(checker);
-          resolve(true);
-        }
-      }, 1e3);
-    });
-  };
-  const elementGetsVisible = (selector) => forExpression(() => !!document.querySelector(selector));
   const WaLoader = () => {
-    const [documentLoaded, setDocumentLoaded] = h(false);
-    const [WaInitialized, setWAIinitialized] = h(false);
     const {
       value: Wa,
       setValue: setWa
     } = WaContext.useContext();
-    p(() => {
-      elementGetsVisible("#app").then(() => {
-        setDocumentLoaded(true);
-      });
-    }, []);
-    p(() => {
+    p$1(() => {
       elementGetsVisible('span[data-icon="archived"]').then(async () => {
         const {
           Store,
@@ -3556,28 +4220,52 @@ ${this.address}` : this.name || this.address || "";
             Client: new Client()
           });
         }
-        setWAIinitialized(true);
         console.log("WA++ EXTENSION READY");
       });
     }, []);
-    if (!documentLoaded || !WaInitialized) {
-      return null;
-    }
-    return u(preact.Fragment, {});
+    return null;
+  };
+  const version = "0.2.1";
+  const checkVersion = () => {
+    const fetchLatestVersion = async () => {
+      const latestVersion = await fetch("https://gramont.ddns.net/cdn/file/wa-plusplus-latest-version.txt").then((resp) => resp.text()).catch((err) => version);
+      if (latestVersion !== version) {
+        console.log("version mismatch!");
+      } else {
+        console.log("you have the last version");
+      }
+    };
+    p$1(() => {
+      fetchLatestVersion();
+    }, []);
   };
   function App() {
-    return u(WaContext.Provider, {
-      children: u("div", {
+    return u$1(WaContext.Provider, {
+      children: u$1(AppContext.Provider, {
+        children: u$1(AppContent, {})
+      })
+    });
+  }
+  const AppContent = () => {
+    const {
+      theme
+    } = AppContext.useContext().value;
+    checkVersion();
+    return u$1(tt, {
+      theme: {
+        variant: theme
+      },
+      children: u$1("div", {
         style: {
           width: "100%",
           height: "100%"
         },
-        children: [u(WaLoader, {}), u(AllModules, {})]
+        children: [u$1(WaLoader, {}), u$1(AllModules, {}), u$1(AlertComponent, {})]
       })
     });
-  }
+  };
   console.log("WA++ is installed properly!");
-  preact.render(u(App, {}), (() => {
+  preact.render(u$1(App, {}), (() => {
     const app = document.createElement("div");
     app.setAttribute("id", "WA++");
     app.setAttribute("style", `position: absolute;
