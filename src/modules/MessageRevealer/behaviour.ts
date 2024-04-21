@@ -2,12 +2,14 @@ import { useEffect, useState } from 'preact/hooks';
 import WaContext from '../../contexts/Wa';
 import MessageMedia from '../../lib/Media';
 import { MessageTypes } from '../../lib/Message/models';
+import Message from '../../lib/Message';
 
 export const useMessageRevalerLogic = () => {
 	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [media, setMedia] = useState<MessageMedia | null>(null);
 	const [messageType, setMessageType] = useState<MessageTypes | null>(null);
+	const [messageObj, setMessageObj] = useState<Message>({} as Message);
 	const [modalOpen, setModalOpen] = useState(false);
 	const { value: Wa } = WaContext.useContext();
 
@@ -45,6 +47,7 @@ export const useMessageRevalerLogic = () => {
 		if (!!currentMessageId) {
 			setModalOpen(true);
 			setLoading(true);
+			setMessageObj(message);
 		}
 
 		const media = await Wa.Client.downloadMediaFromMessage(currentMessageId);
@@ -69,6 +72,7 @@ export const useMessageRevalerLogic = () => {
 		loading,
 		closeModal,
 		modalOpen,
+		messageObj,
 	};
 };
 

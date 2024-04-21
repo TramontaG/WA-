@@ -12,6 +12,7 @@ export const createSimpleContext = <T extends Record<string, any>>(data: T) => {
 	const Provider = (props: { children: JSX.Element }) => {
 		const [myData, setMyData] = useState<T>(data);
 		const setValue = (newData: Partial<T>) => {
+			console.log(newData);
 			setMyData({
 				...myData,
 				...newData,

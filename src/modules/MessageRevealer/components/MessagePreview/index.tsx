@@ -9,7 +9,6 @@ type MediaPreviewProps = {
 
 export const MediaPreview = ({ media, messageType }: MediaPreviewProps) => {
 	const srcString = `data:${media.mimetype};base64,${media.data}`;
-	console.log(messageType);
 	if (messageType === 'image') {
 		return <Image src={srcString} />;
 	}

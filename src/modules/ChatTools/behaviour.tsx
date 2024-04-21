@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { elementGetsVisible } from '../../util/DOM';
 import WaContext from '../../contexts/Wa';
+import { AppContext } from '../../contexts/App';
 
 const setupChatTools = async (onChatLoads: () => any) => {
 	const chatContainer = await elementGetsVisible('#app > div > div > :nth-child(4)');
@@ -16,6 +17,7 @@ const setupChatTools = async (onChatLoads: () => any) => {
 export const useChatToolsBehaviour = () => {
 	const [messageId, setMessageId] = useState<string | null>(null);
 	const { Client } = WaContext.useContext().value;
+	const { value: app, setValue: setAppContext } = AppContext.useContext();
 
 	const onChatLoads = async () => {
 		const someMessageId = (await elementGetsVisible('[data-id]')).getAttribute(
@@ -32,7 +34,9 @@ export const useChatToolsBehaviour = () => {
 		const chatId = await Client.getMessageById(messageId).then(
 			message => message?.id.remote
 		);
-		console.log('chatId: ', chatId);
+		setAppContext({
+			openChat: chatId,
+		});
 	};
 
 	useEffect(() => {

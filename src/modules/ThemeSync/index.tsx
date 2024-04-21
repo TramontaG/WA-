@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks';
 import { AppContext } from '../../contexts/App';
 import { useSetItemListener } from '../../lib/inject/watchLocalStorage';
+import { useWaLoadEffect } from '../../hooks/useWaLoadEffect';
 
 /**
  * This does not mounts anything to the dom. It just keeps the
@@ -9,7 +10,7 @@ import { useSetItemListener } from '../../lib/inject/watchLocalStorage';
 export const ThemeSync = () => {
 	const { setValue: setTheme } = AppContext.useContext();
 
-	useEffect(() => {
+	useWaLoadEffect(() => {
 		const currentTheme = JSON.parse(localStorage.getItem('theme')!) as string;
 		setUserTheme(currentTheme);
 	}, []);

@@ -8,6 +8,7 @@ export const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 	pointer-events: auto;
+	backdrop-filter: blur(2px);
 `;
 
 export const ChildrenContainer = styled.div`

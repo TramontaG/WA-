@@ -10,6 +10,7 @@ export type AppContext = {
 		render: boolean;
 	};
 	theme: Theme;
+	openChat: string;
 };
 
 export const AppContext = createSimpleContext({
@@ -19,4 +20,5 @@ export const AppContext = createSimpleContext({
 		type: 'hidden',
 		render: false,
 	},
+	openChat: '',
 } as AppContext);

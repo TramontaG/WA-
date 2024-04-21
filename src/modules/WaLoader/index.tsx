@@ -5,15 +5,7 @@ import { inject } from '../../lib/inject';
 import { elementGetsVisible } from '../../util/DOM';
 
 export const WaLoader = () => {
-	const [documentLoaded, setDocumentLoaded] = useState(false);
-	const [WaInitialized, setWAIinitialized] = useState(false);
 	const { value: Wa, setValue: setWa } = WaContext.useContext();
-
-	useEffect(() => {
-		elementGetsVisible('#app').then(() => {
-			setDocumentLoaded(true);
-		});
-	}, []);
 
 	useEffect(() => {
 		elementGetsVisible('span[data-icon="archived"]').then(async () => {
@@ -23,14 +15,9 @@ export const WaLoader = () => {
 					Client: new Client(),
 				});
 			}
-			setWAIinitialized(true);
 			console.log('WA++ EXTENSION READY');
 		});
 	}, []);
 
-	if (!documentLoaded || !WaInitialized) {
-		return null;
-	}
-
-	return <></>;
+	return null;
 };
