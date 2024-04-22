@@ -1,6 +1,8 @@
 import { createSimpleContext } from '../contextFactory';
 
-export type Theme = 'light' | 'dark';
+export type Theme = {
+	variant: 'light' | 'dark';
+};
 export type AlertType = 'success' | 'warning' | 'fail' | 'hidden';
 
 export type AppContext = {
@@ -10,15 +12,19 @@ export type AppContext = {
 		render: boolean;
 	};
 	theme: Theme;
-	openChat: string;
+	openChatId: string;
+	allChatIds: string[];
 };
 
 export const AppContext = createSimpleContext({
-	theme: 'light',
+	theme: {
+		variant: JSON.parse(localStorage.getItem('theme') || '"light"'),
+	},
 	alert: {
 		message: 'Mensagem aqui!',
 		type: 'hidden',
 		render: false,
 	},
-	openChat: '',
+	openChatId: '',
+	allChatIds: [],
 } as AppContext);

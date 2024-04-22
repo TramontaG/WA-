@@ -1,4 +1,4 @@
-const forExpression = (exp: () => boolean): Promise<boolean> => {
+const forExpression = (exp: () => boolean, interval = 1000): Promise<boolean> => {
 	return new Promise(resolve => {
 		const checker = setInterval(() => {
 			const done = exp();
@@ -6,12 +6,12 @@ const forExpression = (exp: () => boolean): Promise<boolean> => {
 				clearInterval(checker);
 				resolve(true);
 			}
-		}, 1000);
+		}, interval);
 	});
 };
 
-export const elementGetsVisible = async (selector: string) => {
-	await forExpression(() => !!document.querySelector(selector));
+export const elementGetsVisible = async (selector: string, interval = 1000) => {
+	await forExpression(() => !!document.querySelector(selector), interval);
 	return document.querySelector(selector)!;
 };
 

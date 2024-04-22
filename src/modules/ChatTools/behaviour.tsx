@@ -1,51 +1,73 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
 import { elementGetsVisible } from '../../util/DOM';
 import WaContext from '../../contexts/Wa';
 import { AppContext } from '../../contexts/App';
+import Chat from '../../lib/Chat/GroupChat';
+import { useDomObserver } from '../../hooks/useDomObserver';
 
-const setupChatTools = async (onChatLoads: () => any) => {
+let ChatObserver: MutationObserver | null = null;
+
+const setupChatObserver = async (onChatLoads: () => any) => {
 	const chatContainer = await elementGetsVisible('#app > div > div > :nth-child(4)');
 
-	const chatObserver = new MutationObserver(onChatLoads);
-	chatObserver.observe(chatContainer!, {
+	ChatObserver = new MutationObserver(onChatLoads);
+	ChatObserver.observe(chatContainer!, {
 		subtree: true,
-		attributes: true,
 		childList: true,
 	});
 };
 
+const clearObserver = () => {
+	ChatObserver?.disconnect();
+};
+
 export const useChatToolsBehaviour = () => {
-	const [messageId, setMessageId] = useState<string | null>(null);
+	const [currentChat, setCurrentChat] = useState<Chat>({
+		id: {
+			_serialized: '',
+		},
+	} as Chat);
 	const { Client } = WaContext.useContext().value;
 	const { value: app, setValue: setAppContext } = AppContext.useContext();
+	const [rootElement, setRootElement] = useState<Element | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	const onChatLoads = async () => {
-		const someMessageId = (await elementGetsVisible('[data-id]')).getAttribute(
-			'data-id'
-		)!;
-		setMessageId(someMessageId);
-	};
-
-	const getChatInfo = async () => {
-		if (!messageId) {
+	useDomObserver('#app > div > div > :nth-child(4)', async () => {
+		const newRootElement = document.querySelector('footer > div');
+		if (currentChat?.id._serialized === newRootElement?.getAttribute('chat-id')) {
 			return;
 		}
 
-		const chatId = await Client.getMessageById(messageId).then(
-			message => message?.id.remote
-		);
+		setRootElement(newRootElement);
+		setLoading(true);
+
+		const newCurrentChat = await getCurrentChat();
+		setCurrentChat(newCurrentChat);
 		setAppContext({
-			openChat: chatId,
+			openChatId: newCurrentChat.id._serialized,
 		});
+		newRootElement!.setAttribute('chat-id', newCurrentChat.id._serialized);
+		console.log('Ran fully');
+
+		setLoading(false);
+	});
+
+	const getCurrentChat = async () => {
+		const someMessageId = (await elementGetsVisible('[data-id]')).getAttribute(
+			'data-id'
+		)!;
+		const sampleMessageObject = await Client.getMessageById(someMessageId);
+		return sampleMessageObject!.getChat();
 	};
 
-	useEffect(() => {
-		getChatInfo();
-	}, [messageId]);
+	const onClickButton = async () => {
+		console.log(app);
+	};
 
-	useEffect(() => {
-		if (Client) {
-			setupChatTools(onChatLoads);
-		}
-	}, [Client]);
+	return {
+		onClickButton,
+		rootElement,
+		loading,
+		currentChat,
+	};
 };

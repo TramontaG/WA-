@@ -26,5 +26,8 @@ declare global {
 		MsgActionChecks: StoreMsgActionChecks;
 		Cmd: StoreCmd;
 		Reactions: StoreReactions;
+		ConversationMsgs: StoreConversationMsgs;
+		Label: StoreLabel;
+		Conn: StoreConn;
 	}
 }

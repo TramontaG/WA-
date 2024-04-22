@@ -8,5 +8,5 @@ export const useWaLoadEffect = (cb: EffectCallback, dependencyArray: Inputs) => 
 		if (Client) {
 			return cb();
 		}
-	}, [Client]);
+	}, [Client, ...dependencyArray]);
 };

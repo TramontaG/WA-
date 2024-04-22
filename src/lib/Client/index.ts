@@ -1,5 +1,8 @@
 import { CreateChat } from '../Chat';
+import Chat from '../Chat/GroupChat';
+import { SearchMessageOptions } from '../Chat/models';
 import { BusinessContact, CreateContact, PrivateContact } from '../Contact';
+import Label from '../Label';
 import MessageMedia from '../Media';
 import Message from '../Message';
 import {
@@ -277,5 +280,227 @@ export class Client {
 		}
 
 		return null;
+	}
+
+	async sendSeen(serializedChatId: string): Promise<boolean> {
+		return window.WWebJS.sendSeen(serializedChatId);
+	}
+
+	async clearChatMessages(serializedChatId: string): Promise<boolean> {
+		return window.WWebJS.sendClearChat(serializedChatId);
+	}
+
+	async deleteChat(serializedChatId: string): Promise<boolean> {
+		return window.WWebJS.sendDeleteChat(serializedChatId);
+	}
+
+	async archiveChat(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = await window.Store.Chat.get(serializedChatId);
+			await window.Store.Cmd.archiveChat(chat, true);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async unarchiveChat(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = await window.Store.Chat.get(serializedChatId);
+			await window.Store.Cmd.archiveChat(chat, false);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async pinChat(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = window.Store.Chat.get(serializedChatId);
+			if (chat.pin) {
+				return true;
+			}
+			const MAX_PIN_COUNT = 3;
+			const chatModels = window.Store.Chat.getModelsArray();
+			if (chatModels.length > MAX_PIN_COUNT) {
+				let maxPinned = chatModels[MAX_PIN_COUNT - 1].pin;
+				if (maxPinned) {
+					return false;
+				}
+			}
+			await window.Store.Cmd.pinChat(chat, true);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async unpinChat(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = window.Store.Chat.get(serializedChatId);
+			if (!chat.pin) {
+				return true;
+			}
+			await window.Store.Cmd.pinChat(chat, false);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async muteChat(serializedChatId: string, unmuteDate?: Date): Promise<boolean> {
+		try {
+			const actualUnmuteDate = unmuteDate ? unmuteDate.getTime() / 1000 : -1;
+			let chat = await window.Store.Chat.get(serializedChatId);
+			await chat.mute.mute({ expiration: actualUnmuteDate, sendDevice: !0 });
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async unmuteChat(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = await window.Store.Chat.get(serializedChatId);
+			await window.Store.Cmd.muteChat(chat, false);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async markChatUnread(serializedChatId: string): Promise<boolean> {
+		try {
+			let chat = await window.Store.Chat.get(serializedChatId);
+			await window.Store.Cmd.markChatUnread(chat, true);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	async fetchMessagesFromChat(
+		serializedChatId: string,
+		searchOptions?: SearchMessageOptions
+	): Promise<Message[]> {
+		const msgFilter = (m: any) => {
+			if (m.isNotification) {
+				return false; // dont include notification messages
+			}
+			if (
+				searchOptions &&
+				searchOptions.fromMe !== undefined &&
+				m.id.fromMe !== searchOptions.fromMe
+			) {
+				return false;
+			}
+			return true;
+		};
+
+		const chat = window.Store.Chat.get(serializedChatId);
+		let msgs = chat.msgs.getModelsArray().filter(msgFilter);
+
+		if (searchOptions && searchOptions.limit > 0) {
+			while (msgs.length < searchOptions.limit) {
+				const loadedMessages = await window.Store.ConversationMsgs.loadEarlierMsgs(
+					chat
+				);
+				if (!loadedMessages || !loadedMessages.length) break;
+				msgs = [...loadedMessages.filter(msgFilter), ...msgs];
+			}
+
+			if (msgs.length > searchOptions.limit) {
+				msgs.sort((a: any, b: any) => (a.t > b.t ? 1 : -1));
+				msgs = msgs.splice(msgs.length - searchOptions.limit);
+			}
+		}
+
+		return msgs
+			.map((m: any) => window.WWebJS.getMessageModel(m))
+			.map((model: Record<string, any>) => new Message(this, model));
+	}
+
+	/** Valid for 25 seconds or until calling `Client.clearChatState(serializedChatId)` */
+	async sendTypingStateToChat(serializedChatId: string): Promise<boolean> {
+		try {
+			window.WWebJS.sendChatstate('typing', serializedChatId);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	/** Valid for 25 seconds or until calling `Client.clearChatState(serializedChatId)` */
+	async sendRecordingAudioStateToChat(serializedChatId: string): Promise<boolean> {
+		try {
+			window.WWebJS.sendChatstate('recording', serializedChatId);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	/** Clears chatState. Used to revert `sendRecordningAudioStateToChat` or `sendTypingStateToChat` */
+	async clearChatState(serializedChatId: string): Promise<boolean> {
+		try {
+			window.WWebJS.sendChatstate('stop', serializedChatId);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
+	// [TODO]: Check wtf is this;
+	async getChatLabels(serializedChatId: string): Promise<Label[]> {
+		return window.WWebJS.getChatLabels(serializedChatId);
+	}
+
+	async getChatsByLabelId(labelId: string): Promise<Chat[]> {
+		try {
+			const label = window.Store.Label.get(labelId);
+			const labelItems = label.labelItemCollection.getModelsArray();
+			const chatIds: string[] = labelItems.reduce((result: string[], item: any) => {
+				if (item.parentType === 'Chat') {
+					result.push(item.parentId);
+				}
+				return result;
+			}, []);
+
+			return Promise.all(chatIds.map(id => this.getChatById(id)));
+		} catch (e) {
+			return [];
+		}
+	}
+
+	async addOrRemoveLabelsFromChat(
+		labelIds: (string | number)[],
+		serializedChatIds: string[]
+	) {
+		if (['smba', 'smbi'].indexOf(window.Store.Conn.platform) === -1) {
+			throw '[LT01] Only Whatsapp business';
+		}
+		const labels = window.WWebJS.getLabels().filter(
+			(e: any) => labelIds.find(l => l == e.id) !== undefined
+		);
+		const chats = window.Store.Chat.filter((e: any) =>
+			serializedChatIds.includes(e.id._serialized)
+		);
+
+		let actions = labels.map((label: Label) => ({ id: label.id, type: 'add' }));
+
+		chats.forEach((chat: any) => {
+			(chat.labels || []).forEach((n: any) => {
+				if (!actions.find((e: any) => e.id == n)) {
+					actions.push({ id: n, type: 'remove' });
+				}
+			});
+		});
+
+		return await window.Store.Label.addOrRemoveLabels(actions, chats);
+	}
+
+	async getAllChats(): Promise<Chat[]> {
+		const proto_chats = await window.WWebJS.getChats();
+		return proto_chats.map((chat: any) => CreateChat(this, chat));
 	}
 }

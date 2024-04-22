@@ -1,4 +1,6 @@
 import { Client } from '../Client';
+import GroupChat from './GroupChat';
+import { PrivateChat } from './PrivateChat';
 
 export const CreateChat = (client: Client, data: any) => {
 	if (data.isGroup) {
@@ -7,12 +9,3 @@ export const CreateChat = (client: Client, data: any) => {
 		return new PrivateChat(client, data);
 	}
 };
-
-// [TODO]: finish those classes;
-
-class GroupChat {
-	constructor(Client: Client, data: any) {}
-}
-class PrivateChat {
-	constructor(Client: Client, data: any) {}
-}

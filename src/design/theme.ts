@@ -1,4 +1,5 @@
 import { Colord } from 'colord';
+import { Console } from 'console';
 
 type HsbColor = Readonly<[number, number, number]>;
 
@@ -44,6 +45,10 @@ export const color = ([h, s, v]: HsbColor) => {
 };
 
 export const getThemedColors = (theme: any) => {
-	if (theme.variant === 'dark') return colors.dark;
-	return colors.light;
+	if (theme.variant === 'dark' || theme === 'dark') {
+		return colors.dark;
+	} else {
+		debugger;
+		return colors.light;
+	}
 };

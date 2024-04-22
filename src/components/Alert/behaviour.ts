@@ -93,14 +93,14 @@ export const useAlert = () => {
 };
 
 export const useAlertBehavior = () => {
-	const { type, render } = AppContext.useContext().value.alert;
+	const { alert, theme } = AppContext.useContext().value;
 
 	const Icon = () => {
-		if (type === 'fail') {
+		if (alert.type === 'fail') {
 			return XIcon;
 		}
 
-		if (type === 'warning') {
+		if (alert.type === 'warning') {
 			return ExclamationIcon;
 		}
 
@@ -108,19 +108,19 @@ export const useAlertBehavior = () => {
 	};
 
 	const getColor = () => {
-		if (type === 'fail') {
-			return color(getThemedColors('dark').redFail.default);
+		if (alert.type === 'fail') {
+			return color(getThemedColors(theme.variant).redFail.default);
 		}
-		if (type === 'warning') {
-			return color(getThemedColors('dark').text.default);
+		if (alert.type === 'warning') {
+			return color(getThemedColors(theme.variant).text.default);
 		}
-		return color(getThemedColors('dark').greenSuccess.default);
+		return color(getThemedColors(theme.variant).greenSuccess.default);
 	};
 
 	return {
 		Icon: Icon(),
 		iconColor: getColor(),
-		shown: type !== 'hidden',
-		render,
+		shown: alert.type !== 'hidden',
+		render: alert.render,
 	};
 };

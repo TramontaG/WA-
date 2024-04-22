@@ -1,18 +1,26 @@
 import { createPortal } from 'preact/compat';
 import { useChatToolsBehaviour } from './behaviour';
 import { WhatsappPlusPlusButton } from '../../components/Whatsapp++Button';
-import { AppContext } from '../../contexts/App';
+import LoadingRing from '../../components/LoadingRing';
+import { Container } from './styles';
+import { Render } from '../../components/Render';
 
 export const ChatTools = () => {
-	useChatToolsBehaviour();
-	const root = document.querySelector('footer > div');
-	const appContext = AppContext.useContext().value;
+	const { onClickButton, rootElement, loading } = useChatToolsBehaviour();
 
-	if (!root) {
-		return null;
+	if (!rootElement) {
+		return <></>;
 	}
 
-	const onClick = () => console.log(appContext);
-
-	return createPortal(<WhatsappPlusPlusButton onClick={onClick} />, root);
+	return createPortal(
+		<Container>
+			<Render when={loading}>
+				<LoadingRing size={'2rem'} />
+			</Render>
+			<Render when={!loading}>
+				<WhatsappPlusPlusButton onClick={onClickButton} />
+			</Render>
+		</Container>,
+		rootElement
+	);
 };

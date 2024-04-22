@@ -1,4 +1,3 @@
-import { useEffect } from 'preact/hooks';
 import { AppContext } from '../../contexts/App';
 import { useSetItemListener } from '../../lib/inject/watchLocalStorage';
 import { useWaLoadEffect } from '../../hooks/useWaLoadEffect';
@@ -31,15 +30,21 @@ export const ThemeSync = () => {
 	const setUserTheme = (theme: string) => {
 		if (theme === 'light') {
 			setTheme({
-				theme: 'light',
+				theme: {
+					variant: 'dark',
+				},
 			});
 		} else if (theme === 'dark') {
 			setTheme({
-				theme: 'dark',
+				theme: {
+					variant: 'dark',
+				},
 			});
 		} else {
 			setTheme({
-				theme: getSystemThemePreference(),
+				theme: {
+					variant: getSystemThemePreference(),
+				},
 			});
 		}
 	};

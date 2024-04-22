@@ -22,7 +22,7 @@ const AppContent = () => {
 	return (
 		<ThemeProvider
 			theme={{
-				variant: theme,
+				variant: theme.variant,
 			}}
 		>
 			<div style={{ width: '100%', height: '100%' }}>
