@@ -2,11 +2,14 @@ import { createPortal } from 'preact/compat';
 import { useChatToolsBehaviour } from './behaviour';
 import { WhatsappPlusPlusButton } from '../../components/Whatsapp++Button';
 import LoadingRing from '../../components/LoadingRing';
-import { Container } from './styles';
+import { Container, ToolBarContainer } from './styles';
 import { Render } from '../../components/Render';
+import { ForwardMessage } from './Tools/ForwardMessage';
+import { FeatureToggle } from './Tools/FeatureToggle';
 
 export const ChatTools = () => {
-	const { onClickButton, rootElement, loading } = useChatToolsBehaviour();
+	const { onClickButton, rootElement, loading, toolbarOpen } =
+		useChatToolsBehaviour();
 
 	if (!rootElement) {
 		return <></>;
@@ -20,6 +23,10 @@ export const ChatTools = () => {
 			<Render when={!loading}>
 				<WhatsappPlusPlusButton onClick={onClickButton} />
 			</Render>
+			<ToolBarContainer open={toolbarOpen}>
+				<FeatureToggle />
+				<ForwardMessage />
+			</ToolBarContainer>
 		</Container>,
 		rootElement
 	);

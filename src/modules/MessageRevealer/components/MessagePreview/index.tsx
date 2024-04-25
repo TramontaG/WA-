@@ -1,24 +1,34 @@
-import MessageMedia from '../../../../lib/Media';
-import { MessageTypes } from '../../../../lib/Message/models';
-import { Image, Multimidia } from './styles';
+import LoadingRing from '../../../../components/LoadingRing';
+import { Render } from '../../../../components/Render';
+import { stopBubbling } from '../../../../util/DOM';
+import { Container } from '../../styles';
+import { useMediaPreviewBehavior } from './behaviour';
+import { CaptionContainer, Image, ImageContainer, Multimidia } from './styles';
 
-type MediaPreviewProps = {
-	messageType: MessageTypes;
-	media: MessageMedia;
+export type MediaPreviewProps = {
+	id: string;
 };
 
-export const MediaPreview = ({ media, messageType }: MediaPreviewProps) => {
-	const srcString = `data:${media.mimetype};base64,${media.data}`;
-	if (messageType === 'image') {
-		return <Image src={srcString} />;
-	}
-	if (messageType === 'video' || messageType === 'audio' || messageType === 'ptt') {
-		return (
-			<Multimidia controls>
-				<source src={srcString} />
-			</Multimidia>
-		);
+export const MediaPreview = ({ id }: MediaPreviewProps) => {
+	const { media, srcString, isImage, caption } = useMediaPreviewBehavior({ id });
+
+	if (!media) {
+		return <LoadingRing size={'12rem'} />;
 	}
 
-	return null;
+	return (
+		<ImageContainer>
+			<Render when={isImage}>
+				<Image src={srcString} />
+			</Render>
+			<Render when={!isImage}>
+				<Multimidia controls>
+					<source src={srcString} />
+				</Multimidia>
+			</Render>
+			<Render when={!!caption}>
+				<CaptionContainer>{caption}</CaptionContainer>
+			</Render>
+		</ImageContainer>
+	);
 };

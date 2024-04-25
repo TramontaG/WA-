@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import WaContext from '../../contexts/Wa';
 import { Client } from '../../lib/Client';
 import { inject } from '../../lib/inject';
@@ -9,6 +9,7 @@ export const WaLoader = () => {
 
 	useEffect(() => {
 		elementGetsVisible('span[data-icon="archived"]').then(async () => {
+			console.log('aaa');
 			const { Store, WAInterface } = await inject();
 			if (!!Store && !!WAInterface) {
 				setWa({

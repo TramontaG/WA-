@@ -1,19 +1,17 @@
-import { JSX } from 'preact/jsx-runtime';
 import { useFullScreenModalBehaviour } from './behaviour';
 import { Container } from './styles';
 
-export type FullScreenModalProps = {
-	children: JSX.Element;
-	isOpen: boolean;
-	closeModal: () => void;
-};
-
-export const FullScreenModal = (props: FullScreenModalProps) => {
-	const { isOpen } = useFullScreenModalBehaviour(props);
+export const FullScreenModal = () => {
+	const { isOpen, closeModal, Children, childrenProps } =
+		useFullScreenModalBehaviour();
 
 	if (!isOpen) {
 		return null;
 	}
 
-	return <Container onClick={props.closeModal}>{props.children}</Container>;
+	return (
+		<Container onClick={closeModal}>
+			<Children {...childrenProps} />
+		</Container>
+	);
 };

@@ -9,7 +9,7 @@ export const AllModules = () => {
 	const [modulesReady, setModulesReady] = useState(false);
 
 	useEffect(() => {
-		if (!!Wa) {
+		if (!!Wa.Client) {
 			setModulesReady(true);
 		}
 	}, [Wa]);

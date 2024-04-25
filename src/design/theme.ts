@@ -26,6 +26,7 @@ export const colors = {
 		secundary: createColorList([176, 97, 60]),
 		tertiary: createColorList([159, 86, 76]),
 		icon: createColorList([203, 16, 63]),
+		header: createColorList([202, 37, 20]),
 	},
 	light: {
 		background: createColorList([216, 2, 96]),
@@ -34,8 +35,9 @@ export const colors = {
 		greenSuccess: createColorList([123, 39, 84]),
 		primary: createColorList([146, 64, 92]),
 		secundary: createColorList([147, 40, 96]),
-		tertuary: createColorList([149, 18, 99]),
+		tertiary: createColorList([149, 18, 99]),
 		icon: createColorList([202, 24, 44]),
+		header: createColorList([216, 2, 96]),
 	},
 };
 
@@ -48,7 +50,6 @@ export const getThemedColors = (theme: any) => {
 	if (theme.variant === 'dark' || theme === 'dark') {
 		return colors.dark;
 	} else {
-		debugger;
 		return colors.light;
 	}
 };

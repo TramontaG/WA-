@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'preact/hooks';
+import { useCallback, useState } from 'preact/hooks';
 import { elementGetsVisible } from '../util/DOM';
 import { useWaLoadEffect } from './useWaLoadEffect';
 
@@ -7,6 +7,14 @@ type UseDomObserverOptions = MutationObserverInit &
 		allowPropagation: boolean;
 	}>;
 
+/**
+ * This hook will execute a callback whenever the dom element obtained by the provided
+ * selector suffers a mutation. Its a wrapper fo the [Mutation Observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) Api
+ * @param selector - The selector for the element you want to observe
+ * @param cb - The callback that should be execute when the observed element mutates
+ * @param options - Options object passed to `Observer.observe(node, options)`
+ * @returns
+ */
 export const useDomObserver = <Result,>(
 	selector: string,
 	cb: () => Result,
@@ -56,7 +64,7 @@ export const useDomObserver = <Result,>(
 		setupObserver();
 	};
 
-	const flushObserver = () => {
+	const flush = () => {
 		observer?.disconnect();
 		setDomObserver(null);
 	};
@@ -67,6 +75,10 @@ export const useDomObserver = <Result,>(
 
 	return {
 		start,
-		flushObserver,
+		flush,
 	};
+};
+
+export const CommonSelectors = {
+	chatWindow: '#app > div > div > :nth-child(4)',
 };

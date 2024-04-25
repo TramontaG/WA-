@@ -1,17 +1,46 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import WaContext from '../../contexts/Wa';
 import MessageMedia from '../../lib/Media';
 import { MessageTypes } from '../../lib/Message/models';
 import Message from '../../lib/Message';
+import { CommonSelectors, useDomObserver } from '../../hooks/useDomObserver';
+import { AppContext } from '../../contexts/App';
+import { MessageRevealer, MessageRevealerComponent } from '.';
+import { useModal } from '../../hooks/useModal';
 
 export const useMessageRevalerLogic = () => {
-	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
-	const [loading, setLoading] = useState(false);
-	const [media, setMedia] = useState<MessageMedia | null>(null);
-	const [messageType, setMessageType] = useState<MessageTypes | null>(null);
-	const [messageObj, setMessageObj] = useState<Message>({} as Message);
-	const [modalOpen, setModalOpen] = useState(false);
-	const { value: Wa } = WaContext.useContext();
+	const [, setCurrentMessageId] = useState<string | null>(null);
+	const { Client } = WaContext.useContext().value;
+	const modal = useModal({
+		afterClose: () => setCurrentMessageId(null),
+	});
+
+	useDomObserver(
+		CommonSelectors.chatWindow,
+		async () => {
+			const allMesasgesInDom = [...document.querySelectorAll('[data-id]')];
+			const allMessageObj = await Promise.all(
+				allMesasgesInDom.map(async node => {
+					const id = node.getAttribute('data-id')!;
+					return Client.getMessageById(id)!;
+				})
+			);
+
+			const allViewOnceMsgIds = allMessageObj
+				.filter(msg => msg && msg._data.isViewOnce)
+				.map(msg => msg!.id._serialized);
+
+			allViewOnceMsgIds.forEach(id => {
+				const msgContainer = document.querySelector(`[data-id="${id}"]`)!;
+				msgContainer.removeEventListener('click', onClickMessage);
+				msgContainer.addEventListener('click', onClickMessage);
+			});
+		},
+		{
+			subtree: true,
+			childList: true,
+		}
+	);
 
 	const getMessageId = (ev: Event) => {
 		let target = ev.target as HTMLElement;
@@ -21,92 +50,16 @@ export const useMessageRevalerLogic = () => {
 		return target.getAttribute('data-id')!;
 	};
 
-	const onClickMessage = async (ev: Event) => {
+	const onClickMessage = useCallback(async (ev: Event) => {
 		const messageId = getMessageId(ev);
-		setCurrentMessageId(messageId);
-	};
-
-	useEffect(() => {
-		if (!Wa.Client) {
-			return;
-		} else {
-			setupMessageRevealer(onClickMessage);
-		}
-	}, [Wa]);
-
-	const downloadAndShowMedia = async () => {
-		if (currentMessageId === null) {
-			return;
-		}
-		const message = await Wa.Client.getMessageById(currentMessageId);
-
-		if (!message?.hasMedia || !message._data.isViewOnce) {
-			return;
-		}
-
-		if (!!currentMessageId) {
-			setModalOpen(true);
-			setLoading(true);
-			setMessageObj(message);
-		}
-
-		const media = await Wa.Client.downloadMediaFromMessage(currentMessageId);
-		setMedia(media ?? null);
-		setLoading(false);
-		setMessageType(message.type);
-	};
-
-	useEffect(() => {
-		downloadAndShowMedia();
-	}, [currentMessageId]);
-
-	const closeModal = () => {
-		setModalOpen(false);
-		setCurrentMessageId(null);
-	};
-
-	return {
-		currentMessageId,
-		media,
-		messageType,
-		loading,
-		closeModal,
-		modalOpen,
-		messageObj,
-	};
-};
-
-const setupMessageRevealer = (onClickMessage: (ev: Event) => any) => {
-	const addMediaToMessage = () => {
-		const allMesasgesInDom = document.querySelectorAll('[data-id]');
-		allMesasgesInDom.forEach(message =>
-			message.removeEventListener('click', onClickMessage)
-		);
-		allMesasgesInDom.forEach(message => {
-			message.addEventListener('click', onClickMessage);
+		modal.openModal(MessageRevealerComponent, {
+			messageId: messageId,
 		});
-	};
+	}, []);
 
-	const startMainObserver = () => {
-		const mainDiv = document.getElementById('main');
-		if (!mainDiv) {
-			return;
+	modal.useModalEffect(modal => {
+		if (!modal.open) {
+			setCurrentMessageId(null);
 		}
-
-		MainDivObserver.observe(mainDiv, {
-			subtree: true,
-			childList: true,
-			attributes: true,
-			attributeFilter: ['data-id'],
-		});
-	};
-
-	const AppObserver = new MutationObserver(startMainObserver);
-	const MainDivObserver = new MutationObserver(addMediaToMessage);
-
-	AppObserver.observe(document.getElementById('app')!, {
-		subtree: true,
-		attributes: true,
-		childList: true,
 	});
 };

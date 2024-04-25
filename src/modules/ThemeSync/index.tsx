@@ -1,4 +1,4 @@
-import { AppContext } from '../../contexts/App';
+import { AppContext, Theme } from '../../contexts/App';
 import { useSetItemListener } from '../../lib/inject/watchLocalStorage';
 import { useWaLoadEffect } from '../../hooks/useWaLoadEffect';
 
@@ -7,10 +7,12 @@ import { useWaLoadEffect } from '../../hooks/useWaLoadEffect';
  * syncs the whatsapp user theme with the lib's theme
  */
 export const ThemeSync = () => {
-	const { setValue: setTheme } = AppContext.useContext();
+	const { setValue: setAppContext } = AppContext.useContext();
 
 	useWaLoadEffect(() => {
-		const currentTheme = JSON.parse(localStorage.getItem('theme')!) as string;
+		const currentTheme = JSON.parse(
+			localStorage.getItem('theme')!
+		) as Theme['variant'];
 		setUserTheme(currentTheme);
 	}, []);
 
@@ -27,34 +29,22 @@ export const ThemeSync = () => {
 		return 'light';
 	};
 
-	const setUserTheme = (theme: string) => {
-		if (theme === 'light') {
-			setTheme({
-				theme: {
-					variant: 'dark',
-				},
-			});
-		} else if (theme === 'dark') {
-			setTheme({
-				theme: {
-					variant: 'dark',
-				},
-			});
-		} else {
-			setTheme({
-				theme: {
-					variant: getSystemThemePreference(),
-				},
-			});
-		}
+	const setUserTheme = (theme: 'light' | 'dark') => {
+		setAppContext({
+			theme: {
+				variant: theme,
+			},
+		});
 	};
 
-	useSetItemListener(({ key, newValue }) => {
-		if (key !== 'theme') {
-			return;
-		}
-		setUserTheme(newValue);
-	}, 'theme-sync');
+	useWaLoadEffect(() => {
+		useSetItemListener(({ key, newValue }) => {
+			if (key !== 'theme') {
+				return;
+			}
+			setUserTheme(newValue);
+		}, 'theme-sync');
+	}, []);
 
 	return <></>;
 };

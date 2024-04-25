@@ -4,7 +4,7 @@ import WaContext from './contexts/Wa';
 import { AllModules } from './modules';
 import { WaLoader } from './modules/WaLoader';
 import { AppContext } from './contexts/App';
-import { checkVersion } from './hooks/checkVersion';
+import { FullScreenModal } from './components/FullScreenModal';
 
 export function App() {
 	return (
@@ -18,7 +18,6 @@ export function App() {
 
 const AppContent = () => {
 	const { theme } = AppContext.useContext().value;
-	checkVersion();
 	return (
 		<ThemeProvider
 			theme={{
@@ -29,6 +28,7 @@ const AppContent = () => {
 				<WaLoader />
 				<AllModules />
 				<AlertComponent />
+				<FullScreenModal />
 			</div>
 		</ThemeProvider>
 	);

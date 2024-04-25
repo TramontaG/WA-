@@ -1,32 +1,26 @@
-import { FullScreenModal } from '../../components/FullScreenModal';
-import LoadingRing from '../../components/LoadingRing';
-import { Render } from '../../components/Render';
 import { stopBubbling } from '../../util/DOM';
 import { useMessageRevalerLogic } from './behaviour';
 import { MediaPreview } from './components/MessagePreview';
-import { CaptionContainer, Container, ImageContainer } from './styles';
+import { Container } from './styles';
 
-export const MessageRevealer = () => {
-	const { loading, media, messageType, closeModal, modalOpen, messageObj } =
-		useMessageRevalerLogic();
+export const MessageRevealerComponent = ({
+	messageId,
+}: {
+	messageId: string | null;
+}) => {
+	if (!messageId) {
+		return null;
+	}
 
 	return (
-		<FullScreenModal isOpen={modalOpen} closeModal={closeModal}>
-			<>
-				<Render when={loading}>
-					<LoadingRing size={'12rem'} />
-				</Render>
-				<Render when={!loading}>
-					<Container onClick={stopBubbling}>
-						<ImageContainer>
-							<MediaPreview messageType={messageType!} media={media!} />
-						</ImageContainer>
-						<CaptionContainer>
-							<span>{messageObj.body}</span>
-						</CaptionContainer>
-					</Container>
-				</Render>
-			</>
-		</FullScreenModal>
+		<Container onClick={stopBubbling}>
+			<MediaPreview id={messageId} />
+		</Container>
 	);
+};
+
+export const MessageRevealer = () => {
+	useMessageRevalerLogic();
+
+	return null;
 };
