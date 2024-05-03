@@ -13,7 +13,7 @@ export const ThemeSync = () => {
 		const currentTheme = JSON.parse(
 			localStorage.getItem('theme')!
 		) as Theme['variant'];
-		setUserTheme(currentTheme);
+		setUserTheme(currentTheme || getSystemThemePreference());
 	}, []);
 
 	/**

@@ -1,12 +1,16 @@
 import { ButtonPrimitiveStyle } from '../../styles';
 import { useFeatureToggleBehaviour } from './behaviour';
 
-export const FeatureToggle = () => {
-	const { openModal } = useFeatureToggleBehaviour();
+export type FeatureToggleProps = {
+	closeToolbar: () => any;
+};
+
+export const FeatureToggle = (props: FeatureToggleProps) => {
+	const { onClick } = useFeatureToggleBehaviour(props);
 
 	return (
 		<>
-			<ButtonPrimitiveStyle onClick={openModal}>
+			<ButtonPrimitiveStyle onClick={onClick}>
 				<h1>Painel de funções</h1>
 			</ButtonPrimitiveStyle>
 		</>

@@ -1,6 +1,5 @@
 import { useState } from 'preact/hooks';
 import { elementGetsVisible } from '../../util/DOM';
-import WaContext from '../../contexts/Wa';
 import { AppContext } from '../../contexts/App';
 import Chat from '../../lib/Chat/GroupChat';
 import { CommonSelectors, useDomObserver } from '../../hooks/useDomObserver';
@@ -11,8 +10,8 @@ export const useChatToolsBehaviour = () => {
 			_serialized: '',
 		},
 	} as Chat);
-	const { Client } = WaContext.useContext().value;
-	const setAppContext = AppContext.useContext().setValue;
+	const { value: appContext, setValue: setAppContext } = AppContext.useContext();
+	const Client = appContext.client;
 	const [rootElement, setRootElement] = useState<Element | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [toolbarOpen, setToolbarOpen] = useState(false);
@@ -41,7 +40,7 @@ export const useChatToolsBehaviour = () => {
 		const someMessageId = (await elementGetsVisible('[data-id]')).getAttribute(
 			'data-id'
 		)!;
-		const sampleMessageObject = await Client.getMessageById(someMessageId);
+		const sampleMessageObject = await Client!.getMessageById(someMessageId);
 		return sampleMessageObject!.getChat();
 	};
 
@@ -51,8 +50,13 @@ export const useChatToolsBehaviour = () => {
 		}
 	};
 
+	const closeToolbar = () => {
+		setToolbarOpen(false);
+	};
+
 	return {
 		onClickButton,
+		closeToolbar,
 		rootElement,
 		loading,
 		toolbarOpen,

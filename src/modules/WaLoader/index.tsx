@@ -1,19 +1,18 @@
 import { useEffect } from 'preact/hooks';
-import WaContext from '../../contexts/Wa';
 import { Client } from '../../lib/Client';
 import { inject } from '../../lib/inject';
 import { elementGetsVisible } from '../../util/DOM';
+import { AppContext } from '../../contexts/App';
 
 export const WaLoader = () => {
-	const { value: Wa, setValue: setWa } = WaContext.useContext();
+	const { value: appContext, setValue: setAppContext } = AppContext.useContext();
 
 	useEffect(() => {
 		elementGetsVisible('span[data-icon="archived"]').then(async () => {
-			console.log('aaa');
 			const { Store, WAInterface } = await inject();
 			if (!!Store && !!WAInterface) {
-				setWa({
-					Client: new Client(),
+				setAppContext({
+					client: new Client(),
 				});
 			}
 			console.log('WA++ EXTENSION READY');

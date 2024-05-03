@@ -1,13 +1,16 @@
-import { useState } from 'preact/hooks';
+import { useModal } from '../../../../hooks/useModal';
+import { FeatureToggleProps } from '.';
+import { FeaturesPanel } from '../../../FeaturesPanel';
 
-export const useFeatureToggleBehaviour = () => {
-	const [modalOpen, setModalOpen] = useState(false);
-	const openModal = () => setModalOpen(true);
-	const closeModal = () => setModalOpen(false);
+export const useFeatureToggleBehaviour = (props: FeatureToggleProps) => {
+	const modal = useModal({
+		beforeOpen: props.closeToolbar,
+	});
+	const onClick = () => {
+		modal.openModal(FeaturesPanel);
+	};
 
 	return {
-		modalOpen,
-		openModal,
-		closeModal,
+		onClick,
 	};
 };

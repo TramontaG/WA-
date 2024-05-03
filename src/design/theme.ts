@@ -47,7 +47,7 @@ export const color = ([h, s, v]: HsbColor) => {
 };
 
 export const getThemedColors = (theme: any) => {
-	if (theme.variant === 'dark' || theme === 'dark') {
+	if (theme?.variant === 'dark' || theme === 'dark') {
 		return colors.dark;
 	} else {
 		return colors.light;

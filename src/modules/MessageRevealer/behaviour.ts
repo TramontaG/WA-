@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
-import WaContext from '../../contexts/Wa';
 import MessageMedia from '../../lib/Media';
 import { MessageTypes } from '../../lib/Message/models';
 import Message from '../../lib/Message';
@@ -10,7 +9,7 @@ import { useModal } from '../../hooks/useModal';
 
 export const useMessageRevalerLogic = () => {
 	const [, setCurrentMessageId] = useState<string | null>(null);
-	const { Client } = WaContext.useContext().value;
+	const { client } = AppContext.useContext().value;
 	const modal = useModal({
 		afterClose: () => setCurrentMessageId(null),
 	});
@@ -22,7 +21,7 @@ export const useMessageRevalerLogic = () => {
 			const allMessageObj = await Promise.all(
 				allMesasgesInDom.map(async node => {
 					const id = node.getAttribute('data-id')!;
-					return Client.getMessageById(id)!;
+					return client!.getMessageById(id)!;
 				})
 			);
 

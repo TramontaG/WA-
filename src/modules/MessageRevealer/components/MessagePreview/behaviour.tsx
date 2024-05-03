@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'preact/hooks';
 import { MediaPreviewProps } from '.';
 import { MessageTypes } from '../../../../lib/Message/models';
-import WaContext from '../../../../contexts/Wa';
 import { useAlert } from '../../../../components/Alert/behaviour';
+import { AppContext } from '../../../../contexts/App';
 
 export const useMediaPreviewBehavior = ({ id }: MediaPreviewProps) => {
 	const [media, setMedia] = useState<{
@@ -12,12 +12,12 @@ export const useMediaPreviewBehavior = ({ id }: MediaPreviewProps) => {
 		caption: string | null;
 	} | null>(null);
 
-	const { Client } = WaContext.useContext().value;
+	const { client } = AppContext.useContext().value;
 	const { showFail } = useAlert();
 
 	const fetchMedia = async () => {
 		try {
-			const msg = await Client.getMessageById(id);
+			const msg = await client!.getMessageById(id);
 			const media = await msg?.downloadMedia();
 			if (!media) {
 				return showFail(

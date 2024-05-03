@@ -1,12 +1,12 @@
 import { EffectCallback, Inputs, useEffect } from 'preact/hooks';
-import WaContext from '../contexts/Wa';
+import { AppContext } from '../contexts/App';
 
 export const useWaLoadEffect = (cb: EffectCallback, dependencyArray: Inputs) => {
-	const { Client } = WaContext.useContext().value;
+	const { client } = AppContext.useContext().value;
 
 	useEffect(() => {
-		if (Client) {
+		if (client) {
 			return cb();
 		}
-	}, [Client, ...dependencyArray]);
+	}, [client, ...dependencyArray]);
 };

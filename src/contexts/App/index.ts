@@ -1,3 +1,4 @@
+import { Client } from '../../lib/Client';
 import { createSimpleContext } from '../contextFactory';
 import { FunctionalComponent } from 'preact';
 
@@ -16,7 +17,7 @@ export type FullScreenModal<Props = Record<string, any>> = {
 	childrenProps: Props;
 };
 
-export type AppContext = {
+export type AppContextType = {
 	alert: {
 		type: AlertType;
 		message: string;
@@ -27,11 +28,14 @@ export type AppContext = {
 	openChatId: string;
 	allChatIds: string[];
 	features: Features;
+	client: Client | null;
 };
+
+const theme = localStorage.getItem('theme');
 
 export const AppContext = createSimpleContext({
 	theme: {
-		variant: JSON.parse(localStorage.getItem('theme') || '"light"'),
+		variant: theme ? JSON.parse(theme) : 'light',
 	},
 	alert: {
 		message: 'Mensagem aqui!',
@@ -40,12 +44,13 @@ export const AppContext = createSimpleContext({
 	},
 	openChatId: '',
 	allChatIds: [],
-	features: {
-		MessageReveal: true,
-	},
 	fullScreenModal: {
 		open: false,
 		children: () => null,
 		childrenProps: {},
 	},
-} as AppContext);
+	features: {
+		MessageReveal: true,
+	},
+	client: null,
+} as AppContextType);

@@ -1,7 +1,8 @@
 import { JSX, createContext } from 'preact';
 import { useState, useContext } from 'preact/hooks';
+import { DeepPartial, recursiveAssign } from '../util/Objects';
 
-export const createSimpleContext = <T extends Record<string, any>>(data: T) => {
+export const createAppContext = <T extends Record<string, any>>(data: T) => {
 	const MyContext = createContext(
 		{} as {
 			value: T;
@@ -11,11 +12,9 @@ export const createSimpleContext = <T extends Record<string, any>>(data: T) => {
 
 	const Provider = (props: { children: JSX.Element }) => {
 		const [myData, setMyData] = useState<T>(data);
-		const setValue = (newData: Partial<T>) => {
-			setMyData({
-				...myData,
-				...newData,
-			});
+
+		const setValue = (descriptor: DeepPartial<T>) => {
+			setMyData(oldData => recursiveAssign(oldData, descriptor));
 		};
 
 		return (

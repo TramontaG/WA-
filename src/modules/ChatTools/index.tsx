@@ -8,7 +8,7 @@ import { ForwardMessage } from './Tools/ForwardMessage';
 import { FeatureToggle } from './Tools/FeatureToggle';
 
 export const ChatTools = () => {
-	const { onClickButton, rootElement, loading, toolbarOpen } =
+	const { onClickButton, rootElement, loading, toolbarOpen, closeToolbar } =
 		useChatToolsBehaviour();
 
 	if (!rootElement) {
@@ -24,8 +24,7 @@ export const ChatTools = () => {
 				<WhatsappPlusPlusButton onClick={onClickButton} />
 			</Render>
 			<ToolBarContainer open={toolbarOpen}>
-				<FeatureToggle />
-				<ForwardMessage />
+				<FeatureToggle closeToolbar={closeToolbar} />
 			</ToolBarContainer>
 		</Container>,
 		rootElement

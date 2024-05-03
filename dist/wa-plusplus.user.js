@@ -1624,7 +1624,10 @@
     const Provider = (props) => {
       const [myData, setMyData] = h$1(data);
       const setValue = (newData) => {
-        console.log(newData);
+        console.log({
+          myData,
+          newData
+        });
         setMyData({
           ...myData,
           ...newData
@@ -1643,14 +1646,27 @@
       useContext: () => q$2(MyContext)
     };
   };
+  const theme = localStorage.getItem("theme");
   const AppContext = createSimpleContext({
-    theme: "light",
+    theme: {
+      variant: theme ? JSON.parse(theme) : "light"
+    },
     alert: {
       message: "Mensagem aqui!",
       type: "hidden",
       render: false
     },
-    openChat: ""
+    openChatId: "",
+    allChatIds: [],
+    fullScreenModal: {
+      open: false,
+      children: () => null,
+      childrenProps: {}
+    },
+    features: {
+      MessageReveal: true
+    },
+    client: null
   });
   var r = { grad: 0.9, turn: 360, rad: 360 / (2 * Math.PI) }, t = function(r2) {
     return "string" == typeof r2 ? r2.length > 0 : "number" == typeof r2;
@@ -1805,7 +1821,8 @@
       primary: createColorList([175, 95, 41]),
       secundary: createColorList([176, 97, 60]),
       tertiary: createColorList([159, 86, 76]),
-      icon: createColorList([203, 16, 63])
+      icon: createColorList([203, 16, 63]),
+      header: createColorList([202, 37, 20])
     },
     light: {
       background: createColorList([216, 2, 96]),
@@ -1814,8 +1831,9 @@
       greenSuccess: createColorList([123, 39, 84]),
       primary: createColorList([146, 64, 92]),
       secundary: createColorList([147, 40, 96]),
-      tertuary: createColorList([149, 18, 99]),
-      icon: createColorList([202, 24, 44])
+      tertiary: createColorList([149, 18, 99]),
+      icon: createColorList([202, 24, 44]),
+      header: createColorList([216, 2, 96])
     }
   };
   const color = ([h2, s2, v2]) => {
@@ -1826,10 +1844,12 @@
     });
     return color2.toHex();
   };
-  const getThemedColors = (theme) => {
-    if (theme.variant === "dark")
+  const getThemedColors = (theme2) => {
+    if ((theme2 == null ? void 0 : theme2.variant) === "dark" || theme2 === "dark") {
       return colors.dark;
-    return colors.light;
+    } else {
+      return colors.light;
+    }
   };
   const AlertContainer = ut.div`
 	position: relative;
@@ -1843,11 +1863,11 @@
 `;
   const AlertBody = ut.div`
 	background: ${({
-  theme
-}) => color(getThemedColors(theme).background.default)};
+  theme: theme2
+}) => color(getThemedColors(theme2).background.default)};
 	color: ${({
-  theme
-}) => color(getThemedColors(theme).text.default)};
+  theme: theme2
+}) => color(getThemedColors(theme2).text.default)};
 	width: 33%;
 	height: 100px;
 	display: flex;
@@ -1901,13 +1921,13 @@
     });
   }
   function CircleIcon(props) {
-    const theme = q$2(Ke);
+    const theme2 = q$2(Ke);
     return u$1("svg", {
       fill: "currentColor",
       viewBox: "0 0 16 16",
       height: "1em",
       width: "1em",
-      stroke: color(getThemedColors(theme).primary.default),
+      stroke: color(getThemedColors(theme2).primary.default),
       ...props,
       children: u$1("circle", {
         cx: "8",
@@ -1942,34 +1962,114 @@
       })
     });
   }
+  const useAlert = () => {
+    const {
+      value,
+      setValue
+    } = AppContext.useContext();
+    const hideAlert = (oldMessage) => {
+      setValue({
+        alert: {
+          message: oldMessage,
+          type: "hidden",
+          render: true
+        }
+      });
+      setTimeout(() => {
+        setValue({
+          alert: {
+            message: oldMessage,
+            type: "hidden",
+            render: false
+          }
+        });
+      }, 500);
+    };
+    const showAlert = (type, message, timeInSeconds = 4) => {
+      if (value.alert.render) {
+        return;
+      }
+      setValue({
+        alert: {
+          message,
+          type: "hidden",
+          render: true
+        }
+      });
+      requestAnimationFrame(() => {
+        setValue({
+          alert: {
+            message,
+            type,
+            render: true
+          }
+        });
+      });
+      setTimeout(() => {
+        hideAlert(message);
+      }, timeInSeconds * 1e3);
+    };
+    const showSuccess = (message, timeInSeconds = 4) => {
+      showAlert("success", message, timeInSeconds);
+    };
+    const showFail = (message, timeInSeconds = 4) => {
+      setValue({
+        alert: {
+          message,
+          type: "fail",
+          render: true
+        }
+      });
+      setTimeout(() => {
+        hideAlert(message);
+      }, timeInSeconds * 1e3);
+    };
+    const showWarning = (message, timeInSeconds = 4) => {
+      setValue({
+        alert: {
+          message,
+          type: "warning",
+          render: true
+        }
+      });
+      setTimeout(() => {
+        hideAlert(message);
+      }, timeInSeconds * 1e3);
+    };
+    return {
+      showSuccess,
+      showFail,
+      showWarning
+    };
+  };
   const useAlertBehavior = () => {
     const {
-      type,
-      render: render2
-    } = AppContext.useContext().value.alert;
+      alert,
+      theme: theme2
+    } = AppContext.useContext().value;
     const Icon = () => {
-      if (type === "fail") {
+      if (alert.type === "fail") {
         return XIcon;
       }
-      if (type === "warning") {
+      if (alert.type === "warning") {
         return ExclamationIcon;
       }
       return CheckIcon;
     };
     const getColor = () => {
-      if (type === "fail") {
-        return color(getThemedColors("dark").redFail.default);
+      if (alert.type === "fail") {
+        return color(getThemedColors(theme2.variant).redFail.default);
       }
-      if (type === "warning") {
-        return color(getThemedColors("dark").text.default);
+      if (alert.type === "warning") {
+        return color(getThemedColors(theme2.variant).text.default);
       }
-      return color(getThemedColors("dark").greenSuccess.default);
+      return color(getThemedColors(theme2.variant).greenSuccess.default);
     };
     return {
       Icon: Icon(),
       iconColor: getColor(),
-      shown: type !== "hidden",
-      render: render2
+      shown: alert.type !== "hidden",
+      render: alert.render
     };
   };
   const Render = ({
@@ -2011,44 +2111,171 @@
       })
     });
   };
-  const WaContext = createSimpleContext({});
-  const useFullScreenModalBehaviour = ({
-    closeModal,
-    isOpen
+  const forExpression = (exp, interval = 1e3) => {
+    return new Promise((resolve) => {
+      const checker = setInterval(() => {
+        const done = exp();
+        if (done) {
+          clearInterval(checker);
+          resolve(true);
+        }
+      }, interval);
+    });
+  };
+  const elementGetsVisible = async (selector, interval = 1e3) => {
+    await forExpression(() => !!document.querySelector(selector), interval);
+    return document.querySelector(selector);
+  };
+  const stopBubbling = (e2) => {
+    e2.stopPropagation();
+  };
+  const useWaLoadEffect = (cb, dependencyArray) => {
+    const {
+      client
+    } = AppContext.useContext().value;
+    p$1(() => {
+      if (client) {
+        return cb();
+      }
+    }, [client, ...dependencyArray]);
+  };
+  const useDomObserver = (selector, cb, options2 = {
+    childList: true
   }) => {
-    const actualCloseModal = (ev) => {
-      ev.stopPropagation();
-      closeModal();
+    const [observer, setDomObserver] = h$1(null);
+    const [node2, setNode] = h$1(null);
+    const callbackWrapper = T$2(async () => {
+      if (options2.allowPropagation ?? false) {
+        return cb();
+      }
+      observer == null ? void 0 : observer.disconnect();
+      const result = await cb();
+      activateOldObserver();
+      return result;
+    }, [observer, options2]);
+    const setupObserver = async () => {
+      if (!observer) {
+        return createNewObserver();
+      }
+      activateOldObserver();
     };
+    const createNewObserver = async () => {
+      if (observer) {
+        return observer;
+      }
+      const observedNode = await elementGetsVisible(selector, 100);
+      setNode(observedNode);
+      const myObserver = new MutationObserver(callbackWrapper);
+      setDomObserver(myObserver);
+      myObserver.observe(observedNode, options2);
+    };
+    const activateOldObserver = () => {
+      if (observer) {
+        observer.observe(node2, options2);
+      }
+    };
+    const start = () => {
+      setupObserver();
+    };
+    const flush = () => {
+      observer == null ? void 0 : observer.disconnect();
+      setDomObserver(null);
+    };
+    useWaLoadEffect(() => {
+      setupObserver();
+    }, []);
     return {
-      isOpen,
-      closeModal: actualCloseModal
+      start,
+      flush
     };
   };
-  const Container$2 = ut.div`
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.65);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	pointer-events: auto;
-	backdrop-filter: blur(2px);
-`;
-  ut.div`
-	min-width: 1px;
-	min-height: 1px;
-`;
-  const FullScreenModal = (props) => {
+  const CommonSelectors = {
+    chatWindow: "#app > div > div > :nth-child(4)"
+  };
+  const useModal = ({
+    afterClose,
+    afterOpen,
+    beforeClose,
+    beforeOpen
+  }) => {
     const {
-      isOpen
-    } = useFullScreenModalBehaviour(props);
-    if (!isOpen) {
-      return null;
-    }
-    return u$1(Container$2, {
-      onClick: props.closeModal,
-      children: props.children
+      value: context,
+      setValue: setContext
+    } = AppContext.useContext();
+    const openModal = (component, props) => {
+      beforeOpen == null ? void 0 : beforeOpen();
+      setContext({
+        fullScreenModal: {
+          open: true,
+          children: component,
+          childrenProps: props ?? {}
+        }
+      });
+      afterOpen == null ? void 0 : afterOpen();
+    };
+    const closeModal = () => {
+      beforeClose == null ? void 0 : beforeClose();
+      setContext({
+        fullScreenModal: {
+          open: false,
+          children: () => null,
+          childrenProps: {}
+        }
+      });
+      afterClose == null ? void 0 : afterClose();
+    };
+    const useModalEffect = (cb) => {
+      p$1(() => {
+        cb(context.fullScreenModal);
+      }, [context.fullScreenModal]);
+    };
+    return {
+      openModal,
+      closeModal,
+      useModalEffect
+    };
+  };
+  const useMessageRevalerLogic = () => {
+    const [, setCurrentMessageId] = h$1(null);
+    const {
+      client
+    } = AppContext.useContext().value;
+    const modal = useModal({
+      afterClose: () => setCurrentMessageId(null)
+    });
+    useDomObserver(CommonSelectors.chatWindow, async () => {
+      const allMesasgesInDom = [...document.querySelectorAll("[data-id]")];
+      const allMessageObj = await Promise.all(allMesasgesInDom.map(async (node2) => {
+        const id = node2.getAttribute("data-id");
+        return client.getMessageById(id);
+      }));
+      const allViewOnceMsgIds = allMessageObj.filter((msg) => msg && msg._data.isViewOnce).map((msg) => msg.id._serialized);
+      allViewOnceMsgIds.forEach((id) => {
+        const msgContainer = document.querySelector(`[data-id="${id}"]`);
+        msgContainer.removeEventListener("click", onClickMessage);
+        msgContainer.addEventListener("click", onClickMessage);
+      });
+    }, {
+      subtree: true,
+      childList: true
+    });
+    const getMessageId = (ev) => {
+      let target = ev.target;
+      while (!target.getAttribute("data-id")) {
+        target = target.parentElement;
+      }
+      return target.getAttribute("data-id");
+    };
+    const onClickMessage = T$2(async (ev) => {
+      const messageId = getMessageId(ev);
+      modal.openModal(MessageRevealerComponent, {
+        messageId
+      });
+    }, []);
+    modal.useModalEffect((modal2) => {
+      if (!modal2.open) {
+        setCurrentMessageId(null);
+      }
     });
   };
   const rotationAnimation = ht`
@@ -2073,161 +2300,70 @@
       stroke-dashoffset: -45;
     }
 `;
-  const Container$1 = ut(ut.div`
+  const Container$5 = ut.div`
 	animation: ${rotationAnimation};
-	animation-duration: 3s;
+	animation-duration: 1.5s;
 	animation-direction: normal;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
-`).attrs((props) => ({
-    style: {
-      // transition: 'all 2s ease-in-out',
-      // transform: props.full ? 'rotate(360deg)' : 'rotate(0deg)',
-    }
-  }))``;
-  const _MyCircle = ut(CircleIcon)`
+`;
+  const MyCircle = ut(CircleIcon)`
 	stroke-linecap: round;
 	stroke-dasharray: 0;
 	stroke-dashoffset: 0;
 	display: block;
 	animation: ${ringAnimation};
-	animation-duration: 3s;
+	animation-duration: 2s;
 	animation-direction: normal;
 	animation-iteration-count: infinite;
 	animation-timing-function: ease-in-out;
 `;
-  const MyCircle = ut(_MyCircle).attrs((props) => ({
-    style: {}
-  }))``;
   const LoadingRing = ({
     size
   }) => {
-    const [count, setCount] = h$1(0);
-    p$1(() => {
-      setCount(1);
-      const ival = setInterval(() => setCount((count2) => count2 + 1), 1e3);
-      return () => clearInterval(ival);
-    }, []);
-    return u$1(Container$1, {
-      full: count % 2 === 0,
+    return u$1(Container$5, {
       children: u$1(MyCircle, {
-        count,
         width: size,
         height: size
       })
     });
   };
-  const forExpression = (exp) => {
-    return new Promise((resolve) => {
-      const checker = setInterval(() => {
-        const done = exp();
-        if (done) {
-          clearInterval(checker);
-          resolve(true);
-        }
-      }, 1e3);
-    });
-  };
-  const elementGetsVisible = async (selector) => {
-    await forExpression(() => !!document.querySelector(selector));
-    return document.querySelector(selector);
-  };
-  const stopBubbling = (e2) => {
-    console.log("STOPPING BUBBLING FOR EVENT", e2);
-    e2.stopImmediatePropagation();
-    e2.preventDefault();
-    e2.stopPropagation();
-  };
-  const useMessageRevalerLogic = () => {
-    const [currentMessageId, setCurrentMessageId] = h$1(null);
-    const [loading, setLoading] = h$1(false);
+  const useMediaPreviewBehavior = ({
+    id
+  }) => {
     const [media, setMedia] = h$1(null);
-    const [messageType, setMessageType] = h$1(null);
-    const [messageObj, setMessageObj] = h$1({});
-    const [modalOpen, setModalOpen] = h$1(false);
     const {
-      value: Wa
-    } = WaContext.useContext();
-    const getMessageId = (ev) => {
-      let target = ev.target;
-      while (!target.getAttribute("data-id")) {
-        target = target.parentElement;
+      client
+    } = AppContext.useContext().value;
+    const {
+      showFail
+    } = useAlert();
+    const fetchMedia = async () => {
+      try {
+        const msg = await client.getMessageById(id);
+        const media2 = await (msg == null ? void 0 : msg.downloadMedia());
+        if (!media2) {
+          return showFail("Falha ao obter midia da mensagem. Tente novamente mais tarde");
+        }
+        setMedia({
+          type: msg.type,
+          data: media2.data,
+          mimetype: media2.mimetype,
+          caption: (msg == null ? void 0 : msg.body) ?? null
+        });
+      } catch (e2) {
+        showFail(`${e2}`);
       }
-      return target.getAttribute("data-id");
-    };
-    const onClickMessage = async (ev) => {
-      const messageId = getMessageId(ev);
-      setCurrentMessageId(messageId);
-    };
-    p$1(() => {
-      if (!Wa.Client) {
-        return;
-      } else {
-        setupMessageRevealer(onClickMessage);
-      }
-    }, [Wa]);
-    const downloadAndShowMedia = async () => {
-      if (currentMessageId === null) {
-        return;
-      }
-      const message = await Wa.Client.getMessageById(currentMessageId);
-      if (!(message == null ? void 0 : message.hasMedia) || !message._data.isViewOnce) {
-        return;
-      }
-      if (!!currentMessageId) {
-        setModalOpen(true);
-        setLoading(true);
-        setMessageObj(message);
-      }
-      const media2 = await Wa.Client.downloadMediaFromMessage(currentMessageId);
-      setMedia(media2 ?? null);
-      setLoading(false);
-      setMessageType(message.type);
     };
     p$1(() => {
-      downloadAndShowMedia();
-    }, [currentMessageId]);
-    const closeModal = () => {
-      setModalOpen(false);
-      setCurrentMessageId(null);
-    };
+      fetchMedia();
+    }, [id]);
     return {
-      currentMessageId,
       media,
-      messageType,
-      loading,
-      closeModal,
-      modalOpen,
-      messageObj
+      srcString: `data:${media == null ? void 0 : media.mimetype};base64,${media == null ? void 0 : media.data}`,
+      isImage: (media == null ? void 0 : media.type) === "image",
+      caption: media == null ? void 0 : media.caption
     };
-  };
-  const setupMessageRevealer = (onClickMessage) => {
-    const addMediaToMessage = () => {
-      const allMesasgesInDom = document.querySelectorAll("[data-id]");
-      allMesasgesInDom.forEach((message) => message.removeEventListener("click", onClickMessage));
-      allMesasgesInDom.forEach((message) => {
-        message.addEventListener("click", onClickMessage);
-      });
-    };
-    const startMainObserver = () => {
-      const mainDiv = document.getElementById("main");
-      if (!mainDiv) {
-        return;
-      }
-      MainDivObserver.observe(mainDiv, {
-        subtree: true,
-        childList: true,
-        attributes: true,
-        attributeFilter: ["data-id"]
-      });
-    };
-    const AppObserver = new MutationObserver(startMainObserver);
-    const MainDivObserver = new MutationObserver(addMediaToMessage);
-    AppObserver.observe(document.getElementById("app"), {
-      subtree: true,
-      attributes: true,
-      childList: true
-    });
   };
   const Image$1 = ut.img`
 	height: 100%;
@@ -2242,36 +2378,6 @@
 	max-height: 100%;
 	object-fit: contain;
 	pointer-events: auto;
-`;
-  const MediaPreview = ({
-    media,
-    messageType
-  }) => {
-    const srcString = `data:${media.mimetype};base64,${media.data}`;
-    if (messageType === "image") {
-      return u$1(Image$1, {
-        src: srcString
-      });
-    }
-    if (messageType === "video" || messageType === "audio" || messageType === "ptt") {
-      return u$1(Multimidia, {
-        controls: true,
-        children: u$1("source", {
-          src: srcString
-        })
-      });
-    }
-    return null;
-  };
-  const Container = ut.div`
-	height: 75%;
-	border-radius: 15px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	overflow: hidden;
-	max-width: 75%;
 `;
   const ImageContainer = ut.div`
 	height: 100%;
@@ -2293,82 +2399,121 @@
 	position: absolute;
 	text-align: center;
 `;
-  const MessageRevealer = () => {
+  const MediaPreview = ({
+    id
+  }) => {
     const {
-      loading,
       media,
-      messageType,
-      closeModal,
-      modalOpen,
-      messageObj
-    } = useMessageRevalerLogic();
-    return u$1(FullScreenModal, {
-      isOpen: modalOpen,
-      closeModal,
-      children: u$1(preact.Fragment, {
-        children: [u$1(Render, {
-          when: loading,
-          children: u$1(LoadingRing, {
-            size: "12rem"
+      srcString,
+      isImage,
+      caption
+    } = useMediaPreviewBehavior({
+      id
+    });
+    if (!media) {
+      return u$1(LoadingRing, {
+        size: "12rem"
+      });
+    }
+    return u$1(ImageContainer, {
+      children: [u$1(Render, {
+        when: isImage,
+        children: u$1(Image$1, {
+          src: srcString
+        })
+      }), u$1(Render, {
+        when: !isImage,
+        children: u$1(Multimidia, {
+          controls: true,
+          children: u$1("source", {
+            src: srcString
           })
-        }), u$1(Render, {
-          when: !loading,
-          children: u$1(Container, {
-            onClick: stopBubbling,
-            children: [u$1(ImageContainer, {
-              children: u$1(MediaPreview, {
-                messageType,
-                media
-              })
-            }), u$1(CaptionContainer, {
-              children: u$1("span", {
-                children: messageObj.body
-              })
-            })]
-          })
-        })]
+        })
+      }), u$1(Render, {
+        when: !!caption,
+        children: u$1(CaptionContainer, {
+          children: caption
+        })
+      })]
+    });
+  };
+  const Container$4 = ut.div`
+	height: 75%;
+	border-radius: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	overflow: hidden;
+	max-width: 75%;
+`;
+  const MessageRevealerComponent = ({
+    messageId
+  }) => {
+    if (!messageId) {
+      return null;
+    }
+    return u$1(Container$4, {
+      onClick: stopBubbling,
+      children: u$1(MediaPreview, {
+        id: messageId
       })
     });
   };
-  const setupChatTools = async (onChatLoads) => {
-    const chatContainer = await elementGetsVisible("#app > div > div > :nth-child(4)");
-    const chatObserver = new MutationObserver(onChatLoads);
-    chatObserver.observe(chatContainer, {
-      subtree: true,
-      attributes: true,
-      childList: true
-    });
+  const MessageRevealer = () => {
+    useMessageRevalerLogic();
+    return null;
   };
   const useChatToolsBehaviour = () => {
-    const [messageId, setMessageId] = h$1(null);
+    const [currentChat, setCurrentChat] = h$1({
+      id: {
+        _serialized: ""
+      }
+    });
     const {
-      Client: Client2
-    } = WaContext.useContext().value;
-    const {
-      value: app,
+      value: appContext,
       setValue: setAppContext
     } = AppContext.useContext();
-    const onChatLoads = async () => {
-      const someMessageId = (await elementGetsVisible("[data-id]")).getAttribute("data-id");
-      setMessageId(someMessageId);
-    };
-    const getChatInfo = async () => {
-      if (!messageId) {
+    const Client2 = appContext.client;
+    const [rootElement, setRootElement] = h$1(null);
+    const [loading, setLoading] = h$1(true);
+    const [toolbarOpen, setToolbarOpen] = h$1(false);
+    useDomObserver(CommonSelectors.chatWindow, async () => {
+      setToolbarOpen(false);
+      const newRootElement = document.querySelector("footer > div");
+      if ((currentChat == null ? void 0 : currentChat.id._serialized) === (newRootElement == null ? void 0 : newRootElement.getAttribute("chat-id"))) {
         return;
       }
-      const chatId = await Client2.getMessageById(messageId).then((message) => message == null ? void 0 : message.id.remote);
+      setRootElement(newRootElement);
+      setLoading(true);
+      const newCurrentChat = await getCurrentChat();
+      setCurrentChat(newCurrentChat);
       setAppContext({
-        openChat: chatId
+        openChatId: newCurrentChat.id._serialized
       });
+      newRootElement.setAttribute("chat-id", newCurrentChat.id._serialized);
+      setLoading(false);
+    });
+    const getCurrentChat = async () => {
+      const someMessageId = (await elementGetsVisible("[data-id]")).getAttribute("data-id");
+      const sampleMessageObject = await Client2.getMessageById(someMessageId);
+      return sampleMessageObject.getChat();
     };
-    p$1(() => {
-      getChatInfo();
-    }, [messageId]);
-    p$1(() => {
-      if (Client2) {
-        setupChatTools(onChatLoads);
+    const onClickButton = async () => {
+      if (!loading) {
+        setToolbarOpen((open) => !open);
       }
-    }, [Client2]);
+    };
+    const closeToolbar = () => {
+      setToolbarOpen(false);
+    };
+    return {
+      onClickButton,
+      closeToolbar,
+      rootElement,
+      loading,
+      toolbarOpen
+    };
   };
   const Button = ut.button`
 	width: 3rem;
@@ -2378,8 +2523,8 @@
 	justify-content: center;
 	align-items: center;
 	color: ${({
-  theme
-}) => color(getThemedColors(theme).icon.default)};
+  theme: theme2
+}) => color(getThemedColors(theme2).icon.default)};
 `;
   const IconContainer = ut.div`
 	position: relative;
@@ -2425,17 +2570,177 @@
       })
     });
   };
-  const ChatTools = () => {
-    useChatToolsBehaviour();
-    const root = document.querySelector("footer > div");
-    const appContext = AppContext.useContext().value;
-    if (!root) {
-      return null;
-    }
-    const onClick = () => console.log(appContext);
-    return j$2(u$1(WhatsappPlusPlusButton, {
+  const ToolContainerHeight = 48;
+  const Container$3 = ut.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	padding: 5px;
+`;
+  const ToolBarContainer = ut.div`
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	bottom: 62px;
+	right: 0px;
+	border-radius: 15px 15px 0px 0px;
+	overflow: hidden;
+	transition: height ease-in-out 0.2s;
+	height: ${(props) => props.open ? (props.children.length ?? 1) * ToolContainerHeight : 0}px;
+`;
+  const ButtonPrimitiveStyle = ut.button`
+	width: 300px;
+	height: 100%;
+	height: ${ToolContainerHeight}px;
+	background: ${({
+  theme: theme2
+}) => color(getThemedColors(theme2).header.default)};
+	color: ${({
+  theme: theme2
+}) => color(getThemedColors(theme2).text.default)};
+	box-sizing: content-box;
+	border-bottom: solid 2px
+		${({
+  theme: theme2
+}) => color(getThemedColors(theme2).header.default)};
+
+	font-weight: 400;
+	line-height: 19px;
+	font-size: 14.2px;
+
+	transition: all ease-in-out 0.25s;
+	&:hover {
+		border-bottom: solid 2px
+			${({
+  theme: theme2
+}) => color(getThemedColors(theme2).primary.default)};
+		background: ${({
+  theme: theme2
+}) => color(getThemedColors(theme2).header.addBrightness(-10))};
+	}
+`;
+  const Container$2 = ut.div`
+	pointer-events: auto;
+`;
+  const Checkbox = ut.input``;
+  const Label = ut.span``;
+  const useCheckBoxBehaviour = (props) => {
+    const onInput = (ev) => {
+      return props.onChangeValue(ev.target.checked);
+    };
+    return onInput;
+  };
+  const _CheckBox = (props, ref) => {
+    const onInput = useCheckBoxBehaviour(props);
+    return u$1(Container$2, {
+      children: [u$1(Checkbox, {
+        checked: props.checked,
+        type: "checkbox",
+        ref,
+        onInput
+      }), u$1(Label, {
+        children: props.label
+      })]
+    });
+  };
+  const CheckBox = N$1(_CheckBox);
+  const useFeaturesPanelBehaviour = () => {
+    const {
+      value: appContext,
+      setValue: setAppContext
+    } = AppContext.useContext();
+    const toggleFeature = (featureName) => (value) => {
+      setAppContext({
+        features: {
+          [featureName]: value
+        }
+      });
+      localStorage.setItem("WA++Features", JSON.stringify({
+        ...appContext.features,
+        [featureName]: value
+      }));
+    };
+    const featureIsActive = (featureName) => {
+      return appContext.features[featureName];
+    };
+    return {
+      toggleFeature,
+      featureIsActive
+    };
+  };
+  const Container$1 = ut.div`
+	background: red;
+	padding: 1rem;
+`;
+  const FeaturesPanel = () => {
+    const {
+      featureIsActive,
+      toggleFeature
+    } = useFeaturesPanelBehaviour();
+    return u$1(Container$1, {
+      onClick: stopBubbling,
+      children: u$1(CheckBox, {
+        checked: featureIsActive("MessageReveal"),
+        onChangeValue: toggleFeature("MessageReveal"),
+        label: "Message Reveler"
+      })
+    });
+  };
+  const useFeatureToggleBehaviour = (props) => {
+    const modal = useModal({
+      beforeOpen: props.closeToolbar
+    });
+    const onClick = () => {
+      modal.openModal(FeaturesPanel);
+    };
+    return {
       onClick
-    }), root);
+    };
+  };
+  const FeatureToggle = (props) => {
+    const {
+      onClick
+    } = useFeatureToggleBehaviour(props);
+    return u$1(preact.Fragment, {
+      children: u$1(ButtonPrimitiveStyle, {
+        onClick,
+        children: u$1("h1", {
+          children: "Painel de funções"
+        })
+      })
+    });
+  };
+  const ChatTools = () => {
+    const {
+      onClickButton,
+      rootElement,
+      loading,
+      toolbarOpen,
+      closeToolbar
+    } = useChatToolsBehaviour();
+    if (!rootElement) {
+      return u$1(preact.Fragment, {});
+    }
+    return j$2(u$1(Container$3, {
+      children: [u$1(Render, {
+        when: loading,
+        children: u$1(LoadingRing, {
+          size: "2rem"
+        })
+      }), u$1(Render, {
+        when: !loading,
+        children: u$1(WhatsappPlusPlusButton, {
+          onClick: onClickButton
+        })
+      }), u$1(ToolBarContainer, {
+        open: toolbarOpen,
+        children: u$1(FeatureToggle, {
+          closeToolbar
+        })
+      })]
+    }), rootElement);
   };
   const eventCallbackMap = {
     setItem: {},
@@ -2488,116 +2793,72 @@
       eventCallbackMap.setItem[key] = callback;
     }
   };
-  const useWaLoadEffect = (cb, dependencyArray) => {
-    const {
-      Client: Client2
-    } = WaContext.useContext().value;
-    p$1(() => {
-      if (Client2) {
-        return cb();
-      }
-    }, [Client2]);
-  };
   const ThemeSync = () => {
     const {
-      setValue: setTheme
+      setValue: setAppContext
     } = AppContext.useContext();
     useWaLoadEffect(() => {
       const currentTheme = JSON.parse(localStorage.getItem("theme"));
-      setUserTheme(currentTheme);
-    });
+      setUserTheme(currentTheme || getSystemThemePreference());
+    }, []);
     const getSystemThemePreference = () => {
       if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
         return "dark";
       }
       return "light";
     };
-    const setUserTheme = (theme) => {
-      if (theme === "light") {
-        setTheme({
-          theme: "light"
-        });
-      } else if (theme === "dark") {
-        setTheme({
-          theme: "dark"
-        });
-      } else {
-        setTheme({
-          theme: getSystemThemePreference()
-        });
-      }
+    const setUserTheme = (theme2) => {
+      setAppContext({
+        theme: {
+          variant: theme2
+        }
+      });
     };
-    useSetItemListener(({
-      key,
-      newValue
-    }) => {
-      if (key !== "theme") {
-        return;
-      }
-      setUserTheme(newValue);
-    }, "theme-sync");
+    useWaLoadEffect(() => {
+      useSetItemListener(({
+        key,
+        newValue
+      }) => {
+        if (key !== "theme") {
+          return;
+        }
+        setUserTheme(newValue);
+      }, "theme-sync");
+    }, []);
     return u$1(preact.Fragment, {});
+  };
+  const ModuleController = ({
+    active,
+    children
+  }) => {
+    console.log(`Rendering of messageController is ${active}`);
+    if (active) {
+      return children;
+    }
+    return null;
   };
   const AllModules = () => {
     const {
-      value: Wa
-    } = WaContext.useContext();
+      client,
+      features
+    } = AppContext.useContext().value;
     const [modulesReady, setModulesReady] = h$1(false);
     p$1(() => {
-      if (!!Wa) {
+      if (!!client) {
         setModulesReady(true);
       }
-    }, [Wa]);
+    }, [client]);
     if (!modulesReady) {
       return null;
     } else {
       return u$1(preact.Fragment, {
-        children: [u$1(MessageRevealer, {}), u$1(ChatTools, {}), u$1(ThemeSync, {})]
+        children: [u$1(ModuleController, {
+          active: !!features.MessageReveal,
+          children: u$1(MessageRevealer, {})
+        }), u$1(ChatTools, {}), u$1(ThemeSync, {})]
       });
     }
   };
-  const CreateChat = (client, data) => {
-    if (data.isGroup) {
-      return new GroupChat(client, data);
-    } else {
-      return new PrivateChat(client, data);
-    }
-  };
-  class GroupChat {
-    constructor(Client2, data) {
-    }
-  }
-  class PrivateChat {
-    constructor(Client2, data) {
-    }
-  }
-  const CreateContact = (client, data) => {
-    if (data.isBusiness) {
-      return new BusinessContact(client, data);
-    } else {
-      return new PrivateContact(client, data);
-    }
-  };
-  class BusinessContact {
-    constructor(Client2, data) {
-    }
-  }
-  class PrivateContact {
-    constructor(Client2, data) {
-    }
-  }
-  class MessageMedia {
-    constructor(mimetype, data, filename, filesize) {
-      __publicField(this, "mimetype");
-      __publicField(this, "data");
-      __publicField(this, "filename");
-      __publicField(this, "filesize");
-      this.mimetype = mimetype;
-      this.data = data;
-      this.filename = filename;
-      this.filesize = filesize;
-    }
-  }
   let Location$1 = class Location2 {
     /**
      * @param {number} latitude
@@ -3048,6 +3309,212 @@ ${this.address}` : this.name || this.address || "";
       return this.client.editMessage(this.id._serialized, content, options2);
     }
   }
+  class Chat {
+    /** Last message from chat */
+    constructor(client, data) {
+      /** Client instance */
+      __publicField(this, "client");
+      /** Indicates if the Chat is archived */
+      __publicField(this, "archived");
+      /** ID that represents the chat */
+      __publicField(this, "id");
+      /** Indicates if the Chat is a Group Chat */
+      __publicField(this, "isGroup");
+      /** Indicates if the Chat is readonly */
+      __publicField(this, "isReadOnly");
+      /** Indicates if the Chat is muted */
+      __publicField(this, "isMuted");
+      /** Unix timestamp for when the mute expires */
+      __publicField(this, "muteExpiration");
+      /** Title of the chat */
+      __publicField(this, "name");
+      /** Unix timestamp for when the last activity occurred */
+      __publicField(this, "timestamp");
+      /** Amount of messages unread */
+      __publicField(this, "unreadCount");
+      /** Last message fo chat */
+      __publicField(this, "lastMessage");
+      /** Indicates if the Chat is pinned */
+      __publicField(this, "pinned");
+      this.client = client;
+      if (data)
+        this._patch(data);
+    }
+    _patch(data) {
+      this.id = data.id;
+      this.name = data.formattedTitle;
+      this.isGroup = data.isGroup;
+      this.isReadOnly = data.isReadOnly;
+      this.unreadCount = data.unreadCount;
+      this.timestamp = data.t;
+      this.archived = data.archive;
+      this.pinned = !!data.pin;
+      this.isMuted = data.isMuted;
+      this.muteExpiration = data.muteExpiration;
+      this.lastMessage = data.lastMessage ? new Message(this.client, data.lastMessage) : void 0;
+    }
+    /**
+     * Send a message to this chat
+     * @param {string|MessageMedia|Location} content
+     * @param {MessageSendOptions} [options]
+     * @returns {Promise<Message>} Message that was just sent
+     */
+    async sendMessage(content, options2) {
+      return this.client.sendMessage(this.id._serialized, content, options2);
+    }
+    /**
+     * Set the message as seen
+     * @returns {Promise<Boolean>} result
+     */
+    async sendSeen() {
+      return this.client.sendSeen(this.id._serialized);
+    }
+    /**
+     * Clears all messages from the chat
+     * @returns {Promise<Boolean>} result
+     */
+    async clearMessages() {
+      return this.client.clearChatMessages(this.id._serialized);
+    }
+    /**
+     * Deletes the chat
+     * @returns {Promise<Boolean>} result
+     */
+    async delete() {
+      return this.client.deleteChat(this.id._serialized);
+    }
+    /**
+     * Archives this chat
+     */
+    async archive() {
+      return this.client.archiveChat(this.id._serialized);
+    }
+    /**
+     * un-archives this chat
+     */
+    async unarchive() {
+      return this.client.unarchiveChat(this.id._serialized);
+    }
+    /**
+     * Pins this chat
+     * @returns {Promise<boolean>} New pin state. Could be false if the max number of pinned chats was reached.
+     */
+    async pin() {
+      return this.client.pinChat(this.id._serialized);
+    }
+    /**
+     * Unpins this chat
+     * @returns {Promise<boolean>} New pin state
+     */
+    async unpin() {
+      return this.client.unpinChat(this.id._serialized);
+    }
+    /**
+     * Mutes this chat forever, unless a date is specified
+     * @param {?Date} unmuteDate Date at which the Chat will be unmuted, leave as is to mute forever
+     */
+    async mute(unmuteDate) {
+      return this.client.muteChat(this.id._serialized, unmuteDate);
+    }
+    /**
+     * Unmutes this chat
+     */
+    async unmute() {
+      return this.client.unmuteChat(this.id._serialized);
+    }
+    /**
+     * Mark this chat as unread
+     */
+    async markUnread() {
+      return this.client.markChatUnread(this.id._serialized);
+    }
+    /**
+     * Loads chat messages, sorted from earliest to latest.
+     * @param {Object} searchOptions Options for searching messages. Right now only limit and fromMe is supported.
+     * @param {Number} [searchOptions.limit] The amount of messages to return. If no limit is specified, the available messages will be returned. Note that the actual number of returned messages may be smaller if there aren't enough messages in the conversation. Set this to Infinity to load all messages.
+     * @param {Boolean} [searchOptions.fromMe] Return only messages from the bot number or vise versa. To get all messages, leave the option undefined.
+     * @returns {Promise<Array<Message>>}
+     */
+    async fetchMessages(searchOptions) {
+      return this.client.fetchMessagesFromChat(this.id._serialized, searchOptions);
+    }
+    /**
+     * Simulate typing in chat. This will last for 25 seconds.
+     */
+    async sendStateTyping() {
+      return this.client.sendTypingStateToChat(this.id._serialized);
+    }
+    /**
+     * Simulate recording audio in chat. This will last for 25 seconds.
+     */
+    async sendStateRecording() {
+      return this.client.sendRecordingAudioStateToChat(this.id._serialized);
+    }
+    /**
+     * Stops typing or recording in chat immediately.
+     */
+    async clearState() {
+      return this.client.clearChatState(this.id._serialized);
+    }
+    /**
+     * Returns the Contact that corresponds to this Chat.
+     * @returns {Promise<Contact>}
+     */
+    async getContact() {
+      return await this.client.getContactById(this.id._serialized);
+    }
+    /**
+     * Returns array of all Labels assigned to this Chat
+     * @returns {Promise<Array<Label>>}
+     */
+    async getLabels() {
+      return this.client.getChatLabels(this.id._serialized);
+    }
+    /**
+     * Add or remove labels to this Chat
+     * @param {Array<number|string>} labelIds
+     * @returns {Promise<void>}
+     */
+    async changeLabels(labelIds) {
+      return this.client.addOrRemoveLabelsFromChat(labelIds, [this.id._serialized]);
+    }
+  }
+  class PrivateChat extends Chat {
+  }
+  const CreateChat = (client, data) => {
+    if (data.isGroup) {
+      return new Chat(client, data);
+    } else {
+      return new PrivateChat(client, data);
+    }
+  };
+  const CreateContact = (client, data) => {
+    if (data.isBusiness) {
+      return new BusinessContact(client, data);
+    } else {
+      return new PrivateContact(client, data);
+    }
+  };
+  class BusinessContact {
+    constructor(Client2, data) {
+    }
+  }
+  class PrivateContact {
+    constructor(Client2, data) {
+    }
+  }
+  class MessageMedia {
+    constructor(mimetype, data, filename, filesize) {
+      __publicField(this, "mimetype");
+      __publicField(this, "data");
+      __publicField(this, "filename");
+      __publicField(this, "filesize");
+      this.mimetype = mimetype;
+      this.data = data;
+      this.filename = filename;
+      this.filesize = filesize;
+    }
+  }
   class Reaction {
     constructor(client, data) {
       __publicField(this, "client");
@@ -3270,6 +3737,194 @@ ${this.address}` : this.name || this.address || "";
         console.warn("you can't edit this message.");
       }
       return null;
+    }
+    async sendSeen(serializedChatId) {
+      return window.WWebJS.sendSeen(serializedChatId);
+    }
+    async clearChatMessages(serializedChatId) {
+      return window.WWebJS.sendClearChat(serializedChatId);
+    }
+    async deleteChat(serializedChatId) {
+      return window.WWebJS.sendDeleteChat(serializedChatId);
+    }
+    async archiveChat(serializedChatId) {
+      try {
+        let chat = await window.Store.Chat.get(serializedChatId);
+        await window.Store.Cmd.archiveChat(chat, true);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async unarchiveChat(serializedChatId) {
+      try {
+        let chat = await window.Store.Chat.get(serializedChatId);
+        await window.Store.Cmd.archiveChat(chat, false);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async pinChat(serializedChatId) {
+      try {
+        let chat = window.Store.Chat.get(serializedChatId);
+        if (chat.pin) {
+          return true;
+        }
+        const MAX_PIN_COUNT = 3;
+        const chatModels = window.Store.Chat.getModelsArray();
+        if (chatModels.length > MAX_PIN_COUNT) {
+          let maxPinned = chatModels[MAX_PIN_COUNT - 1].pin;
+          if (maxPinned) {
+            return false;
+          }
+        }
+        await window.Store.Cmd.pinChat(chat, true);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async unpinChat(serializedChatId) {
+      try {
+        let chat = window.Store.Chat.get(serializedChatId);
+        if (!chat.pin) {
+          return true;
+        }
+        await window.Store.Cmd.pinChat(chat, false);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async muteChat(serializedChatId, unmuteDate) {
+      try {
+        const actualUnmuteDate = unmuteDate ? unmuteDate.getTime() / 1e3 : -1;
+        let chat = await window.Store.Chat.get(serializedChatId);
+        await chat.mute.mute({
+          expiration: actualUnmuteDate,
+          sendDevice: true
+        });
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async unmuteChat(serializedChatId) {
+      try {
+        let chat = await window.Store.Chat.get(serializedChatId);
+        await window.Store.Cmd.muteChat(chat, false);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async markChatUnread(serializedChatId) {
+      try {
+        let chat = await window.Store.Chat.get(serializedChatId);
+        await window.Store.Cmd.markChatUnread(chat, true);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    async fetchMessagesFromChat(serializedChatId, searchOptions) {
+      const msgFilter = (m2) => {
+        if (m2.isNotification) {
+          return false;
+        }
+        if (searchOptions && searchOptions.fromMe !== void 0 && m2.id.fromMe !== searchOptions.fromMe) {
+          return false;
+        }
+        return true;
+      };
+      const chat = window.Store.Chat.get(serializedChatId);
+      let msgs = chat.msgs.getModelsArray().filter(msgFilter);
+      if (searchOptions && searchOptions.limit > 0) {
+        while (msgs.length < searchOptions.limit) {
+          const loadedMessages = await window.Store.ConversationMsgs.loadEarlierMsgs(chat);
+          if (!loadedMessages || !loadedMessages.length)
+            break;
+          msgs = [...loadedMessages.filter(msgFilter), ...msgs];
+        }
+        if (msgs.length > searchOptions.limit) {
+          msgs.sort((a2, b2) => a2.t > b2.t ? 1 : -1);
+          msgs = msgs.splice(msgs.length - searchOptions.limit);
+        }
+      }
+      return msgs.map((m2) => window.WWebJS.getMessageModel(m2)).map((model) => new Message(this, model));
+    }
+    /** Valid for 25 seconds or until calling `Client.clearChatState(serializedChatId)` */
+    async sendTypingStateToChat(serializedChatId) {
+      try {
+        window.WWebJS.sendChatstate("typing", serializedChatId);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    /** Valid for 25 seconds or until calling `Client.clearChatState(serializedChatId)` */
+    async sendRecordingAudioStateToChat(serializedChatId) {
+      try {
+        window.WWebJS.sendChatstate("recording", serializedChatId);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    /** Clears chatState. Used to revert `sendRecordningAudioStateToChat` or `sendTypingStateToChat` */
+    async clearChatState(serializedChatId) {
+      try {
+        window.WWebJS.sendChatstate("stop", serializedChatId);
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+    // [TODO]: Check wtf is this;
+    async getChatLabels(serializedChatId) {
+      return window.WWebJS.getChatLabels(serializedChatId);
+    }
+    async getChatsByLabelId(labelId) {
+      try {
+        const label = window.Store.Label.get(labelId);
+        const labelItems = label.labelItemCollection.getModelsArray();
+        const chatIds = labelItems.reduce((result, item) => {
+          if (item.parentType === "Chat") {
+            result.push(item.parentId);
+          }
+          return result;
+        }, []);
+        return Promise.all(chatIds.map((id) => this.getChatById(id)));
+      } catch (e2) {
+        return [];
+      }
+    }
+    async addOrRemoveLabelsFromChat(labelIds, serializedChatIds) {
+      if (["smba", "smbi"].indexOf(window.Store.Conn.platform) === -1) {
+        throw "[LT01] Only Whatsapp business";
+      }
+      const labels = window.WWebJS.getLabels().filter((e2) => labelIds.find((l2) => l2 == e2.id) !== void 0);
+      const chats = window.Store.Chat.filter((e2) => serializedChatIds.includes(e2.id._serialized));
+      let actions = labels.map((label) => ({
+        id: label.id,
+        type: "add"
+      }));
+      chats.forEach((chat) => {
+        (chat.labels || []).forEach((n2) => {
+          if (!actions.find((e2) => e2.id == n2)) {
+            actions.push({
+              id: n2,
+              type: "remove"
+            });
+          }
+        });
+      });
+      return await window.Store.Label.addOrRemoveLabels(actions, chats);
+    }
+    async getAllChats() {
+      const proto_chats = await window.WWebJS.getChats();
+      return proto_chats.map((chat) => CreateChat(this, chat));
     }
   }
   const inject = async () => {
@@ -4227,9 +4882,9 @@ ${this.address}` : this.name || this.address || "";
   };
   const WaLoader = () => {
     const {
-      value: Wa,
-      setValue: setWa
-    } = WaContext.useContext();
+      value: appContext,
+      setValue: setAppContext
+    } = AppContext.useContext();
     p$1(() => {
       elementGetsVisible('span[data-icon="archived"]').then(async () => {
         const {
@@ -4237,8 +4892,8 @@ ${this.address}` : this.name || this.address || "";
           WAInterface
         } = await inject();
         if (!!Store && !!WAInterface) {
-          setWa({
-            Client: new Client()
+          setAppContext({
+            client: new Client()
           });
         }
         console.log("WA++ EXTENSION READY");
@@ -4246,42 +4901,77 @@ ${this.address}` : this.name || this.address || "";
     }, []);
     return null;
   };
-  const version = "0.2.4";
-  const checkVersion = () => {
-    const fetchLatestVersion = async () => {
-      const latestVersion = await fetch("https://gramont.ddns.net/cdn/file/public/wa-plusplus-latest-version.txt").then((resp) => resp.text()).catch((err) => version);
-      if (latestVersion !== version) {
-        console.log("version mismatch!");
-      } else {
-        console.log("you have the last version");
-      }
+  const useFullScreenModalBehaviour = () => {
+    const {
+      value: context,
+      setValue: setContext
+    } = AppContext.useContext();
+    const modal = useModal({});
+    const closeModal = () => {
+      modal.closeModal();
     };
-    p$1(() => {
-      fetchLatestVersion();
-    }, []);
+    const isOpen = context.fullScreenModal.open;
+    const actualCloseModal = (ev) => {
+      ev.stopPropagation();
+      closeModal();
+    };
+    return {
+      isOpen,
+      closeModal: actualCloseModal,
+      Children: context.fullScreenModal.children,
+      childrenProps: context.fullScreenModal.childrenProps
+    };
+  };
+  const Container = ut.div`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.65);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: auto;
+	backdrop-filter: blur(2px);
+`;
+  ut.div`
+	min-width: 1px;
+	min-height: 1px;
+`;
+  const FullScreenModal = () => {
+    const {
+      isOpen,
+      closeModal,
+      Children,
+      childrenProps
+    } = useFullScreenModalBehaviour();
+    if (!isOpen) {
+      return null;
+    }
+    return u$1(Container, {
+      onClick: closeModal,
+      children: u$1(Children, {
+        ...childrenProps
+      })
+    });
   };
   function App() {
-    return u$1(WaContext.Provider, {
-      children: u$1(AppContext.Provider, {
-        children: u$1(AppContent, {})
-      })
+    return u$1(AppContext.Provider, {
+      children: u$1(AppContent, {})
     });
   }
   const AppContent = () => {
-    const {
-      theme
-    } = AppContext.useContext().value;
-    checkVersion();
+    var _a;
+    const appContext = AppContext.useContext().value;
     return u$1(tt, {
       theme: {
-        variant: theme
+        variant: ((_a = appContext.theme) == null ? void 0 : _a.variant) || "light"
       },
       children: u$1("div", {
         style: {
           width: "100%",
           height: "100%"
         },
-        children: [u$1(WaLoader, {}), u$1(AllModules, {}), u$1(AlertComponent, {})]
+        children: [u$1(WaLoader, {}), u$1(AllModules, {}), u$1(AlertComponent, {}), u$1(FullScreenModal, {})]
       })
     });
   };
