@@ -1,4 +1,3 @@
-
 export type DeepPartial<T extends Record<string, any>> = {
 	[key in keyof T]?: T[key] extends Record<string, any>
 		? DeepPartial<T[key]>
@@ -17,32 +16,28 @@ export type DeepPartial<T extends Record<string, any>> = {
  */
 export const recursiveAssign = <T extends Record<string, any>>(
 	oldData: T,
-	newData: DeepPartial<T>
-): T => {
-	return Object.entries(oldData).reduce((object, [key, value]) => {
-		if (key in newData) {
-			if (typeof value === 'object') {
-				const newObject: Record<string, any> = recursiveAssign(
-					oldData[key],
-					newData[key]!
-				);
+	newData: Record<string, any>
+) => {
+	return Object.entries(newData).reduce((object, [key, value]) => {
+		// The part `value.constructor === {}.constructor` is used here in order to avoid
+		// calling Object.entries on an object that is not literal, when the object was created
+		// by instantiating a class, like `const obj = new ObjClass()`
+		if (value && typeof value === 'object' && value.constructor === {}.constructor) {
+			const newObject: Record<string, any> = recursiveAssign(
+				oldData[key],
+				newData[key]
+			);
 
-				return {
-					...object,
-					[key]: {
-						...newObject,
-					},
-				};
-			}
 			return {
 				...object,
-				[key]: newData[key],
+				[key]: {
+					...newObject,
+				},
 			};
 		}
-
 		return {
 			...object,
-			[key]: oldData[key],
+			[key]: newData[key] === undefined ? oldData[key] : newData[key],
 		};
-	}, {} as T);
+	}, oldData as T);
 };

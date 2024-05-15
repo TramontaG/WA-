@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useState } from 'preact/hooks';
-import MessageMedia from '../../lib/Media';
-import { MessageTypes } from '../../lib/Message/models';
-import Message from '../../lib/Message';
+import { useCallback, useState } from 'preact/hooks';
 import { CommonSelectors, useDomObserver } from '../../hooks/useDomObserver';
 import { AppContext } from '../../contexts/App';
-import { MessageRevealer, MessageRevealerComponent } from '.';
+import { MessageRevealerComponent } from '.';
 import { useModal } from '../../hooks/useModal';
 
 export const useMessageRevalerLogic = () => {
 	const [, setCurrentMessageId] = useState<string | null>(null);
-	const { client } = AppContext.useContext().value;
+	const { client, features, fullScreenModal } = AppContext.useContext().value;
 	const modal = useModal({
 		afterClose: () => setCurrentMessageId(null),
 	});
@@ -17,6 +14,9 @@ export const useMessageRevalerLogic = () => {
 	useDomObserver(
 		CommonSelectors.chatWindow,
 		async () => {
+			if (!features.MessageReveal) {
+				return;
+			}
 			const allMesasgesInDom = [...document.querySelectorAll('[data-id]')];
 			const allMessageObj = await Promise.all(
 				allMesasgesInDom.map(async node => {

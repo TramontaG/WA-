@@ -37,6 +37,7 @@ export const useModal = ({
 				childrenProps: props ?? {},
 			},
 		});
+
 		afterOpen?.();
 	};
 

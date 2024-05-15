@@ -7,8 +7,6 @@ type ModuleControllerProps = {
 };
 
 export const ModuleController = ({ active, children }: ModuleControllerProps) => {
-	console.log(`Rendering of messageController is ${active}`);
-
 	if (active) {
 		return children;
 	}

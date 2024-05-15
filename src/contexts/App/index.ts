@@ -1,5 +1,5 @@
 import { Client } from '../../lib/Client';
-import { createSimpleContext } from '../contextFactory';
+import { createAppContext } from '../contextFactory';
 import { FunctionalComponent } from 'preact';
 
 export type Theme = {
@@ -33,7 +33,7 @@ export type AppContextType = {
 
 const theme = localStorage.getItem('theme');
 
-export const AppContext = createSimpleContext({
+export const AppContext = createAppContext({
 	theme: {
 		variant: theme ? JSON.parse(theme) : 'light',
 	},

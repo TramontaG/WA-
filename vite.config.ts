@@ -1,9 +1,18 @@
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import monkey, { cdn } from 'vite-plugin-monkey';
+import fs from 'fs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	server: {
+		cors: true,
+		https: {
+			key: fs.readFileSync('./Certs/server.key'),
+			cert: fs.readFileSync('./Certs/server.cert'),
+		},
+	},
+
 	plugins: [
 		preact(),
 		monkey({

@@ -14,7 +14,7 @@ export const createAppContext = <T extends Record<string, any>>(data: T) => {
 		const [myData, setMyData] = useState<T>(data);
 
 		const setValue = (descriptor: DeepPartial<T>) => {
-			setMyData(oldData => recursiveAssign(oldData, descriptor));
+			setMyData(recursiveAssign(myData, descriptor));
 		};
 
 		return (

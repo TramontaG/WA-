@@ -114,7 +114,6 @@ export class Client {
 			return new Message(this, newMessage);
 		} catch (e) {
 			console.warn(e);
-			console.log({ chatId, content, options, sendSeen });
 		}
 	}
 
